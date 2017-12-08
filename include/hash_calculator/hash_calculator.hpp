@@ -23,22 +23,19 @@
  *
  ******************************************************************************/
 
-#ifndef BLOCKCHAIN_GENERAL_HPP_
-#define BLOCKCHAIN_GENERAL_HPP_
+#ifndef BLOCKCHAIN_HASH_CALCULATOR_HASH_CALCULATOR_HPP_
+#define BLOCKCHAIN_HASH_CALCULATOR_HASH_CALCULATOR_HPP_
 
-#include <string>
-#include <vector>
+#include "general.hpp"
 
 namespace ssybc {
 
-  using IndexType = std::size_t;
-  using TimeIntervalType = double;
-  using HashType = std::string;
-  using NonceType = std::size_t;
-  using ByteType = unsigned char;
-  using BinaryDataType = std::vector<ByteType>;
+  class HashCalculator {
+  public:
+    virtual HashType Hash(BinaryDataType const data) const = 0;
+  };
 
 }  // namespace ssybc
 
-#endif  // BLOCKCHAIN_GENERAL_HPP_
+#endif  // BLOCKCHAIN_HASH_CALCULATOR_HASH_CALCULATOR_HPP_
 
