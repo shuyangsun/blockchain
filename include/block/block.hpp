@@ -27,8 +27,8 @@
 #define BLOCKCHAIN_BLOCK_BLOCK_HPP_
 
 #include "include/general.hpp"
-#include "include/binary_data_converter/binary_data_converter_default.hpp"
 #include "include/hash_calculator/hash_calculator_sha256.hpp"
+#include "include/binary_data_converter/binary_data_converter_default.hpp"
 
 namespace ssybc {
 
@@ -51,16 +51,16 @@ namespace ssybc {
     Block(Block &&block);
     ~Block();
 
-    BlockIndex Index() const final;
-    BlockTimeInterval TimeStamp() const final;
-    BlockHash PreviousBlockHash() const final;
-    BlockNonce Nonce() const final;
-    size_t SizeOfContentAsBinaryInBytes() const final;
-    BlockContent Content() const final;
-    BlockHash Hash() const final;
+    BlockIndex Index() const;
+    BlockTimeInterval TimeStamp() const;
+    BlockHash PreviousBlockHash() const;
+    BlockNonce Nonce() const;
+    size_t SizeOfContentAsBinaryInBytes() const;
+    BlockContent Content() const;
+    BlockHash Hash() const;
 
-    BinaryData ToBinaryBlock() const final;
-    operator std::string() const final;
+    BinaryData ToBinaryBlock() const;
+    operator std::string() const;
     virtual std::string ToString() const;
 
   private:
@@ -74,7 +74,7 @@ namespace ssybc {
     BlockContent const content_;
 
     BlockHash hash_{};
-    BinaryData ContentAsBinary_() const final;
+    BinaryData ContentAsBinary_() const;
   };
 
 }  // namespace ssybc
