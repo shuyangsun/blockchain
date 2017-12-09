@@ -24,7 +24,7 @@
  ******************************************************************************/
 
 
-#include "hash_calculator/hash_calculator_sha256.hpp"
+#include "include/hash_calculator/hash_calculator_sha256.hpp"
 
 ssybc::BlockHash ssybc::SHA256Calculator::Hash(ssybc::BinaryData const data) const
 {

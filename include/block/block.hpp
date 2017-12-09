@@ -26,17 +26,27 @@
 #ifndef BLOCKCHAIN_BLOCK_BLOCK_HPP_
 #define BLOCKCHAIN_BLOCK_BLOCK_HPP_
 
-#include "general.hpp"
+#include "include/general.hpp"
+#include "include/binary_data_converter/binary_data_converter_default.hpp"
+#include "include/hash_calculator/hash_calculator_sha256.hpp"
 
 namespace ssybc {
 
-  template<typename BlockData, typename BinaryDataConverter, typename HashCalculator>
+  template<
+    typename BlockContent,
+    template<typename> class BinaryDataConverterTemplate = BinaryDataConverterDefault,
+    typename HashCalculator = SHA256Calculator>
   class Block {
 
   public:
 
     Block() = delete;
-    Block(BlockIndex block_index, BlockTimeInterval time_stamp, BlockHash previous_hash, BlockNonce nonce, BlockData data);
+    Block(
+      BlockIndex const block_index,
+      BlockTimeInterval const time_stamp,
+      BlockHash const previous_hash,
+      BlockNonce const nonce,
+      BlockContent const content);
     Block(const Block &block);
     Block(Block &&block);
     ~Block();
@@ -45,22 +55,26 @@ namespace ssybc {
     BlockTimeInterval TimeStamp() const final;
     BlockHash PreviousBlockHash() const final;
     BlockNonce Nonce() const final;
-    BlockData Data() const final;
+    size_t SizeOfContentAsBinaryInBytes() const final;
+    BlockContent Content() const final;
     BlockHash Hash() const final;
 
-    BinaryData ToBinary() const final;
+    BinaryData ToBinaryBlock() const final;
     operator std::string() const final;
     virtual std::string ToString() const;
 
   private:
 
+    using BinaryDataConverter_ = BinaryDataConverterTemplate<BlockContent>;
+
     BlockIndex const index_;
     BlockTimeInterval const time_stamp_;
     BlockHash const previous_hash_;
     BlockNonce const nonce_;
-    BlockData const data_;
+    BlockContent const content_;
 
     BlockHash hash_{};
+    BinaryData ContentAsBinary_() const final;
   };
 
 }  // namespace ssybc

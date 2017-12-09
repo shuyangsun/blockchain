@@ -26,7 +26,7 @@
 #ifndef BLOCKCHAIN_HASH_CALCULATOR_HASH_CALCULATOR_SHA256_HPP_
 #define BLOCKCHAIN_HASH_CALCULATOR_HASH_CALCULATOR_SHA256_HPP_
 
-#include "hash_calculator_interface.hpp"
+#include "include/hash_calculator/hash_calculator_interface.hpp"
 
 namespace ssybc {
 

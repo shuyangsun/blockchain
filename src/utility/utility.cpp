@@ -24,7 +24,7 @@
  ******************************************************************************/
 
 
-#include "utility/utility.hpp"
+#include "include/utility/utility.hpp"
 
 std::string ssybc::util::DateTimeStringFromTimeStamp(BlockTimeInterval const time_stamp, std::string const time_format)
 {
