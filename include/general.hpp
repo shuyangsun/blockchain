@@ -29,6 +29,8 @@
 #include <string>
 #include <vector>
 
+#define EMPTY_BLOCK
+
 namespace ssybc {
 
   using BlockIndex = std::size_t;
