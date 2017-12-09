@@ -30,7 +30,7 @@
 
 namespace ssybc {
 
-  template<typename BlockData, typename HashCalculator>
+  template<typename BlockData, typename BinaryDataConverter, typename HashCalculator>
   class Block {
 
   public:
@@ -48,14 +48,9 @@ namespace ssybc {
     BlockData Data() const final;
     BlockHash Hash() const final;
 
-    std::string ToString() const final;
-    BinaryData ToBinaryData() const final;
-    virtual bool IsValid() const = 0;
-  
-  protected:
-    
-    virtual std::string StringFromData_(const BlockData &data) const = 0;
-    virtual BinaryData BinaryDataFromData_(const BlockData &data) const = 0;
+    BinaryData ToBinary() const final;
+    operator std::string() const final;
+    virtual std::string ToString() const;
 
   private:
 

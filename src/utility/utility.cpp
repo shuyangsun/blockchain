@@ -41,5 +41,5 @@ std::string ssybc::util::DateTimeStringFromTimeStamp(BlockTimeInterval const tim
 
 std::string ssybc::util::DateTimeStringFromTimeStamp(BlockTimeInterval const time_stamp)
 {
-  return DateTimeStringFromTimeStamp(time_stamp, "%Y-%m-%dT%H:%M:%S");
+  return DateTimeStringFromTimeStamp(time_stamp, "%Y-%m-%dT%H:%M:%SUTC");
 }
