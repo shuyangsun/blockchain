@@ -35,6 +35,9 @@ namespace util {
   std::string DateTimeStringFromTimeStamp(BlockTimeInterval const time_stamp, std::string const time_format);
   std::string DateTimeStringFromTimeStamp(BlockTimeInterval const time_stamp);
 
+  std::string BinaryStringFromByte(Byte const byte);
+  std::string HexStringFromByte(Byte const byte);
+
 }  // namespace util
 
 }  // namespace ssybc

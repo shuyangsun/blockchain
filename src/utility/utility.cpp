@@ -26,20 +26,72 @@
 
 #include "include/utility/utility.hpp"
 
+#include <unordered_map>
+
+namespace ssybc{
+   std::unordered_map<Byte, char> kIntToHexCharMap {
+    { 0, '0' },
+    { 1, '1' },
+    { 2, '2' },
+    { 3, '3' },
+    { 4, '4' },
+    { 5, '5' },
+    { 6, '6' },
+    { 7, '7' },
+    { 8, '8' },
+    { 9, '9' },
+    { 10, 'a' },
+    { 11, 'b' },
+    { 12, 'c' },
+    { 13, 'd' },
+    { 14, 'e' },
+    { 15, 'f' }
+  };
+}
+
+
 std::string ssybc::util::DateTimeStringFromTimeStamp(BlockTimeInterval const time_stamp, std::string const time_format)
 {
   struct tm ptm {};
   errno_t err{};
   err = gmtime_s(&ptm, &time_stamp);
 
-  size_t const buffer_size{ 30 };
+  size_t const buffer_size{30};
   char buffer[buffer_size];
   memset(buffer, 0, buffer_size * sizeof(char));
   strftime(buffer, sizeof(buffer), time_format.c_str(), &ptm);
   return std::string(buffer);
 }
 
+
 std::string ssybc::util::DateTimeStringFromTimeStamp(BlockTimeInterval const time_stamp)
 {
   return DateTimeStringFromTimeStamp(time_stamp, "%Y-%m-%dT%H:%M:%SUTC");
+}
+
+
+std::string ssybc::util::BinaryStringFromByte(Byte const byte)
+{
+  std::string result{"00000000"};
+  Byte mask{0b00000001};
+  for (size_t i{0}; i < kNumberOfBitsInByte; ++i) {
+    if ((byte & mask) > 0) {
+      result[kNumberOfBitsInByte - 1 - i] = '1';
+    }
+    mask <<= 1;
+  }
+  return result;
+}
+
+
+std::string ssybc::util::HexStringFromByte(Byte const byte)
+{
+  std::string result{"00"};
+  Byte mask{ 0b00001111 };
+  Byte const higher_address_value{ static_cast<Byte const>(byte & mask) };
+  result[1] = kIntToHexCharMap[higher_address_value];
+  mask = 0b11110000;
+  Byte const lower_address_value{ static_cast<Byte const>((byte & mask) >> 4) };
+  result[0] = kIntToHexCharMap[lower_address_value];
+  return result;
 }
