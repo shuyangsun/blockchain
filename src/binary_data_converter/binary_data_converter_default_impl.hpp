@@ -23,22 +23,25 @@
  *
  ******************************************************************************/
 
-#ifndef BLOCKCHAIN_BINARY_DATA_CONVERTER_BINARY_DATA_CONVERTER_INTERFACE_HPP_
-#define BLOCKCHAIN_BINARY_DATA_CONVERTER_BINARY_DATA_CONVERTER_INTERFACE_HPP_
+#ifndef BLOCKCHAIN_BINARY_DATA_CONVERTER_BINARY_DATA_CONVERTER_DEFAULT_IMPL_HPP_
+#define BLOCKCHAIN_BINARY_DATA_CONVERTER_BINARY_DATA_CONVERTER_DEFAULT_IMPL_HPP_
 
-#include "include/general.hpp"
+#include "include/binary_data_converter/binary_data_converter_default.hpp"
 
-namespace ssybc {
+#include <string>
 
-  template<typename DataType>
-  class BinaryDataConverterInterface {
-  public:
-    virtual BinaryData BinaryDataFromData(DataType const data) const = 0;
+template<typename DataType>
+ssybc::BinaryData ssybc::BinaryDataConverterDefault<DataType>::BinaryDataFromData(DataType const data) const
+{
+  return BinaryData{};
+}
 
-    virtual ~BinaryDataConverterInterface() { EMPTY_BLOCK }
-  };
+template<>
+ssybc::BinaryData ssybc::BinaryDataConverterDefault<unsigned char>::BinaryDataFromData(unsigned char const data) const
+{
+  // TODO
+  return BinaryData{};
+}
 
-}  // namespace ssybc
-
-#endif  // BLOCKCHAIN_BINARY_DATA_CONVERTER_BINARY_DATA_CONVERTER_INTERFACE_HPP_
+#endif  // BLOCKCHAIN_BINARY_DATA_CONVERTER_BINARY_DATA_CONVERTER_DEFAULT_IMPL_HPP_
 

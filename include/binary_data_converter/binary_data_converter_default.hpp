@@ -26,17 +26,24 @@
 #ifndef BLOCKCHAIN_BINARY_DATA_CONVERTER_BINARY_DATA_CONVERTER_DEFAULT_HPP_
 #define BLOCKCHAIN_BINARY_DATA_CONVERTER_BINARY_DATA_CONVERTER_DEFAULT_HPP_
 
-#include "binary_data_converter/binary_data_converter_interface.hpp"
+#include "include/binary_data_converter/binary_data_converter_interface.hpp"
 
 namespace ssybc {
 
   template<typename DataType>
   class BinaryDataConverterDefault: public virtual BinaryDataConverterInterface<DataType> {
   public:
-    virtual BinaryData BinaryDataConverterDefault(DataType const data) const final;
+    BinaryData BinaryDataFromData(DataType const data) const override final;
   };
 
+  // ------------------------ Specialization Declaration ------------------------
+
+  template<>
+  BinaryData BinaryDataConverterDefault<unsigned char>::BinaryDataFromData(unsigned char const data) const;
+
 }  // namespace ssybc
+
+#include "src/binary_data_converter/binary_data_converter_default_impl.hpp"
 
 #endif  // BLOCKCHAIN_BINARY_DATA_CONVERTER_BINARY_DATA_CONVERTER_DEFAULT_HPP_
 

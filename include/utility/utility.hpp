@@ -26,7 +26,7 @@
 #ifndef BLOCKCHAIN_UTILITY_UTILITY_HPP_
 #define BLOCKCHAIN_UTILITY_UTILITY_HPP_
 
-#include "general.hpp"
+#include "include/general.hpp"
 
 namespace ssybc {
 
