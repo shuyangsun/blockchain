@@ -28,6 +28,8 @@
 
 #include "include/binary_data_converter/binary_data_converter_interface.hpp"
 
+#include <exception>
+
 namespace ssybc {
 
   template<typename DataType>
@@ -40,6 +42,10 @@ namespace ssybc {
 
   template<>
   BinaryData BinaryDataConverterDefault<unsigned char>::BinaryDataFromData(unsigned char const data) const;
+  template<>
+  BinaryData BinaryDataConverterDefault<char>::BinaryDataFromData(char const data) const;
+  template<>
+  BinaryData BinaryDataConverterDefault<unsigned short>::BinaryDataFromData(unsigned short const data) const;
 
 }  // namespace ssybc
 

@@ -30,16 +30,35 @@
 
 #include <string>
 
+
 template<typename DataType>
 inline auto ssybc::BinaryDataConverterDefault<DataType>::BinaryDataFromData(DataType const data) const -> BinaryData
 {
-  return BinaryData{};
+  throw std::logic_error("Cannot convert object of type \"" + typeid(DataType) + "\" to BinaryData.");
 }
+
 
 template<>
 inline auto ssybc::BinaryDataConverterDefault<unsigned char>::BinaryDataFromData(unsigned char const data) const -> BinaryData
 {
-  return {data};
+  return { static_cast<Byte>(data) };
+}
+
+
+template<>
+inline auto ssybc::BinaryDataConverterDefault<char>::BinaryDataFromData(char const data) const -> BinaryData
+{
+  auto tmp_byte = static_cast<Byte const>(data);
+  return {tmp_byte};
+}
+
+
+template<>
+inline auto ssybc::BinaryDataConverterDefault<unsigned short>::BinaryDataFromData(unsigned short const data) const -> BinaryData
+{
+  size_t const result_size{sizeof(data)};
+  auto byte_ptr = reinterpret_cast<Byte const*>(&data);
+  return BinaryData(byte_ptr, byte_ptr + result_size);
 }
 
 #endif  // BLOCKCHAIN_BINARY_DATA_CONVERTER_BINARY_DATA_CONVERTER_DEFAULT_IMPL_HPP_
