@@ -29,6 +29,7 @@
 
 #include <exception>
 #include <cassert>
+#include <algorithm>
 
 
 namespace ssybc {

@@ -31,16 +31,15 @@
 #include <string>
 
 template<typename DataType>
-ssybc::BinaryData ssybc::BinaryDataConverterDefault<DataType>::BinaryDataFromData(DataType const data) const
+inline auto ssybc::BinaryDataConverterDefault<DataType>::BinaryDataFromData(DataType const data) const -> BinaryData
 {
   return BinaryData{};
 }
 
 template<>
-ssybc::BinaryData ssybc::BinaryDataConverterDefault<unsigned char>::BinaryDataFromData(unsigned char const data) const
+inline auto ssybc::BinaryDataConverterDefault<unsigned char>::BinaryDataFromData(unsigned char const data) const -> BinaryData
 {
-  // TODO
-  return BinaryData{};
+  return {data};
 }
 
 #endif  // BLOCKCHAIN_BINARY_DATA_CONVERTER_BINARY_DATA_CONVERTER_DEFAULT_IMPL_HPP_
