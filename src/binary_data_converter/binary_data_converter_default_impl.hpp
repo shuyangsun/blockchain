@@ -56,10 +56,111 @@ inline auto ssybc::BinaryDataConverterDefault<char>::BinaryDataFromData(char con
 template<>
 inline auto ssybc::BinaryDataConverterDefault<unsigned short>::BinaryDataFromData(unsigned short const data) const -> BinaryData
 {
-  size_t const result_size{sizeof(data)};
+  size_t const result_size{ sizeof(data) };
   auto byte_ptr = reinterpret_cast<Byte const*>(&data);
   return BinaryData(byte_ptr, byte_ptr + result_size);
 }
+
+
+template<>
+inline auto ssybc::BinaryDataConverterDefault<short>::BinaryDataFromData(short const data) const -> BinaryData
+{
+  size_t const result_size{ sizeof(data) };
+  auto byte_ptr = reinterpret_cast<Byte const*>(&data);
+  return BinaryData(byte_ptr, byte_ptr + result_size);
+}
+
+
+template<>
+inline auto ssybc::BinaryDataConverterDefault<unsigned int>::BinaryDataFromData(unsigned int const data) const -> BinaryData
+{
+  size_t const result_size{ sizeof(data) };
+  auto byte_ptr = reinterpret_cast<Byte const*>(&data);
+  return BinaryData(byte_ptr, byte_ptr + result_size);
+}
+
+
+template<>
+inline auto ssybc::BinaryDataConverterDefault<int>::BinaryDataFromData(int const data) const -> BinaryData
+{
+  size_t const result_size{ sizeof(data) };
+  auto byte_ptr = reinterpret_cast<Byte const*>(&data);
+  return BinaryData(byte_ptr, byte_ptr + result_size);
+}
+
+
+template<>
+inline auto ssybc::BinaryDataConverterDefault<unsigned long>::BinaryDataFromData(unsigned long const data) const -> BinaryData
+{
+  size_t const result_size{ sizeof(data) };
+  auto byte_ptr = reinterpret_cast<Byte const*>(&data);
+  return BinaryData(byte_ptr, byte_ptr + result_size);
+}
+
+
+template<>
+inline auto ssybc::BinaryDataConverterDefault<long>::BinaryDataFromData(long const data) const -> BinaryData
+{
+  size_t const result_size{ sizeof(data) };
+  auto byte_ptr = reinterpret_cast<Byte const*>(&data);
+  return BinaryData(byte_ptr, byte_ptr + result_size);
+}
+
+
+template<>
+inline auto ssybc::BinaryDataConverterDefault<unsigned long long>::BinaryDataFromData(unsigned long long const data) const -> BinaryData
+{
+  size_t const result_size{ sizeof(data) };
+  auto byte_ptr = reinterpret_cast<Byte const*>(&data);
+  return BinaryData(byte_ptr, byte_ptr + result_size);
+}
+
+
+template<>
+inline auto ssybc::BinaryDataConverterDefault<long long>::BinaryDataFromData(long long const data) const -> BinaryData
+{
+  size_t const result_size{ sizeof(data) };
+  auto byte_ptr = reinterpret_cast<Byte const*>(&data);
+  return BinaryData(byte_ptr, byte_ptr + result_size);
+}
+
+
+template<>
+inline auto ssybc::BinaryDataConverterDefault<float>::BinaryDataFromData(float const data) const -> BinaryData
+{
+  size_t const result_size{ sizeof(data) };
+  auto byte_ptr = reinterpret_cast<Byte const*>(&data);
+  return BinaryData(byte_ptr, byte_ptr + result_size);
+}
+
+
+template<>
+inline auto ssybc::BinaryDataConverterDefault<double>::BinaryDataFromData(double const data) const -> BinaryData
+{
+  size_t const result_size{ sizeof(data) };
+  auto byte_ptr = reinterpret_cast<Byte const*>(&data);
+  return BinaryData(byte_ptr, byte_ptr + result_size);
+}
+
+
+template<>
+inline auto ssybc::BinaryDataConverterDefault<long double>::BinaryDataFromData(long double const data) const -> BinaryData
+{
+  size_t const result_size{ sizeof(data) };
+  auto byte_ptr = reinterpret_cast<Byte const*>(&data);
+  return BinaryData(byte_ptr, byte_ptr + result_size);
+}
+
+
+template<>
+inline auto ssybc::BinaryDataConverterDefault<std::string>::BinaryDataFromData(std::string const data) const -> BinaryData
+{
+  auto c_string = data.c_str();
+  size_t const result_size{ data.size() };
+  auto byte_ptr = reinterpret_cast<Byte const*>(c_string);
+  return BinaryData(byte_ptr, byte_ptr + result_size);
+}
+
 
 #endif  // BLOCKCHAIN_BINARY_DATA_CONVERTER_BINARY_DATA_CONVERTER_DEFAULT_IMPL_HPP_
 
