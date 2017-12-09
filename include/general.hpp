@@ -31,12 +31,12 @@
 
 namespace ssybc {
 
-  using IndexType = std::size_t;
-  using TimeIntervalType = double;
-  using HashType = std::string;
-  using NonceType = std::size_t;
-  using ByteType = unsigned char;
-  using BinaryDataType = std::vector<ByteType>;
+  using BlockIndex = std::size_t;
+  using BlockTimeInterval = double;
+  using BlockHash = std::string;
+  using BlockNonce = std::size_t;
+  using Byte = unsigned char;
+  using BinaryData = std::vector<Byte>;
 
 }  // namespace ssybc
 

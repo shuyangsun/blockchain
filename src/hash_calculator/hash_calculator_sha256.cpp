@@ -26,9 +26,9 @@
 
 #include "hash_calculator/hash_calculator_sha256.hpp"
 
-ssybc::HashType ssybc::SHA256Calculator::Hash(ssybc::BinaryDataType const data) const
+ssybc::BlockHash ssybc::SHA256Calculator::Hash(ssybc::BinaryData const data) const
 {
   // TODO: implement correct hash function.
-  return HashType{"testhashvalue"};
+  return BlockHash{"testhashvalue"};
 }
 

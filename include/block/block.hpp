@@ -30,8 +30,41 @@
 
 namespace ssybc {
 
+  template<typename BlockData, typename HashCalculator>
   class Block {
+
+  public:
+
+    Block(BlockIndex block_index, BlockTimeInterval time_stamp, BlockHash previous_hash, BlockNonce nonce, BlockData data);
+    Block(const Block &block);
+    Block(Block &&block);
+    ~Block();
+
+    BlockIndex Index() const final;
+    BlockTimeInterval TimeStamp() const final;
+    BlockHash PreviousBlockHash() const final;
+    BlockNonce Nonce() const final;
+    BlockData Data() const final;
+    BlockHash Hash() const final;
+
+    std::string ToString() const final;
+    BinaryData ToBinaryData() const final;
+    virtual bool IsValid() const = 0;
   
+  protected:
+    
+    virtual std::string StringFromData_(const BlockData &data) const = 0;
+    virtual BinaryData BinaryDataFromData_(const BlockData &data) const = 0;
+
+  private:
+
+    BlockIndex const index_;
+    BlockTimeInterval const time_stamp_;
+    BlockHash const previous_hash_;
+    BlockNonce const nonce_;
+    BlockData const data_;
+
+    BlockHash hash_{};
   };
 
 }  // namespace ssybc

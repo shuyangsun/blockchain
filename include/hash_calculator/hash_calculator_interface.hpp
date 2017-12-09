@@ -23,19 +23,19 @@
  *
  ******************************************************************************/
 
-#ifndef BLOCKCHAIN_HASH_CALCULATOR_HASH_CALCULATOR_HPP_
-#define BLOCKCHAIN_HASH_CALCULATOR_HASH_CALCULATOR_HPP_
+#ifndef BLOCKCHAIN_HASH_CALCULATOR_HASH_CALCULATOR_INTERFACE_HPP_
+#define BLOCKCHAIN_HASH_CALCULATOR_HASH_CALCULATOR_INTERFACE_HPP_
 
 #include "general.hpp"
 
 namespace ssybc {
 
-  class HashCalculator {
+  class HashCalculatorInterface {
   public:
-    virtual HashType Hash(BinaryDataType const data) const = 0;
+    virtual BlockHash Hash(BinaryData const data) const = 0;
   };
 
 }  // namespace ssybc
 
-#endif  // BLOCKCHAIN_HASH_CALCULATOR_HASH_CALCULATOR_HPP_
+#endif  // BLOCKCHAIN_HASH_CALCULATOR_HASH_CALCULATOR_INTERFACE_HPP_
 
