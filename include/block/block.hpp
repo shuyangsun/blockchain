@@ -35,6 +35,7 @@ namespace ssybc {
 
   public:
 
+    Block() = delete;
     Block(BlockIndex block_index, BlockTimeInterval time_stamp, BlockHash previous_hash, BlockNonce nonce, BlockData data);
     Block(const Block &block);
     Block(Block &&block);
