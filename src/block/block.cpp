@@ -27,6 +27,8 @@
 #include "block/block.hpp"
 #include "utility/utility.hpp"
 
+#include <cassert>
+
 
 template<typename BlockData, typename HashCalculator>
 ssybc::Block<BlockData, HashCalculator>::Block(
@@ -40,26 +42,20 @@ ssybc::Block<BlockData, HashCalculator>::Block(
   previous_hash_{previous_hash},
   nonce_{nonce},
   data_{data}
-{ EMPTY_BLOCK }
+{
+  assert(sizeof(Byte) == 1);
+}
 
 
 template<typename BlockData, typename HashCalculator>
 ssybc::Block<BlockData, HashCalculator>::Block(const Block & block) :
-  index_{ block.Index() },
-  time_stamp_{ block.TimeStamp() },
-  previous_hash_{ block.PreviousBlockHash() },
-  nonce_{ block.Nonce() },
-  data_{ block.Data() }
+  Block(block.Index(), block.TimeStamp(), block.PreviousBlockHash(), block.Nonce(), block.Data())
 { EMPTY_BLOCK }
 
 
 template<typename BlockData, typename HashCalculator>
 ssybc::Block<BlockData, HashCalculator>::Block(Block && block) :
-  index_{ block.Index() },
-  time_stamp_{ block.TimeStamp() },
-  previous_hash_{ std::move(block.PreviousBlockHash()) },
-  nonce_{ block.Nonce() },
-  data_{ std::move(block.Data()) }
+  Block(block.Index(), block.TimeStamp(), std::move(block.PreviousBlockHash()), block.Nonce(), std::move(block.Data()))
 { EMPTY_BLOCK }
 
 
