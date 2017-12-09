@@ -41,6 +41,9 @@ namespace ssybc {
   using Byte = unsigned char;
   using BinaryData = std::vector<Byte>;
 
+  constexpr unsigned short kNumberOfBitsInByte{8};
+  constexpr unsigned int kNumberOfBytesInMB{1024 * 1024};
+
 }  // namespace ssybc
 
 #endif  // BLOCKCHAIN_GENERAL_HPP_
