@@ -27,11 +27,16 @@
 #include "block/block.hpp"
 #include "utility/utility.hpp"
 
+#include <exception>
 #include <cassert>
 
+namespace ssybc {
+  template<typename BlockData>
+  std::string StringFromBlockData_(BlockData const data);
+};
 
-template<typename BlockData, typename HashCalculator>
-ssybc::Block<BlockData, HashCalculator>::Block(
+template<typename BlockData, typename BinaryDataConverter, typename HashCalculator>
+ssybc::Block<BlockData, BinaryDataConverter, HashCalculator>::Block(
   BlockIndex block_index,
   BlockTimeInterval time_stamp,
   BlockHash previous_hash,
@@ -47,20 +52,20 @@ ssybc::Block<BlockData, HashCalculator>::Block(
 }
 
 
-template<typename BlockData, typename HashCalculator>
-ssybc::Block<BlockData, HashCalculator>::Block(const Block & block) :
+template<typename BlockData, typename BinaryDataConverter, typename HashCalculator>
+ssybc::Block<BlockData, BinaryDataConverter, HashCalculator>::Block(const Block & block) :
   Block(block.Index(), block.TimeStamp(), block.PreviousBlockHash(), block.Nonce(), block.Data())
 { EMPTY_BLOCK }
 
 
-template<typename BlockData, typename HashCalculator>
-ssybc::Block<BlockData, HashCalculator>::Block(Block && block) :
+template<typename BlockData, typename BinaryDataConverter, typename HashCalculator>
+ssybc::Block<BlockData, BinaryDataConverter, HashCalculator>::Block(Block && block) :
   Block(block.Index(), block.TimeStamp(), std::move(block.PreviousBlockHash()), block.Nonce(), std::move(block.Data()))
 { EMPTY_BLOCK }
 
 
-template<typename BlockData, typename HashCalculator>
-ssybc::Block<BlockData, HashCalculator>::~Block()
+template<typename BlockData, typename BinaryDataConverter, typename HashCalculator>
+ssybc::Block<BlockData, BinaryDataConverter, HashCalculator>::~Block()
 {
   delete index_;
   delete time_stamp_;
@@ -69,38 +74,44 @@ ssybc::Block<BlockData, HashCalculator>::~Block()
   delete data_;
 }
 
-template<typename BlockData, typename HashCalculator>
-ssybc::BlockIndex ssybc::Block<BlockData, HashCalculator>::Index() const
+
+template<typename BlockData, typename BinaryDataConverter, typename HashCalculator>
+ssybc::BlockIndex ssybc::Block<BlockData, BinaryDataConverter, HashCalculator>::Index() const
 {
   return index_;
 }
 
-template<typename BlockData, typename HashCalculator>
-ssybc::BlockTimeInterval ssybc::Block<BlockData, HashCalculator>::TimeStamp() const
+
+template<typename BlockData, typename BinaryDataConverter, typename HashCalculator>
+ssybc::BlockTimeInterval ssybc::Block<BlockData, BinaryDataConverter, HashCalculator>::TimeStamp() const
 {
   return time_stamp_;
 }
 
-template<typename BlockData, typename HashCalculator>
-ssybc::BlockHash ssybc::Block<BlockData, HashCalculator>::PreviousBlockHash() const
+
+template<typename BlockData, typename BinaryDataConverter, typename HashCalculator>
+ssybc::BlockHash ssybc::Block<BlockData, BinaryDataConverter, HashCalculator>::PreviousBlockHash() const
 {
   return previous_hash_;
 }
 
-template<typename BlockData, typename HashCalculator>
-ssybc::BlockNonce ssybc::Block<BlockData, HashCalculator>::Nonce() const
+
+template<typename BlockData, typename BinaryDataConverter, typename HashCalculator>
+ssybc::BlockNonce ssybc::Block<BlockData, BinaryDataConverter, HashCalculator>::Nonce() const
 {
   return nonce_;
 }
 
-template<typename BlockData, typename HashCalculator>
-BlockData ssybc::Block<BlockData, HashCalculator>::Data() const
+
+template<typename BlockData, typename BinaryDataConverter, typename HashCalculator>
+BlockData ssybc::Block<BlockData, BinaryDataConverter, HashCalculator>::Data() const
 {
-  return data_;
+  return BlockData(data_);
 }
 
-template<typename BlockData, typename HashCalculator>
-ssybc::BlockHash ssybc::Block<BlockData, HashCalculator>::Hash() const
+
+template<typename BlockData, typename BinaryDataConverter, typename HashCalculator>
+ssybc::BlockHash ssybc::Block<BlockData, BinaryDataConverter, HashCalculator>::Hash() const
 {
   if (hash_ == HashType{}) {
     hash_ = HashCalculator().Hash(ToBinaryData());
@@ -108,30 +119,49 @@ ssybc::BlockHash ssybc::Block<BlockData, HashCalculator>::Hash() const
   return hash_;
 }
 
-template<typename BlockData, typename HashCalculator>
-std::string ssybc::Block<BlockData, HashCalculator>::ToString() const
+
+template<typename BlockData, typename BinaryDataConverter, typename HashCalculator>
+ssybc::Block<BlockData, BinaryDataConverter, HashCalculator>::operator std::string() const
+{
+  return ToString();
+}
+
+
+template<typename BlockData, typename BinaryDataConverter, typename HashCalculator>
+std::string ssybc::Block<BlockData, BinaryDataConverter, HashCalculator>::ToString() const
 {
   std::string result{ "{\n\tindex: " };
-  result += std::string(std::string{index_});
+  result += std::string(std::string{ index_ });
   result += ",\n\ttime_stamp: ";
   result += util::DateTimeStringFromTimeStamp(TimeStamp());
   result += ",\n\tnonce: ";
-  result += std::string{Nonce()};
+  result += std::string{ Nonce() };
   result += ",\n\tprevious_hash: ";
-  result += std::string{PreviousBlockHash()};
+  result += std::string{ PreviousBlockHash() };
   result += ",\n\thash: ";
-  result += std::string{Hash()};
+  result += std::string{ Hash() };
   result += ",\n\tdata: ";
-  result += StringFromData_(Data());
+  result += StringFromBlockData_(Data());
   retulr += "\n}";
   return result;
 }
 
-template<typename BlockData, typename HashCalculator>
-ssybc::BinaryData ssybc::Block<BlockData, HashCalculator>::ToBinaryData() const
+
+template<typename BlockData, typename BinaryDataConverter, typename HashCalculator>
+ssybc::BinaryData ssybc::Block<BlockData, BinaryDataConverter, HashCalculator>::ToBinary() const
 {
   return BinaryData();
 }
 
 
+template<typename BlockData>
+std::string ssybc::StringFromBlockData_(BlockData const data)
+{
+  try {
+    return std::string(data);
+  }
+  catch {
+    return "unformated_data";
+  }
+}
 
