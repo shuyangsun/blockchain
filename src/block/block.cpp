@@ -26,5 +26,17 @@
 
 #include "block/block.hpp"
 
-
+template<typename BlockData, typename HashCalculator>
+ssybc::Block<BlockData, HashCalculator>::Block(
+  BlockIndex block_index,
+  BlockTimeInterval time_stamp,
+  BlockHash previous_hash,
+  BlockNonce nonce,
+  BlockData data) :
+  index_{block_index},
+  time_stamp_{time_stamp},
+  previous_hash_{previous_hash},
+  nonce_{nonce},
+  data_{data}
+{ EMPTY_BLOCK }
 
