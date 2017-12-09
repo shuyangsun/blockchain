@@ -30,6 +30,7 @@
 #include <exception>
 #include <cassert>
 #include <algorithm>
+#include <iterator>
 
 
 namespace ssybc {
@@ -160,17 +161,42 @@ std::string ssybc::Block<BlockContent, BinaryDataConverterTemplate, HashCalculat
 
 
 template<typename BlockContent, template<typename> class BinaryDataConverterTemplate, typename HashCalculator>
-ssybc::BinaryData ssybc::Block<BlockContent, BinaryDataConverterTemplate, HashCalculator>::ContentAsBinary_() const
+ssybc::BinaryData ssybc::Block<BlockContent, BinaryDataConverterTemplate, HashCalculator>::ToBinaryBlock() const
 {
-  return BinaryDataConverter_().BinaryDataFromData(content_);
+  auto index_binary = BinaryDataConverterDefault<BlockIndex>().BinaryDataFromData(Index());
+  auto time_stamp_binary = BinaryDataConverterDefault<BlockTimeInterval>().BinaryDataFromData(TimeStamp());
+  auto nonce_binary = BinaryDataConverterDefault<BlockNonce>().BinaryDataFromData(Nonce());
+  auto prev_hash_binary = BinaryDataConverterDefault<BlockHash>().BinaryDataFromData(PreviousBlockHash());
+  auto hash_binary = BinaryDataConverterDefault<BlockHash>().BinaryDataFromData(Hash());
+  auto content_binary = ContentAsBinary_();
+  auto content_size_binary = BinaryDataConverterDefault<size_t>().BinaryDataFromData(content_binary.size());
+  
+  std::vector<BinaryData> binarys{
+    index_binary ,
+    time_stamp_binary,
+    nonce_binary,
+    prev_hash_binary,
+    hash_binary,
+    content_size_binary,
+    content_binary
+  };
+
+  BinaryData result{};
+  for (auto &bin_data : binarys) {
+    result.insert(
+      result.end(),
+      std::make_move_iterator(bin_data.begin()),
+      std::make_move_iterator(bin_data.end())
+    );
+  }
+  return result;
 }
 
 
 template<typename BlockContent, template<typename> class BinaryDataConverterTemplate, typename HashCalculator>
-ssybc::BinaryData ssybc::Block<BlockContent, BinaryDataConverterTemplate, HashCalculator>::ToBinaryBlock() const
+ssybc::BinaryData ssybc::Block<BlockContent, BinaryDataConverterTemplate, HashCalculator>::ContentAsBinary_() const
 {
-  // TODO
-  return BinaryData();
+  return BinaryDataConverter_().BinaryDataFromData(content_);
 }
 
 
