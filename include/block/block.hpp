@@ -23,8 +23,8 @@
  *
  ******************************************************************************/
 
-#ifndef BLOCKCHAIN_BLOCK_BLOCK_HPP_
-#define BLOCKCHAIN_BLOCK_BLOCK_HPP_
+#ifndef BLOCKCHAIN_INCLUDE_BLOCK_BLOCK_HPP_
+#define BLOCKCHAIN_INCLUDE_BLOCK_BLOCK_HPP_
 
 #include "include/general.hpp"
 #include "include/hash_calculator/hash_calculator_sha256.hpp"
@@ -34,11 +34,13 @@ namespace ssybc {
 
   template<
     typename BlockContent,
-    template<typename> class BinaryDataConverterTemplate = BinaryDataConverterDefault,
+    template<typename> class ContentBinaryConverterTemplate = BinaryDataConverterDefault,
     typename HashCalculator = SHA256Calculator>
   class Block {
 
   public:
+
+    using ContentBinaryConverter = ContentBinaryConverterTemplate<BlockContent>;
 
     Block() = delete;
     Block(
@@ -65,19 +67,19 @@ namespace ssybc {
 
   private:
 
-    using BinaryDataConverter_ = BinaryDataConverterTemplate<BlockContent>;
-
     BlockIndex const index_;
     BlockTimeInterval const time_stamp_;
     BlockHash const previous_hash_;
     BlockNonce const nonce_;
     BlockContent const content_;
-
-    BlockHash hash_{};
-    BinaryData ContentAsBinary_() const;
+    BlockHash const hash_{};
   };
 
 }  // namespace ssybc
 
-#endif  // BLOCKCHAIN_BLOCK_BLOCK_HPP_
+
+#include "src/block/block_impl.hpp"
+
+
+#endif  // BLOCKCHAIN_INCLUDE_BLOCK_BLOCK_HPP_
 
