@@ -28,8 +28,6 @@
 
 #include "include/binary_data_converter/binary_data_converter_default.hpp"
 
-#include <string>
-
 
 template<typename DataType>
 inline auto ssybc::BinaryDataConverterDefault<DataType>::BinaryDataFromData(DataType const data) const -> BinaryData
