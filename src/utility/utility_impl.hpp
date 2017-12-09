@@ -129,6 +129,9 @@ template<typename T>
 inline T ssybc::util::ByteSwap(T const value)
 {
   size_t const num_bytes{ sizeof(T) };
+  if (num_bytes <= 1) {
+    return value;
+  }
   T mask_on_value{ static_cast<T>(0b11111111) };
   T mask_on_result{ static_cast<T>(0b11111111 << ((num_bytes - 1) * kNumberOfBitsInByte)) };
   T result{ static_cast<T>(0) };
@@ -152,5 +155,11 @@ inline T ssybc::util::ByteSwap(T const value)
   return result;
 }
 
+
+template<typename T>
+inline T ssybc::util::ToBigEndian(T const value)
+{
+  return kIsBigEndian ? value : ByteSwap(value);
+}
 
 #endif  // BLOCKCHAIN_UTILITY_UTILITY_IMPL_HPP_

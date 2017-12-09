@@ -45,6 +45,9 @@ namespace util {
   template<typename T>
   T ByteSwap(T const value);
 
+  template<typename T>
+  T ToBigEndian(T const value);
+
 }  // namespace util
 
 }  // namespace ssybc
