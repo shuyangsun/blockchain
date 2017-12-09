@@ -62,6 +62,7 @@ namespace ssybc {
     BlockHash Hash() const;
 
     BinaryData ToBinaryBlock() const;
+    BinaryData HashableBinaryData() const;
     operator std::string() const;
     virtual std::string ToString() const;
 
@@ -72,7 +73,7 @@ namespace ssybc {
     BlockHash const previous_hash_;
     BlockNonce const nonce_;
     BlockContent const content_;
-    BlockHash const hash_{};
+    BlockHash const hash_;
   };
 
 }  // namespace ssybc
