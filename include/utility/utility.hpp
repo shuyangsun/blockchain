@@ -27,6 +27,7 @@
 #define BLOCKCHAIN_UTILITY_UTILITY_HPP_
 
 #include "include/general.hpp"
+#include <vector>
 
 namespace ssybc {
 
@@ -37,6 +38,9 @@ namespace util {
 
   std::string BinaryStringFromByte(Byte const byte);
   std::string HexStringFromByte(Byte const byte);
+
+  std::string BinaryStringFromByte(BinaryData const bytes);
+  std::string HexStringFromByte(BinaryData const bytes);
 
 }  // namespace util
 
