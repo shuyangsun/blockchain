@@ -46,6 +46,28 @@ namespace ssybc {
   BinaryData BinaryDataConverterDefault<char>::BinaryDataFromData(char const data) const;
   template<>
   BinaryData BinaryDataConverterDefault<unsigned short>::BinaryDataFromData(unsigned short const data) const;
+  template<>
+  BinaryData BinaryDataConverterDefault<short>::BinaryDataFromData(short const data) const;
+  template<>
+  BinaryData BinaryDataConverterDefault<unsigned int>::BinaryDataFromData(unsigned int const data) const;
+  template<>
+  BinaryData BinaryDataConverterDefault<int>::BinaryDataFromData(int const data) const;
+  template<>
+  BinaryData BinaryDataConverterDefault<unsigned long>::BinaryDataFromData(unsigned long const data) const;
+  template<>
+  BinaryData BinaryDataConverterDefault<long>::BinaryDataFromData(long const data) const;
+  template<>
+  BinaryData BinaryDataConverterDefault<unsigned long long>::BinaryDataFromData(unsigned long long const data) const;
+  template<>
+  BinaryData BinaryDataConverterDefault<long long>::BinaryDataFromData(long long const data) const;
+  template<>
+  BinaryData BinaryDataConverterDefault<float>::BinaryDataFromData(float const data) const;
+  template<>
+  BinaryData BinaryDataConverterDefault<double>::BinaryDataFromData(double const data) const;
+  template<>
+  BinaryData BinaryDataConverterDefault<long double>::BinaryDataFromData(long double const data) const;
+  template<>
+  BinaryData BinaryDataConverterDefault<std::string>::BinaryDataFromData(std::string const data) const;
 
 }  // namespace ssybc
 
