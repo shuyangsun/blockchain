@@ -23,25 +23,21 @@
  *
  ******************************************************************************/
 
-#ifndef BLOCKCHAIN_GENERAL_HPP_
-#define BLOCKCHAIN_GENERAL_HPP_
+#ifndef BLOCKCHAIN_UTILITY_UTILITY_HPP_
+#define BLOCKCHAIN_UTILITY_UTILITY_HPP_
 
-#include <string>
-#include <vector>
-#include <ctime>
-
-#define EMPTY_BLOCK
+#include "general.hpp"
 
 namespace ssybc {
 
-  using BlockIndex = std::size_t;
-  using BlockTimeInterval = time_t;
-  using BlockHash = std::string;
-  using BlockNonce = std::size_t;
-  using Byte = unsigned char;
-  using BinaryData = std::vector<Byte>;
+namespace util {
+
+  std::string DateTimeStringFromTimeStamp(BlockTimeInterval const time_stamp, std::string const time_format);
+  std::string DateTimeStringFromTimeStamp(BlockTimeInterval const time_stamp);
+
+}  // namespace util
 
 }  // namespace ssybc
 
-#endif  // BLOCKCHAIN_GENERAL_HPP_
+#endif  // BLOCKCHAIN_UTILITY_UTILITY_HPP_
 

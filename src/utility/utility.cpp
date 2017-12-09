@@ -23,25 +23,23 @@
  *
  ******************************************************************************/
 
-#ifndef BLOCKCHAIN_GENERAL_HPP_
-#define BLOCKCHAIN_GENERAL_HPP_
 
-#include <string>
-#include <vector>
-#include <ctime>
+#include "utility/utility.hpp"
 
-#define EMPTY_BLOCK
+std::string ssybc::util::DateTimeStringFromTimeStamp(BlockTimeInterval const time_stamp, std::string const time_format)
+{
+  struct tm ptm {};
+  errno_t err{};
+  err = gmtime_s(&ptm, &time_stamp);
 
-namespace ssybc {
+  size_t const buffer_size{ 30 };
+  char buffer[buffer_size];
+  memset(buffer, 0, buffer_size * sizeof(char));
+  strftime(buffer, sizeof(buffer), time_format.c_str(), &ptm);
+  return std::string(buffer);
+}
 
-  using BlockIndex = std::size_t;
-  using BlockTimeInterval = time_t;
-  using BlockHash = std::string;
-  using BlockNonce = std::size_t;
-  using Byte = unsigned char;
-  using BinaryData = std::vector<Byte>;
-
-}  // namespace ssybc
-
-#endif  // BLOCKCHAIN_GENERAL_HPP_
-
+std::string ssybc::util::DateTimeStringFromTimeStamp(BlockTimeInterval const time_stamp)
+{
+  return DateTimeStringFromTimeStamp(time_stamp, "%Y-%m-%dT%H:%M:%S");
+}
