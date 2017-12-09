@@ -24,12 +24,15 @@
  ******************************************************************************/
 
 
+#ifndef BLOCKCHAIN_UTILITY_UTILITY_IMPL_HPP_
+#define BLOCKCHAIN_UTILITY_UTILITY_IMPL_HPP_
+
 #include "include/utility/utility.hpp"
 
 #include <unordered_map>
 
 namespace ssybc{
-   std::unordered_map<Byte, char> kIntToHexCharMap {
+   static std::unordered_map<Byte, char> kIntToHexCharMap {
     { 0, '0' },
     { 1, '1' },
     { 2, '2' },
@@ -50,7 +53,7 @@ namespace ssybc{
 }
 
 
-std::string ssybc::util::DateTimeStringFromTimeStamp(BlockTimeInterval const time_stamp, std::string const time_format)
+inline std::string ssybc::util::DateTimeStringFromTimeStamp(BlockTimeInterval const time_stamp, std::string const time_format)
 {
   struct tm ptm {};
   errno_t err{};
@@ -64,13 +67,13 @@ std::string ssybc::util::DateTimeStringFromTimeStamp(BlockTimeInterval const tim
 }
 
 
-std::string ssybc::util::DateTimeStringFromTimeStamp(BlockTimeInterval const time_stamp)
+inline std::string ssybc::util::DateTimeStringFromTimeStamp(BlockTimeInterval const time_stamp)
 {
   return DateTimeStringFromTimeStamp(time_stamp, "%Y-%m-%dT%H:%M:%SUTC");
 }
 
 
-std::string ssybc::util::BinaryStringFromByte(Byte const byte)
+inline std::string ssybc::util::BinaryStringFromByte(Byte const byte)
 {
   std::string result{"00000000"};
   Byte mask{0b00000001};
@@ -84,7 +87,7 @@ std::string ssybc::util::BinaryStringFromByte(Byte const byte)
 }
 
 
-std::string ssybc::util::HexStringFromByte(Byte const byte)
+inline std::string ssybc::util::HexStringFromByte(Byte const byte)
 {
   std::string result{"00"};
   Byte mask{ 0b00001111 };
@@ -97,7 +100,7 @@ std::string ssybc::util::HexStringFromByte(Byte const byte)
 }
 
 
-std::string ssybc::util::BinaryStringFromByte(BinaryData const bytes)
+inline std::string ssybc::util::BinaryStringFromByte(BinaryData const bytes)
 {
   std::string result{};
   for (size_t i{ 0 }; i < bytes.size(); ++i) {
@@ -110,7 +113,7 @@ std::string ssybc::util::BinaryStringFromByte(BinaryData const bytes)
 }
 
 
-std::string ssybc::util::HexStringFromByte(BinaryData const bytes)
+inline std::string ssybc::util::HexStringFromByte(BinaryData const bytes)
 {
   std::string result{};
   for (size_t i{ 0 }; i < bytes.size(); ++i) {
@@ -121,3 +124,33 @@ std::string ssybc::util::HexStringFromByte(BinaryData const bytes)
   }
   return result;
 }
+
+template<typename T>
+inline T ssybc::util::ByteSwap(T const value)
+{
+  size_t const num_bytes{ sizeof(T) };
+  T mask_on_value{ static_cast<T>(0b11111111) };
+  T mask_on_result{ static_cast<T>(0b11111111 << ((num_bytes - 1) * kNumberOfBitsInByte)) };
+  T result{ static_cast<T>(0) };
+  for (size_t i{ 0 }; i < num_bytes; ++i) {
+    int shift_amount{ static_cast<int>((num_bytes - 2 * i - 1) * kNumberOfBitsInByte) };
+    bool const to_left{ shift_amount > 0 };
+    if (!to_left) {
+      shift_amount = -shift_amount;
+    }
+    T tmp_val{};
+    if (to_left) {
+      tmp_val = static_cast<T>((value & mask_on_value) << shift_amount);
+    }
+    else {
+      tmp_val = static_cast<T>((value & mask_on_value) >> shift_amount);
+    }
+    result |= (tmp_val & mask_on_result);
+    mask_on_result >>= kNumberOfBitsInByte;
+    mask_on_value <<= kNumberOfBitsInByte;
+  }
+  return result;
+}
+
+
+#endif  // BLOCKCHAIN_UTILITY_UTILITY_IMPL_HPP_

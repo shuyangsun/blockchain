@@ -181,7 +181,7 @@ std::string ssybc::StringFromBlockContent_(BlockContent const data)
     return std::string(data);
   }
   catch {
-    return "__unspecified_data_description__";
+    return util::HexStringFromByte(ContentAsBinary_());
   }
 }
 

@@ -42,9 +42,14 @@ namespace util {
   std::string BinaryStringFromByte(BinaryData const bytes);
   std::string HexStringFromByte(BinaryData const bytes);
 
+  template<typename T>
+  T ByteSwap(T const value);
+
 }  // namespace util
 
 }  // namespace ssybc
+
+#include "src/utility/utility_impl.hpp"
 
 #endif  // BLOCKCHAIN_UTILITY_UTILITY_HPP_
 
