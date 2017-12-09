@@ -26,13 +26,13 @@
 #ifndef BLOCKCHAIN_HASH_CALCULATOR_HASH_CALCULATOR_SHA256_HPP_
 #define BLOCKCHAIN_HASH_CALCULATOR_HASH_CALCULATOR_SHA256_HPP_
 
-#include "hash_calculator.hpp"
+#include "hash_calculator_interface.hpp"
 
 namespace ssybc {
 
-  class SHA256Calculator: public virtual HashCalculator {
+  class SHA256Calculator: public virtual HashCalculatorInterface {
   public:
-    HashType Hash(BinaryDataType const data) const override;
+    BlockHash Hash(BinaryData const data) const override;
   };
 
 }  // namespace ssybc
