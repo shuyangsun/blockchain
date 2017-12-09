@@ -95,3 +95,29 @@ std::string ssybc::util::HexStringFromByte(Byte const byte)
   result[0] = kIntToHexCharMap[lower_address_value];
   return result;
 }
+
+
+std::string ssybc::util::BinaryStringFromByte(BinaryData const bytes)
+{
+  std::string result{};
+  for (size_t i{ 0 }; i < bytes.size(); ++i) {
+    result += BinaryStringFromByte(bytes[i]);
+    if (i < bytes.size() - 1) {
+      result += " ";
+    }
+  }
+  return result;
+}
+
+
+std::string ssybc::util::HexStringFromByte(BinaryData const bytes)
+{
+  std::string result{};
+  for (size_t i{ 0 }; i < bytes.size(); ++i) {
+    result += HexStringFromByte(bytes[i]);
+    if (i < bytes.size() - 1) {
+      result += " ";
+    }
+  }
+  return result;
+}
