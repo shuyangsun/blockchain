@@ -30,6 +30,7 @@
 #include "include/utility/utility.hpp"
 
 #include <unordered_map>
+#include <algorithm>
 
 namespace ssybc{
    static std::unordered_map<Byte, char> kIntToHexCharMap {
@@ -160,6 +161,21 @@ template<typename T>
 inline T ssybc::util::ToBigEndian(T const value)
 {
   return kIsBigEndian ? value : ByteSwap(value);
+}
+
+
+template<typename T>
+inline std::vector<T> ssybc::util::ConcatenateMoveDestructive(std::vector<std::vector<T>> const &vectors)
+{
+  BinaryData result{};
+  for (auto &vec : vectors) {
+    result.insert(
+      result.end(),
+      std::make_move_iterator(vec.begin()),
+      std::make_move_iterator(vec.end())
+    );
+  }
+  return result;
 }
 
 #endif  // BLOCKCHAIN_UTILITY_UTILITY_IMPL_HPP_

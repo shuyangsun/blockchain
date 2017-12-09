@@ -57,7 +57,7 @@ namespace ssybc {
     BlockTimeInterval TimeStamp() const;
     BlockHash PreviousBlockHash() const;
     BlockNonce Nonce() const;
-    size_t SizeOfContentAsBinaryInBytes() const;
+    size_t SizeOfBinaryContent() const;
     BlockContent Content() const;
     BlockHash Hash() const;
 
@@ -74,6 +74,17 @@ namespace ssybc {
     BlockNonce const nonce_;
     BlockContent const content_;
     BlockHash const hash_;
+
+    BinaryData IndexAsBinary_() const;
+    BinaryData TimeStampAsBinary_() const;
+    BinaryData PreviousHashAsBinary_() const;
+    BinaryData NonceAsBinary_() const;
+    BinaryData ContentAsBinary_() const;
+    BinaryData ContentSizeAsBinary_() const;
+    BinaryData HashAsBinary_() const;
+
+    std::vector<BinaryData> HashableBinaryArr_() const;
+    std::vector<BinaryData> BlockBinaryArr_() const;
   };
 
 }  // namespace ssybc

@@ -47,6 +47,9 @@ namespace util {
 
   template<typename T>
   T ToBigEndian(T const value);
+  
+  template<typename T>
+  std::vector<T> ConcatenateMoveDestructive(std::vector<std::vector<T>> const &vectors);
 
 }  // namespace util
 
