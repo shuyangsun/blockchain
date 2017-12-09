@@ -48,7 +48,7 @@ ssybc::Block<BlockContent, ContentBinaryConverterTemplate, HashCalculator>::Bloc
   previous_hash_{previous_hash},
   nonce_{nonce},
   content_{content},
-  hash_{ HashCalculator().Hash(HashableBinaryData()) }
+  hash_{HashCalculator().Hash(HashableBinaryData())}
 {
   assert(sizeof(Byte) == 1);
 }
@@ -100,9 +100,9 @@ ssybc::BlockNonce ssybc::Block<BlockContent, ContentBinaryConverterTemplate, Has
 
 
 template<typename BlockContent, template<typename> class ContentBinaryConverterTemplate, typename HashCalculator>
-size_t ssybc::Block<BlockContent, ContentBinaryConverterTemplate, HashCalculator>::SizeOfContentAsBinaryInBytes() const
+size_t ssybc::Block<BlockContent, ContentBinaryConverterTemplate, HashCalculator>::SizeOfBinaryContent() const
 {
-  return ContentBinaryConverter().BinaryDataFromData(Content()).size();
+  return ContentAsBinary_().size();
 }
 
 
@@ -141,7 +141,7 @@ std::string ssybc::Block<BlockContent, ContentBinaryConverterTemplate, HashCalcu
   result += ",\n\thash: ";
   result += Hash();
   result += ",\n\tcontent_size_in_bytes: ";
-  result += std::to_string(SizeOfContentAsBinaryInBytes());
+  result += std::to_string(SizeOfBinaryContent());
   result += ",\n\tcontent: ";
 
   std::string content_str{};
@@ -150,7 +150,7 @@ std::string ssybc::Block<BlockContent, ContentBinaryConverterTemplate, HashCalcu
     content_str = std::string{ content };
   }
   catch (const std::exception& e) {
-    auto content_binary = ContentBinaryConverter().BinaryDataFromData(content);
+    auto content_binary = ContentAsBinary_();
     content_str = util::HexStringFromByte(content_binary);
   }
 
@@ -163,64 +163,90 @@ std::string ssybc::Block<BlockContent, ContentBinaryConverterTemplate, HashCalcu
 template<typename BlockContent, template<typename> class ContentBinaryConverterTemplate, typename HashCalculator>
 ssybc::BinaryData ssybc::Block<BlockContent, ContentBinaryConverterTemplate, HashCalculator>::ToBinaryBlock() const
 {
-  auto index_binary = BinaryDataConverterDefault<BlockIndex>().BinaryDataFromData(Index());
-  auto time_stamp_binary = BinaryDataConverterDefault<BlockTimeInterval>().BinaryDataFromData(TimeStamp());
-  auto nonce_binary = BinaryDataConverterDefault<BlockNonce>().BinaryDataFromData(Nonce());
-  auto prev_hash_binary = BinaryDataConverterDefault<BlockHash>().BinaryDataFromData(PreviousBlockHash());
-  auto hash_binary = BinaryDataConverterDefault<BlockHash>().BinaryDataFromData(Hash());
-  auto content_binary = ContentBinaryConverter().BinaryDataFromData(Content());
-  auto content_size_binary = BinaryDataConverterDefault<size_t>().BinaryDataFromData(content_binary.size());
-  
-  std::vector<BinaryData> binarys{
-    index_binary ,
-    time_stamp_binary,
-    nonce_binary,
-    prev_hash_binary,
-    hash_binary,
-    content_size_binary,
-    content_binary
-  };
-
-  BinaryData result{};
-  for (auto &bin_data : binarys) {
-    result.insert(
-      result.end(),
-      std::make_move_iterator(bin_data.begin()),
-      std::make_move_iterator(bin_data.end())
-    );
-  }
-
-  return result;
+  return util::ConcatenateMoveDestructive(BlockBinaryArr_());
 }
 
 template<typename BlockContent, template<typename> class ContentBinaryConverterTemplate, typename HashCalculator>
 ssybc::BinaryData ssybc::Block<BlockContent, ContentBinaryConverterTemplate, HashCalculator>::HashableBinaryData() const
 {
-  auto index_binary = BinaryDataConverterDefault<BlockIndex>().BinaryDataFromData(Index());
-  auto time_stamp_binary = BinaryDataConverterDefault<BlockTimeInterval>().BinaryDataFromData(TimeStamp());
-  auto nonce_binary = BinaryDataConverterDefault<BlockNonce>().BinaryDataFromData(Nonce());
-  auto prev_hash_binary = BinaryDataConverterDefault<BlockHash>().BinaryDataFromData(PreviousBlockHash());
-  auto content_binary = ContentBinaryConverter().BinaryDataFromData(Content());
-
-  std::vector<BinaryData> binarys{
-    index_binary ,
-    time_stamp_binary,
-    nonce_binary,
-    prev_hash_binary,
-    content_binary
-  };
-
-  BinaryData result{};
-  for (auto &bin_data : binarys) {
-    result.insert(
-      result.end(),
-      std::make_move_iterator(bin_data.begin()),
-      std::make_move_iterator(bin_data.end())
-    );
-  }
-
-  return result;
+  return util::ConcatenateMoveDestructive(HashableBinaryArr_());
 }
 
+
+template<typename BlockContent, template<typename> class ContentBinaryConverterTemplate, typename HashCalculator>
+inline ssybc::BinaryData ssybc::Block<BlockContent, ContentBinaryConverterTemplate, HashCalculator>::IndexAsBinary_() const
+{
+  return BinaryDataConverterDefault<BlockIndex>().BinaryDataFromData(Index());
+}
+
+
+template<typename BlockContent, template<typename> class ContentBinaryConverterTemplate, typename HashCalculator>
+inline ssybc::BinaryData ssybc::Block<BlockContent, ContentBinaryConverterTemplate, HashCalculator>::TimeStampAsBinary_() const
+{
+  return BinaryDataConverterDefault<BlockTimeInterval>().BinaryDataFromData(TimeStamp());
+}
+
+
+template<typename BlockContent, template<typename> class ContentBinaryConverterTemplate, typename HashCalculator>
+inline ssybc::BinaryData ssybc::Block<BlockContent, ContentBinaryConverterTemplate, HashCalculator>::PreviousHashAsBinary_() const
+{
+  return BinaryDataConverterDefault<BlockHash>().BinaryDataFromData(PreviousBlockHash());
+}
+
+
+template<typename BlockContent, template<typename> class ContentBinaryConverterTemplate, typename HashCalculator>
+inline ssybc::BinaryData ssybc::Block<BlockContent, ContentBinaryConverterTemplate, HashCalculator>::NonceAsBinary_() const
+{
+  return BinaryDataConverterDefault<BlockNonce>().BinaryDataFromData(Nonce());
+}
+
+
+template<typename BlockContent, template<typename> class ContentBinaryConverterTemplate, typename HashCalculator>
+inline ssybc::BinaryData ssybc::Block<BlockContent, ContentBinaryConverterTemplate, HashCalculator>::ContentAsBinary_() const
+{
+  return ContentBinaryConverter().BinaryDataFromData(Content());
+}
+
+
+template<typename BlockContent, template<typename> class ContentBinaryConverterTemplate, typename HashCalculator>
+inline ssybc::BinaryData ssybc::Block<BlockContent, ContentBinaryConverterTemplate, HashCalculator>::ContentSizeAsBinary_() const
+{
+  return BinaryDataConverterDefault<size_t>().BinaryDataFromData(SizeOfBinaryContent());
+}
+
+
+template<typename BlockContent, template<typename> class ContentBinaryConverterTemplate, typename HashCalculator>
+inline ssybc::BinaryData ssybc::Block<BlockContent, ContentBinaryConverterTemplate, HashCalculator>::HashAsBinary_() const
+{
+  return BinaryDataConverterDefault<BlockHash>().BinaryDataFromData(Hash());
+}
+
+
+template<typename BlockContent, template<typename> class ContentBinaryConverterTemplate, typename HashCalculator>
+inline auto ssybc::Block<BlockContent, ContentBinaryConverterTemplate, HashCalculator>::BlockBinaryArr_() const -> std::vector<BinaryData>
+{
+  return {
+    IndexAsBinary_(),
+    TimeStampAsBinary_(),
+    NonceAsBinary_(),
+    PreviousHashAsBinary_(),
+    HashAsBinary_(),
+    ContentSizeAsBinary_(),
+    ContentAsBinary_()
+  };
+}
+
+
+template<typename BlockContent, template<typename> class ContentBinaryConverterTemplate, typename HashCalculator>
+inline auto ssybc::Block<BlockContent, ContentBinaryConverterTemplate, HashCalculator>::HashableBinaryArr_() const -> std::vector<BinaryData>
+{
+  return {
+    IndexAsBinary_(),
+    TimeStampAsBinary_(),
+    PreviousHashAsBinary_(),
+    ContentAsBinary_(),
+    NonceAsBinary_()
+  };
+}
 
 #endif  // BLOCKCHAIN_SRC_BLOCK_BLOCK_IMPL_HPP_
