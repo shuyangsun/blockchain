@@ -33,6 +33,8 @@ namespace ssybc {
   class HashCalculatorInterface {
   public:
     virtual BlockHash Hash(BinaryData const data) const = 0;
+
+    virtual ~HashCalculatorInterface() { EMPTY_BLOCK }
   };
 
 }  // namespace ssybc
