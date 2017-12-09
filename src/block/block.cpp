@@ -25,6 +25,7 @@
 
 
 #include "block/block.hpp"
+#include "utility/utility.hpp"
 
 
 template<typename BlockData, typename HashCalculator>
@@ -114,7 +115,20 @@ ssybc::BlockHash ssybc::Block<BlockData, HashCalculator>::Hash() const
 template<typename BlockData, typename HashCalculator>
 std::string ssybc::Block<BlockData, HashCalculator>::ToString() const
 {
-  return std::string();
+  std::string result{ "{\n\tindex: " };
+  result += std::string(std::string{index_});
+  result += ",\n\ttime_stamp: ";
+  result += util::DateTimeStringFromTimeStamp(TimeStamp());
+  result += ",\n\tnonce: ";
+  result += std::string{Nonce()};
+  result += ",\n\tprevious_hash: ";
+  result += std::string{PreviousBlockHash()};
+  result += ",\n\thash: ";
+  result += std::string{Hash()};
+  result += ",\n\tdata: ";
+  result += StringFromData_(Data());
+  retulr += "\n}";
+  return result;
 }
 
 template<typename BlockData, typename HashCalculator>
