@@ -28,6 +28,7 @@
 
 #include "include/binary_data_converter/binary_data_converter_interface.hpp"
 
+#include <string>
 #include <exception>
 
 namespace ssybc {
