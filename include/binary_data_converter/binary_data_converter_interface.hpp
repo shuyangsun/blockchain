@@ -33,7 +33,9 @@ namespace ssybc {
   template<typename DataType>
   class BinaryDataConverterInterface {
   public:
+
     virtual BinaryData BinaryDataFromData(DataType const data) const = 0;
+    virtual DataType DataFromBinaryData(BinaryData const binary_data) const = 0;
 
     virtual ~BinaryDataConverterInterface() { EMPTY_BLOCK }
   };

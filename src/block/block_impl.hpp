@@ -314,4 +314,14 @@ inline auto ssybc::Block<
   };
 }
 
+
+template<typename BlockContent, template<typename> class ContentBinaryConverterTemplate, typename HashCalculator>
+inline auto ssybc::Block<
+  BlockContent,
+  ContentBinaryConverterTemplate,
+  HashCalculator>::SizeOfBinaryBlockFromBinaryBlockData_(BinaryData const data) const -> std::size_t
+{
+  
+}
+
 #endif  // BLOCKCHAIN_SRC_BLOCK_BLOCK_IMPL_HPP_

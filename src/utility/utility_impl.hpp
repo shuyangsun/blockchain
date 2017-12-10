@@ -1,27 +1,22 @@
-/******************************************************************************
+/**********************************************************************************************************************
  *
  * Copyright (c) 2017-2018 Shuyang Sun
  *
  * License: MIT
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+ * documentation files (the "Software"), to deal in the Software without restriction, including without limitation the
+ * rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
+ * permit persons to whom the Software is furnished to do so, subject to the following conditions:
  *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions of
+ * the Software.
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
- * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+ * WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
+ * OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+ * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  *
- ******************************************************************************/
+ *********************************************************************************************************************/
 
 
 #ifndef BLOCKCHAIN_UTILITY_UTILITY_IMPL_HPP_
@@ -31,6 +26,10 @@
 
 #include <unordered_map>
 #include <algorithm>
+
+
+ // ----------------------------------------------------- Helper ------------------------------------------------------
+
 
 namespace ssybc{
    static std::unordered_map<Byte, char> kIntToHexCharMap {
@@ -52,6 +51,9 @@ namespace ssybc{
     { 15, 'f' }
   };
 }
+
+
+// -------------------------------------------------- Public Function -------------------------------------------------
 
 
 inline ssybc::BlockTimeInterval ssybc::util::UTCTime()
@@ -167,6 +169,15 @@ inline T ssybc::util::ByteSwap(T const value)
 }
 
 
+template<>
+inline ssybc::BinaryData ssybc::util::ByteSwap(BinaryData const value)
+{
+  BinaryData result = value;
+  std::reverse(result.begin(), result.end());
+  return result;
+}
+
+
 template<typename T>
 inline T ssybc::util::ToBigEndian(T const value)
 {
@@ -190,7 +201,10 @@ inline std::vector<T> ssybc::util::ConcatenateMoveDestructive(std::vector<std::v
 
 
 template<typename T>
-std::string ssybc::util::Join(std::vector<T> const vec, std::string delimiter, const std::function<std::string(T)>& map_func)
+std::string ssybc::util::Join(
+  std::vector<T> const vec,
+  std::string delimiter,
+  const std::function<std::string(T)>& map_func)
 {
   std::string result{};
   for (size_t i{ 0 }; i < vec.size(); ++i) {
