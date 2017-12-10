@@ -45,7 +45,6 @@ namespace ssybc {
   constexpr unsigned int kNumberOfBytesInMB{1024 * 1024};
 
   constexpr bool kIsBigEndian{ (int(1) & 1) > 0 };
-  constexpr auto kGenesisBlockPreviousHash = "0000000000000000000000000000000000000000000000000000000000000000";
 
 }  // namespace ssybc
 

@@ -217,7 +217,7 @@ inline ssybc::BinaryData ssybc::Block<BlockContent, ContentBinaryConverterTempla
 template<typename BlockContent, template<typename> class ContentBinaryConverterTemplate, typename HashCalculator>
 inline ssybc::BinaryData ssybc::Block<BlockContent, ContentBinaryConverterTemplate, HashCalculator>::ContentAsBinary_() const
 {
-  return ContentBinaryConverter().BinaryDataFromData(Content());
+  return ContentBinaryConverterType().BinaryDataFromData(Content());
 }
 
 

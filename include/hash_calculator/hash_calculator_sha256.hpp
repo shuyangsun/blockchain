@@ -34,6 +34,7 @@ namespace ssybc {
   public:
     size_t SizeOfHashInBytes() const override final;
     BlockHash Hash(BinaryData const data) const override final;
+    BlockHash GenesisBlockPreviousHash() const override final;
   };
 
 }  // namespace ssybc
