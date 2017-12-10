@@ -239,6 +239,16 @@ ssybc::BinaryData ssybc::Block<
 }
 
 
+template<typename BlockContent, template<typename> class ContentBinaryConverterTemplate, typename HashCalculator>
+ssybc::Block<BlockContent, ContentBinaryConverterTemplate, HashCalculator> ssybc::Block<
+  BlockContent,
+  ContentBinaryConverterTemplate,
+  HashCalculator>::BlockWithDifferentNonce(BlockNonce const nonce) const
+{
+  return Block(Index(), TimeStamp(), PreviousHash(), nonce, Content());
+}
+
+
 // -------------------------------------------------- Private Method --------------------------------------------------
 
 

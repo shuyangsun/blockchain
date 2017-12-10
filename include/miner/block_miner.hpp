@@ -18,41 +18,37 @@
  *
  *********************************************************************************************************************/
 
+#ifndef BLOCKCHAIN_INCLUDE_MINER_BLOCK_MINER_HPP_
+#define BLOCKCHAIN_INCLUDE_MINER_BLOCK_MINER_HPP_
 
-#ifndef BLOCKCHAIN_SRC_VALIDATOR_BLOCK_VALIDATOR_IMPL_HPP_
-#define BLOCKCHAIN_SRC_VALIDATOR_BLOCK_VALIDATOR_IMPL_HPP_
+#include "include/general.hpp"
 
-#include "include/validator/block_validator.hpp"
+namespace ssybc {
 
+  template<typename Validator>
+  class BlockMiner {
+  public:
 
 // --------------------------------------------------- Public Method --------------------------------------------------
 
+    using BlockType = Validator::BlockType;
+    using HashCalculatorType = BlockType::HashCalculatorType;
 
-template<typename BlockT>
-inline bool ssybc::BlockValidator<BlockT>::IsBlockPreAdjacentTo(BlockT const & lhs, BlockT const & rhs)
-{
-  if (lhs.Index() != (rhs.Index() - 1)) { return false;  }
-  if (lhs.TimeStamp() >= rhs.TimeStamp()) { return false; }
-  if (lhs.Hash() != rhs.PreviousHash()) { return false; }
-  return true;
-}
+    BlockNonce MineGenesisNonce(BinaryData const &hashable_binary) const virtual = 0;
+    BlockNonce MineNonce(BlockHash const &previous_hash, BinaryData const &hashable_binary) const virtual = 0;
 
+    BlockType MineGenesis(BlockType const &block) const;
+    BlockType Mine(BlockType const &previous_block, BlockType const &block) const;
 
-template<typename BlockT>
-inline bool ssybc::BlockValidator<BlockT>::IsValidGenesisBlock(BlockT const & block) const
-{
-  bool const is_hash_valid{ block.PreviousBlockHash() == BlockT::HashCalculatorType().GenesisBlockPreviousHash()  };
-  return block.Index() == 0 && is_hash_valid && IsValidGenesisBlockHash(block.Hash());
-}
+    virtual ~BlockValidator() { EMPTY_BLOCK }
+  };
 
 
-template<typename BlockT>
-inline bool ssybc::BlockValidator<BlockT>::IsValidToAppend(
-  BlockT const & previous_block,
-  BlockT const & block) const
-{
-  return IsBlockPreAdjacentTo(previous_block, block) && IsValidHashToAppend(previous_block.Hash(), block.Hash());
-}
+}  // namespace ssybc
 
 
-#endif  // BLOCKCHAIN_SRC_VALIDATOR_BLOCK_VALIDATOR_IMPL_HPP_
+#include "src/miner/block_miner_impl.hpp"
+
+
+#endif  // BLOCKCHAIN_INCLUDE_MINER_BLOCK_MINER_HPP_
+
