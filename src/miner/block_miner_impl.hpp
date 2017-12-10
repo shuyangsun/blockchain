@@ -32,14 +32,17 @@
 
 
 template<typename Validator>
-inline ssybc::BlockType ssybc::BlockMiner<Validator>::MineGenesis(BlockType const & block) const
+inline auto ssybc::BlockMiner<Validator>::MineGenesis(BlockType const & block) const -> BlockType
 {
   if (block.Index() != 0) {
-    throw std::invalid_argument(
-      "Cannot mine Genesis Block, index is " + block.Index() + " instead of 0."
-    );
+    std::string const message{ 
+      "Cannot mine Genesis Block, index is "
+      + std::to_string(block.Index())
+      + " instead of 0."
+    };
+    throw std::invalid_argument(message);
   }
-  if (block.PreviousHash() != HashCalculatorType().GenesisBlockPreviousHash()) {
+  if (block.PreviousBlockHash() != HashCalculatorType().GenesisBlockPreviousHash()) {
     throw std::invalid_argument(
       "Cannot mine Genesis Block, previous hash does not match value provided by hash calculator."
     );
@@ -50,7 +53,7 @@ inline ssybc::BlockType ssybc::BlockMiner<Validator>::MineGenesis(BlockType cons
   if (!Validator().IsValidGenesisBlock(result)) {
     throw std::logic_error(
       "Cannot mine Genesis Block, mined result does not pass validator, "
-      "check implementation of \"MineGenesisNonce\" method in \"" + typeid(*this).name() + "\"."
+      "check implementation of \"MineGenesisNonce\" method in \"" + std::string(typeid(*this).name()) + "\"."
     );
   }
   return result;
@@ -58,23 +61,23 @@ inline ssybc::BlockType ssybc::BlockMiner<Validator>::MineGenesis(BlockType cons
 
 
 template<typename Validator>
-inline ssybc::BlockType ssybc::BlockMiner<Validator>::Mine(
+inline auto ssybc::BlockMiner<Validator>::Mine(
   BlockType const & previous_block,
-  BlockType const & block) const
+  BlockType const & block) const -> BlockType
 {
-  if (block.PreviousHash() != previous_block.Hash()) {
+  if (block.PreviousBlockHash() != previous_block.Hash()) {
     throw std::invalid_argument(
-      "Cannot mine Block " + block.Index() + ", it is not post-adjacent "
-      "block with Block " + previous_block.Index() + "."
+      "Cannot mine Block " + std::to_string(block.Index()) + ", it is not post-adjacent "
+      "block with Block " + std::to_string(previous_block.Index()) + "."
     );
   }
   auto const hashable_binary = block.HashableBinaryData();
-  auto const result_nonce = MineNonce(previous_hash, hashable_binary);
-  auto result = block.BlockWithDifferentNonce(result_nonce);
-  if (!Validator().IsValidGenesisBlock(result)) {
+  auto const result_nonce = MineNonce(previous_block.Hash(), hashable_binary);
+  auto const result = block.BlockWithDifferentNonce(result_nonce);
+  if (!Validator().IsValidToAppend(previous_block, result)) {
     throw std::logic_error(
       "Cannot mine Genesis Block, mined result does not pass validator, "
-      "check implementation of \"MineGenesisNonce\" method in \"" + typeid(*this).name() + "\"."
+      "check implementation of \"MineGenesisNonce\" method in \"" + std::string(typeid(*this).name()) + "\"."
     );
   }
   return result;

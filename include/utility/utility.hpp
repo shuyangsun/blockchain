@@ -51,6 +51,9 @@ namespace util {
 
   BlockHash HashStrippedLeadingZeros(BlockHash const &hash);
 
+  BlockNonce TrailingNonceFromBinaryData(BinaryData const &binary_data);
+  void UpdateBinaryDataWithTrailingNonce(BinaryData &binary_data, BlockNonce const nonce);
+
   template<typename T>
   T ByteSwap(T const value);
 

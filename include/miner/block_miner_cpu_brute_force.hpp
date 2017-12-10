@@ -18,36 +18,29 @@
  *
  *********************************************************************************************************************/
 
-#ifndef BLOCKCHAIN_INCLUDE_VALIDATOR_BLOCK_VALIDATOR_HPP_
-#define BLOCKCHAIN_INCLUDE_VALIDATOR_BLOCK_VALIDATOR_HPP_
+#ifndef BLOCKCHAIN_INCLUDE_MINER_BLOCK_MINER_CPU_BRUTE_FORCE_HPP_
+#define BLOCKCHAIN_INCLUDE_MINER_BLOCK_MINER_CPU_BRUTE_FORCE_HPP_
 
-#include "include/general.hpp"
+#include "include/miner/block_miner.hpp"
 
 namespace ssybc {
 
-  template<typename BlockT>
-  class BlockValidator {
+  template<typename Validator>
+  class BlockMinerCPUBruteForce: public virtual BlockMiner<Validator> {
   public:
 
 // --------------------------------------------------- Public Method --------------------------------------------------
 
-    using BlockType = typename BlockT;
-
-    virtual bool IsValidGenesisBlockHash(BlockHash const &hash) const = 0;
-    virtual bool IsValidHashToAppend(BlockHash const &previous_hash, BlockHash const &hash) const = 0;
-
-    bool IsBlockPreAdjacentTo(BlockT const &lhs, BlockT const &rhs) const;
-    bool IsValidGenesisBlock(BlockT const &block) const;
-    bool IsValidToAppend(BlockT const &previous_block, BlockT const &block) const;
-
-    virtual ~BlockValidator() { EMPTY_BLOCK }
+    BlockNonce MineGenesisNonce(BinaryData const &hashable_binary) const override;
+    BlockNonce MineNonce(BlockHash const &previous_hash, BinaryData const &hashable_binary) const override;
   };
+
 
 }  // namespace ssybc
 
 
-#include "src/validator/block_validator_impl.hpp"
+#include "src/miner/block_miner_cpu_brute_force_impl.hpp"
 
 
-#endif  // BLOCKCHAIN_INCLUDE_VALIDATOR_BLOCK_VALIDATOR_HPP_
+#endif  // BLOCKCHAIN_INCLUDE_MINER_BLOCK_MINER_CPU_BRUTE_FORCE_HPP_
 

@@ -29,11 +29,11 @@
 
 
 template<typename BlockT>
-inline bool ssybc::BlockValidator<BlockT>::IsBlockPreAdjacentTo(BlockT const & lhs, BlockT const & rhs)
+inline bool ssybc::BlockValidator<BlockT>::IsBlockPreAdjacentTo(BlockT const & lhs, BlockT const & rhs) const
 {
   if (lhs.Index() != (rhs.Index() - 1)) { return false;  }
   if (lhs.TimeStamp() >= rhs.TimeStamp()) { return false; }
-  if (lhs.Hash() != rhs.PreviousHash()) { return false; }
+  if (lhs.Hash() != rhs.PreviousBlockHash()) { return false; }
   return true;
 }
 
