@@ -39,8 +39,10 @@ namespace util {
   std::string BinaryStringFromByte(Byte const byte);
   std::string HexStringFromByte(Byte const byte);
 
-  std::string BinaryStringFromByte(BinaryData const bytes);
-  std::string HexStringFromByte(BinaryData const bytes);
+  std::string BinaryStringFromBytes(BinaryData const bytes);
+  std::string BinaryStringFromBytes(BinaryData const bytes, std::string const delimiter);
+  std::string HexStringFromBytes(BinaryData const bytes);
+  std::string HexStringFromBytes(BinaryData const bytes, std::string const delimiter);
 
   template<typename T>
   T ByteSwap(T const value);
