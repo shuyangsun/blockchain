@@ -26,6 +26,7 @@
 
 #include <unordered_map>
 #include <algorithm>
+#include <iterator>
 
 
  // ----------------------------------------------------- Helper ------------------------------------------------------
@@ -115,28 +116,39 @@ inline std::string ssybc::util::HexStringFromByte(Byte const byte)
 }
 
 
-inline std::string ssybc::util::BinaryStringFromBytes(BinaryData const bytes)
+inline std::string ssybc::util::BinaryStringFromBytes(BinaryData const &bytes)
 {
   return BinaryStringFromBytes(bytes, "");
 }
 
 
-inline std::string ssybc::util::BinaryStringFromBytes(BinaryData const bytes, std::string const delimiter)
+inline std::string ssybc::util::BinaryStringFromBytes(BinaryData const &bytes, std::string const delimiter)
 {
   return Join<Byte>(bytes, delimiter, [](Byte byte) { return BinaryStringFromByte(byte);  });
 }
 
 
-inline std::string ssybc::util::HexStringFromBytes(BinaryData const bytes)
+inline std::string ssybc::util::HexStringFromBytes(BinaryData const &bytes)
 {
   return HexStringFromBytes(bytes, "");
 }
 
 
-inline std::string ssybc::util::HexStringFromBytes(BinaryData const bytes, std::string const delimiter)
+inline std::string ssybc::util::HexStringFromBytes(BinaryData const &bytes, std::string const delimiter)
 {
   return Join<Byte>(bytes, delimiter, [](Byte byte) { return HexStringFromByte(byte);  });
 }
+
+
+inline ssybc::BlockHash ssybc::util::HashStrippedLeadingZeros(BlockHash const &hash)
+{
+  auto iter = hash.begin();
+  while (*iter == 0) {
+    ++iter;
+  }
+  return BlockHash{iter, hash.end()};
+}
+
 
 template<typename T>
 inline T ssybc::util::ByteSwap(T const value)
@@ -202,7 +214,7 @@ inline std::vector<T> ssybc::util::ConcatenateMoveDestructive(std::vector<std::v
 
 template<typename T>
 std::string ssybc::util::Join(
-  std::vector<T> const vec,
+  std::vector<T> const &vec,
   std::string delimiter,
   const std::function<std::string(T)>& map_func)
 {

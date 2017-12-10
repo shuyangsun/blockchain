@@ -41,10 +41,12 @@ namespace util {
   std::string BinaryStringFromByte(Byte const byte);
   std::string HexStringFromByte(Byte const byte);
 
-  std::string BinaryStringFromBytes(BinaryData const bytes);
-  std::string BinaryStringFromBytes(BinaryData const bytes, std::string const delimiter);
-  std::string HexStringFromBytes(BinaryData const bytes);
-  std::string HexStringFromBytes(BinaryData const bytes, std::string const delimiter);
+  std::string BinaryStringFromBytes(BinaryData const &bytes);
+  std::string BinaryStringFromBytes(BinaryData const &bytes, std::string const delimiter);
+  std::string HexStringFromBytes(BinaryData const &bytes);
+  std::string HexStringFromBytes(BinaryData const &bytes, std::string const delimiter);
+
+  BlockHash HashStrippedLeadingZeros(BlockHash const &hash);
 
   template<typename T>
   T ByteSwap(T const value);
@@ -56,7 +58,7 @@ namespace util {
   std::vector<T> ConcatenateMoveDestructive(std::vector<std::vector<T>> const &vectors);
 
   template<typename T>
-  std::string Join(std::vector<T> const vec, std::string delimiter, const std::function<std::string(T)>& map_func);
+  std::string Join(std::vector<T> const &vec, std::string delimiter, const std::function<std::string(T)>& map_func);
 
 
 // -------------------------------------------- Specialization Declaration --------------------------------------------

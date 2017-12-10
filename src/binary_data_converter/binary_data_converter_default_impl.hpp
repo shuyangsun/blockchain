@@ -35,9 +35,9 @@ namespace ssybc {
   template<typename T>
   BinaryData BinaryDataFromPrimitiveTypeFloatData_(T const data);
   template<typename T>
-  T PrimitiveTypeIntegerDataFromBinaryData_(BinaryData const binary_data);
+  T PrimitiveTypeIntegerDataFromBinaryData_(BinaryData const &binary_data);
   template<typename T>
-  T PrimitiveTypeFloatDataFromBinaryData_(BinaryData const binary_data);
+  T PrimitiveTypeFloatDataFromBinaryData_(BinaryData const &binary_data);
 }
 
 
@@ -55,7 +55,7 @@ inline auto ssybc::BinaryDataConverterDefault<DataType>::BinaryDataFromData(Data
 
 
 template<typename DataType>
-inline auto ssybc::BinaryDataConverterDefault<DataType>::DataFromBinaryData(BinaryData const data) const -> DataType
+inline auto ssybc::BinaryDataConverterDefault<DataType>::DataFromBinaryData(BinaryData const &data) const -> DataType
 {
   throw std::logic_error(
     "Cannot extract object of type \"" + typeid(DataType)+"\" from binary data, "
@@ -176,12 +176,20 @@ inline auto ssybc::BinaryDataConverterDefault<std::string>::BinaryDataFromData(
 }
 
 
+template<>
+inline auto ssybc::BinaryDataConverterDefault<ssybc::BinaryData>::BinaryDataFromData(
+  BinaryData const data) const -> BinaryData
+{
+  return data;
+}
+
+
 // -------------------------------------- From Binary Specialization Definition ---------------------------------------
 
 
 template<>
 inline auto ssybc::BinaryDataConverterDefault<unsigned char>::DataFromBinaryData(
-  BinaryData const binary_data) const -> unsigned char
+  BinaryData const &binary_data) const -> unsigned char
 {
   return binary_data.front();
 }
@@ -189,7 +197,7 @@ inline auto ssybc::BinaryDataConverterDefault<unsigned char>::DataFromBinaryData
 
 template<>
 inline auto ssybc::BinaryDataConverterDefault<char>::DataFromBinaryData(
-  BinaryData const binary_data) const -> char
+  BinaryData const &binary_data) const -> char
 {
   return static_cast<char>(binary_data.front());
 }
@@ -197,7 +205,7 @@ inline auto ssybc::BinaryDataConverterDefault<char>::DataFromBinaryData(
 
 template<>
 inline auto ssybc::BinaryDataConverterDefault<unsigned short>::DataFromBinaryData(
-  BinaryData const binary_data) const -> unsigned short
+  BinaryData const &binary_data) const -> unsigned short
 {
   return PrimitiveTypeIntegerDataFromBinaryData_<unsigned short>(binary_data);
 }
@@ -205,7 +213,7 @@ inline auto ssybc::BinaryDataConverterDefault<unsigned short>::DataFromBinaryDat
 
 template<>
 inline auto ssybc::BinaryDataConverterDefault<short>::DataFromBinaryData(
-  BinaryData const binary_data) const -> short
+  BinaryData const &binary_data) const -> short
 {
   return PrimitiveTypeIntegerDataFromBinaryData_<short>(binary_data);
 }
@@ -213,7 +221,7 @@ inline auto ssybc::BinaryDataConverterDefault<short>::DataFromBinaryData(
 
 template<>
 inline auto ssybc::BinaryDataConverterDefault<unsigned int>::DataFromBinaryData(
-  BinaryData const binary_data) const -> unsigned int
+  BinaryData const &binary_data) const -> unsigned int
 {
   return PrimitiveTypeIntegerDataFromBinaryData_<unsigned int>(binary_data);
 }
@@ -221,7 +229,7 @@ inline auto ssybc::BinaryDataConverterDefault<unsigned int>::DataFromBinaryData(
 
 template<>
 inline auto ssybc::BinaryDataConverterDefault<int>::DataFromBinaryData(
-  BinaryData const binary_data) const -> int
+  BinaryData const &binary_data) const -> int
 {
   return PrimitiveTypeIntegerDataFromBinaryData_<int>(binary_data);
 }
@@ -229,7 +237,7 @@ inline auto ssybc::BinaryDataConverterDefault<int>::DataFromBinaryData(
 
 template<>
 inline auto ssybc::BinaryDataConverterDefault<unsigned long>::DataFromBinaryData(
-  BinaryData const binary_data) const -> unsigned long
+  BinaryData const &binary_data) const -> unsigned long
 {
   return PrimitiveTypeIntegerDataFromBinaryData_<unsigned long>(binary_data);
 }
@@ -237,7 +245,7 @@ inline auto ssybc::BinaryDataConverterDefault<unsigned long>::DataFromBinaryData
 
 template<>
 inline auto ssybc::BinaryDataConverterDefault<long>::DataFromBinaryData(
-  BinaryData const binary_data) const -> long
+  BinaryData const &binary_data) const -> long
 {
   return PrimitiveTypeIntegerDataFromBinaryData_<long>(binary_data);
 }
@@ -245,7 +253,7 @@ inline auto ssybc::BinaryDataConverterDefault<long>::DataFromBinaryData(
 
 template<>
 inline auto ssybc::BinaryDataConverterDefault<unsigned long long>::DataFromBinaryData(
-  BinaryData const binary_data) const -> unsigned long long
+  BinaryData const &binary_data) const -> unsigned long long
 {
   return PrimitiveTypeIntegerDataFromBinaryData_<unsigned long long>(binary_data);
 }
@@ -253,7 +261,7 @@ inline auto ssybc::BinaryDataConverterDefault<unsigned long long>::DataFromBinar
 
 template<>
 inline auto ssybc::BinaryDataConverterDefault<long long>::DataFromBinaryData(
-  BinaryData const binary_data) const -> long long
+  BinaryData const &binary_data) const -> long long
 {
   return PrimitiveTypeIntegerDataFromBinaryData_<long long>(binary_data);
 }
@@ -261,7 +269,7 @@ inline auto ssybc::BinaryDataConverterDefault<long long>::DataFromBinaryData(
 
 template<>
 inline auto ssybc::BinaryDataConverterDefault<float>::DataFromBinaryData(
-  BinaryData const binary_data) const -> float
+  BinaryData const &binary_data) const -> float
 {
   return PrimitiveTypeFloatDataFromBinaryData_<float>(binary_data);
 }
@@ -269,7 +277,7 @@ inline auto ssybc::BinaryDataConverterDefault<float>::DataFromBinaryData(
 
 template<>
 inline auto ssybc::BinaryDataConverterDefault<double>::DataFromBinaryData(
-  BinaryData const binary_data) const -> double
+  BinaryData const &binary_data) const -> double
 {
   return PrimitiveTypeFloatDataFromBinaryData_<double>(binary_data);
 }
@@ -277,7 +285,7 @@ inline auto ssybc::BinaryDataConverterDefault<double>::DataFromBinaryData(
 
 template<>
 inline auto ssybc::BinaryDataConverterDefault<long double>::DataFromBinaryData(
-  BinaryData const binary_data) const -> long double
+  BinaryData const &binary_data) const -> long double
 {
   return PrimitiveTypeFloatDataFromBinaryData_<long double>(binary_data);
 }
@@ -285,10 +293,18 @@ inline auto ssybc::BinaryDataConverterDefault<long double>::DataFromBinaryData(
 
 template<>
 inline auto ssybc::BinaryDataConverterDefault<std::string>::DataFromBinaryData(
-  BinaryData const binary_data) const -> std::string
+  BinaryData const &binary_data) const -> std::string
 {
   std::size_t const string_len{ binary_data.size() };
   return std::string(binary_data.begin(), binary_data.end());
+}
+
+
+template<>
+inline auto ssybc::BinaryDataConverterDefault<ssybc::BinaryData>::DataFromBinaryData(
+  BinaryData const &binary_data) const -> BinaryData
+{
+  return binary_data;
 }
 
 
@@ -316,7 +332,7 @@ inline auto ssybc::BinaryDataFromPrimitiveTypeFloatData_(T const data) -> Binary
 
 
 template<typename T>
-inline T ssybc::PrimitiveTypeIntegerDataFromBinaryData_(BinaryData const binary_data)
+inline T ssybc::PrimitiveTypeIntegerDataFromBinaryData_(BinaryData const &binary_data)
 {
   BinaryData const binary_data_endian_converted =
     kIsBigEndian ? util::ByteSwap(binary_data_endian_converted) : binary_data;
@@ -327,7 +343,7 @@ inline T ssybc::PrimitiveTypeIntegerDataFromBinaryData_(BinaryData const binary_
 
 
 template<typename T>
-inline T ssybc::PrimitiveTypeFloatDataFromBinaryData_(BinaryData const binary_data)
+inline T ssybc::PrimitiveTypeFloatDataFromBinaryData_(BinaryData const &binary_data)
 {
   // TODO: handle little Endian.
   Byte const *byte_ptr{ &(binary_data.front()) };

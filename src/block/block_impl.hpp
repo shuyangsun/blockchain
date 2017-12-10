@@ -24,6 +24,7 @@
 
 #include "include/block/block.hpp"
 #include "include/utility/utility.hpp"
+#include "include/utility/operator.hpp"
 
 #include <exception>
 #include <cassert>
@@ -89,8 +90,8 @@ ssybc::Block<BlockContent, ContentBinaryConverterTemplate, HashCalculator>::Bloc
   if (stored_hash_in_binary != real_hash) {
     throw std::logic_error(
       "Cannot initialize block from binary data: "
-      "stored hash \"" + stored_hash_in_binary + "\" is not the same as real hash "
-      "\"" + real_hash + "\"."
+      "stored hash \"" + util::HexStringFromBytes(stored_hash_in_binary) + "\" is not the same as real hash "
+      "\"" + util::HexStringFromBytes(real_hash) + "\"."
     );
   }
 }
@@ -126,6 +127,27 @@ ssybc::BlockHash ssybc::Block<BlockContent, ContentBinaryConverterTemplate, Hash
 
 
 template<typename BlockContent, template<typename> class ContentBinaryConverterTemplate, typename HashCalculator>
+ssybc::BlockHash ssybc::Block<BlockContent, ContentBinaryConverterTemplate, HashCalculator>::Hash() const
+{
+  return hash_;
+}
+
+
+template<typename BlockContent, template<typename> class ContentBinaryConverterTemplate, typename HashCalculator>
+std::string ssybc::Block<BlockContent, ContentBinaryConverterTemplate, HashCalculator>::PreviousBlockHashAsString() const
+{
+  return util::HexStringFromBytes(PreviousBlockHash());
+}
+
+
+template<typename BlockContent, template<typename> class ContentBinaryConverterTemplate, typename HashCalculator>
+std::string ssybc::Block<BlockContent, ContentBinaryConverterTemplate, HashCalculator>::HashAsString() const
+{
+  return util::HexStringFromBytes(Hash());
+}
+
+
+template<typename BlockContent, template<typename> class ContentBinaryConverterTemplate, typename HashCalculator>
 ssybc::BlockNonce ssybc::Block<BlockContent, ContentBinaryConverterTemplate, HashCalculator>::Nonce() const
 {
   return nonce_;
@@ -146,7 +168,7 @@ std::size_t ssybc::Block<BlockContent, ContentBinaryConverterTemplate, HashCalcu
     + IndexAsBinary_().size()
     + TimeStampAsBinary_().size()
     + NonceAsBinary_().size()
-    + HashCalculator().SizeOfHashInBytes() * 4
+    + HashCalculator().SizeOfHashInBytes() * 2
     + SizeOfBinaryContent();
   std::cout << "*** real content size: " << SizeOfBinaryContent() << std::endl;
   std::cout << "*** real block size: " << result << std::endl;
@@ -158,13 +180,6 @@ template<typename BlockContent, template<typename> class ContentBinaryConverterT
 BlockContent ssybc::Block<BlockContent, ContentBinaryConverterTemplate, HashCalculator>::Content() const
 {
   return BlockContent(content_);
-}
-
-
-template<typename BlockContent, template<typename> class ContentBinaryConverterTemplate, typename HashCalculator>
-ssybc::BlockHash ssybc::Block<BlockContent, ContentBinaryConverterTemplate, HashCalculator>::Hash() const
-{
-  return hash_;
 }
 
 
@@ -185,9 +200,9 @@ std::string ssybc::Block<BlockContent, ContentBinaryConverterTemplate, HashCalcu
   result += ",\n\tnonce: ";
   result += std::to_string(Nonce());
   result += ",\n\tprevious_hash: ";
-  result += PreviousBlockHash();
+  result += PreviousBlockHashAsString();
   result += ",\n\thash: ";
-  result += Hash();
+  result += HashAsString();
   result += ",\n\tcontent_size_in_bytes: ";
   result += std::to_string(SizeOfBinaryContent());
   result += ",\n\tcontent: ";
@@ -400,7 +415,7 @@ inline auto ssybc::Block<
   auto begin_iter = data.begin();
   auto end_iter = begin_iter;
   std::advance(begin_iter, sizeof(std::size_t) + sizeof(BlockIndex) + sizeof(BlockTimeInterval) + sizeof(BlockNonce));
-  std::advance(end_iter, HashCalculator().SizeOfHashInBytes() * 2);
+  std::advance(end_iter, HashCalculator().SizeOfHashInBytes());
   BinaryData const data_tmp{ begin_iter, end_iter };
   return BinaryDataConverterDefault<BlockHash>().DataFromBinaryData(data_tmp);
 }
@@ -419,8 +434,8 @@ inline auto ssybc::Block<
     + sizeof(BlockIndex)
     + sizeof(BlockTimeInterval)
     + sizeof(BlockNonce)
-    + HashCalculator().SizeOfHashInBytes() * 2);
-  std::advance(end_iter, HashCalculator().SizeOfHashInBytes() * 2);
+    + HashCalculator().SizeOfHashInBytes());
+  std::advance(end_iter, HashCalculator().SizeOfHashInBytes());
   BinaryData const data_tmp{ begin_iter, end_iter };
   return BinaryDataConverterDefault<BlockHash>().DataFromBinaryData(data_tmp);
 }
@@ -439,7 +454,7 @@ inline auto ssybc::Block<
     + sizeof(BlockIndex)
     + sizeof(BlockTimeInterval)
     + sizeof(BlockNonce)
-    + HashCalculator().SizeOfHashInBytes() * 4
+    + HashCalculator().SizeOfHashInBytes() * 2
   };
   std::size_t const content_size{SizeOfBinaryBlockFromBinaryBlockData_(data) - block_size_without_content};
   std::cout << "*** Fetched header size: " << block_size_without_content << std::endl;
