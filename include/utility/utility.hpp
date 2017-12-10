@@ -35,6 +35,9 @@ namespace util {
 
   BlockTimeInterval UTCTime();
 
+  template<typename T>
+  std::string ToString(T const &value);
+
   std::string DateTimeStringFromTimeStamp(BlockTimeInterval const time_stamp, std::string const time_format);
   std::string DateTimeStringFromTimeStamp(BlockTimeInterval const time_stamp);
 

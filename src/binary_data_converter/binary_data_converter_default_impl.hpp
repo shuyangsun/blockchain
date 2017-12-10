@@ -324,7 +324,7 @@ inline auto ssybc::BinaryDataFromPrimitiveTypeIntegerData_(T const data) -> Bina
 template<typename T>
 inline auto ssybc::BinaryDataFromPrimitiveTypeFloatData_(T const data) -> BinaryData
 {
-  // TODO: handle little Endian.
+  // TODO: handle big Endian.
   SizeT const result_size{ sizeof(data) };
   auto byte_ptr = reinterpret_cast<Byte const*>(&data);
   return BinaryData(byte_ptr, byte_ptr + result_size);
@@ -345,7 +345,7 @@ inline T ssybc::PrimitiveTypeIntegerDataFromBinaryData_(BinaryData const &binary
 template<typename T>
 inline T ssybc::PrimitiveTypeFloatDataFromBinaryData_(BinaryData const &binary_data)
 {
-  // TODO: handle little Endian.
+  // TODO: handle big Endian.
   Byte const *byte_ptr{ &(binary_data.front()) };
   auto data_ptr = reinterpret_cast<T const *>(byte_ptr);
   return *data_ptr;
