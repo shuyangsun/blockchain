@@ -170,8 +170,6 @@ std::size_t ssybc::Block<BlockContent, ContentBinaryConverterTemplate, HashCalcu
     + NonceAsBinary_().size()
     + HashCalculator().SizeOfHashInBytes() * 2
     + SizeOfBinaryContent();
-  std::cout << "*** real content size: " << SizeOfBinaryContent() << std::endl;
-  std::cout << "*** real block size: " << result << std::endl;
   return result;
 }
 
@@ -356,7 +354,6 @@ inline auto ssybc::Block<
   auto end_iter = data.begin();
   std::advance(end_iter, sizeof(std::size_t));
   BinaryData const data_tmp{begin_iter, end_iter};
-  std::cout << "*** parsed block size from binary: " << BinaryDataConverterDefault<std::size_t>().DataFromBinaryData(data_tmp) << std::endl;
   return BinaryDataConverterDefault<std::size_t>().DataFromBinaryData(data_tmp);
 }
 
@@ -368,8 +365,8 @@ inline auto ssybc::Block<
   HashCalculator>::IndexFromBinaryBlockData_(BinaryData const &data) const -> BlockIndex
 {
   auto begin_iter = data.begin();
-  auto end_iter = begin_iter;
   std::advance(begin_iter, sizeof(std::size_t));
+  auto end_iter = begin_iter;
   std::advance(end_iter, sizeof(BlockIndex));
   BinaryData const data_tmp{ begin_iter, end_iter };
   return BinaryDataConverterDefault<BlockIndex>().DataFromBinaryData(data_tmp);
@@ -383,8 +380,8 @@ inline auto ssybc::Block<
   HashCalculator>::TimeStampFromBinaryBlockData_(BinaryData const &data) const -> BlockTimeInterval
 {
   auto begin_iter = data.begin();
-  auto end_iter = begin_iter;
   std::advance(begin_iter, sizeof(std::size_t) + sizeof(BlockIndex));
+  auto end_iter = begin_iter;
   std::advance(end_iter, sizeof(BlockTimeInterval));
   BinaryData const data_tmp{ begin_iter, end_iter };
   return BinaryDataConverterDefault<BlockTimeInterval>().DataFromBinaryData(data_tmp);
@@ -398,8 +395,8 @@ inline auto ssybc::Block<
   HashCalculator>::NonceFromBinaryBlockData_(BinaryData const &data) const -> BlockNonce
 {
   auto begin_iter = data.begin();
-  auto end_iter = begin_iter;
   std::advance(begin_iter, sizeof(std::size_t) + sizeof(BlockIndex) + sizeof(BlockTimeInterval));
+  auto end_iter = begin_iter;
   std::advance(end_iter, sizeof(BlockNonce));
   BinaryData const data_tmp{ begin_iter, end_iter };
   return BinaryDataConverterDefault<BlockNonce>().DataFromBinaryData(data_tmp);
@@ -413,8 +410,8 @@ inline auto ssybc::Block<
   HashCalculator>::PreviousHashFromBinaryBlockData_(BinaryData const &data) const -> BlockHash
 {
   auto begin_iter = data.begin();
-  auto end_iter = begin_iter;
   std::advance(begin_iter, sizeof(std::size_t) + sizeof(BlockIndex) + sizeof(BlockTimeInterval) + sizeof(BlockNonce));
+  auto end_iter = begin_iter;
   std::advance(end_iter, HashCalculator().SizeOfHashInBytes());
   BinaryData const data_tmp{ begin_iter, end_iter };
   return BinaryDataConverterDefault<BlockHash>().DataFromBinaryData(data_tmp);
@@ -428,13 +425,13 @@ inline auto ssybc::Block<
   HashCalculator>::HashFromBinaryBlockData_(BinaryData const &data) const -> BlockHash
 {
   auto begin_iter = data.begin();
-  auto end_iter = begin_iter;
   std::advance(begin_iter,
     sizeof(size_t)
     + sizeof(BlockIndex)
     + sizeof(BlockTimeInterval)
     + sizeof(BlockNonce)
     + HashCalculator().SizeOfHashInBytes());
+  auto end_iter = begin_iter;
   std::advance(end_iter, HashCalculator().SizeOfHashInBytes());
   BinaryData const data_tmp{ begin_iter, end_iter };
   return BinaryDataConverterDefault<BlockHash>().DataFromBinaryData(data_tmp);
@@ -448,7 +445,6 @@ inline auto ssybc::Block<
   HashCalculator>::ContentFromBinaryBlockData_(BinaryData const &data) const -> BlockContent
 {
   auto begin_iter = data.begin();
-  auto end_iter = begin_iter;
   std::size_t const block_size_without_content{
     sizeof(size_t)
     + sizeof(BlockIndex)
@@ -457,9 +453,11 @@ inline auto ssybc::Block<
     + HashCalculator().SizeOfHashInBytes() * 2
   };
   std::size_t const content_size{SizeOfBinaryBlockFromBinaryBlockData_(data) - block_size_without_content};
+  std::cout << "*** real data size: " << data.size() << std::endl;
   std::cout << "*** Fetched header size: " << block_size_without_content << std::endl;
   std::cout << "*** Fetched content size: " << content_size << std::endl;
   std::advance(begin_iter, block_size_without_content);
+  auto end_iter = begin_iter;
   std::advance(end_iter, content_size);
   BinaryData const data_tmp{ begin_iter, end_iter };
   return BinaryDataConverterDefault<BlockContent>().DataFromBinaryData(data_tmp);
