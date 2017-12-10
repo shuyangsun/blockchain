@@ -34,8 +34,8 @@
 
 namespace ssybc {
 
-  using BlockIndex = std::size_t;
-  using BlockTimeInterval = time_t;
+  using BlockIndex = uint64_t;
+  using BlockTimeInterval = int64_t;
   using BlockHash = std::string;
   using BlockNonce = std::size_t;
   using Byte = unsigned char;

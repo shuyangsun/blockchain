@@ -26,6 +26,13 @@
 
 #include "include/hash_calculator/hash_calculator_sha256.hpp"
 
+
+size_t ssybc::SHA256Calculator::SizeOfHashInBytes() const
+{
+  return 33;
+}
+
+
 ssybc::BlockHash ssybc::SHA256Calculator::Hash(ssybc::BinaryData const data) const
 {
   // TODO: implement correct hash function.
