@@ -23,6 +23,7 @@
  *
  ******************************************************************************/
 
+
 #ifndef BLOCKCHAIN_INCLUDE_BLOCK_BLOCK_HPP_
 #define BLOCKCHAIN_INCLUDE_BLOCK_BLOCK_HPP_
 
@@ -40,20 +41,29 @@ namespace ssybc {
 
   public:
 
+// -------------------------------------------------- Type Definition -------------------------------------------------
+
     using BlockContentType = BlockContent;
     using ContentBinaryConverterType = ContentBinaryConverterTemplate<BlockContent>;
     using HashCalculatorType = HashCalculator;
 
+// --------------------------------------------- Constructor & Destructor ---------------------------------------------
+
     Block() = delete;
-    Block(
+    Block
+    (
       BlockIndex const block_index,
       BlockTimeInterval const time_stamp,
       BlockHash const previous_hash,
       BlockNonce const nonce,
-      BlockContent const content);
+      BlockContent const content
+    );
     Block(const Block &block);
     Block(Block &&block);
+    Block(BinaryData const binary_data);
     ~Block();
+
+// --------------------------------------------------- Public Method --------------------------------------------------
 
     BlockIndex Index() const;
     BlockTimeInterval TimeStamp() const;
@@ -71,12 +81,16 @@ namespace ssybc {
 
   private:
 
+// -------------------------------------------------- Private Field ---------------------------------------------------
+
     BlockIndex const index_;
     BlockTimeInterval const time_stamp_;
     BlockHash const previous_hash_;
     BlockNonce const nonce_;
     BlockContent const content_;
     BlockHash const hash_;
+
+// -------------------------------------------------- Private Method --------------------------------------------------
 
     BinaryData IndexAsBinary_() const;
     BinaryData TimeStampAsBinary_() const;
@@ -86,13 +100,13 @@ namespace ssybc {
     BinaryData SizeOfBlockAsBinary_() const;
     BinaryData HashAsBinary_() const;
 
-    //std::size_t SizeOfBinaryBlockFromBinaryBlockData_(BinaryData const data) const;
-    //BlockIndex IndexFromBinaryBlockData_(BinaryData const data) const;
-    //BlockTimeInterval TimeStampFromBinaryBlockData_(BinaryData const data) const;
-    //BlockHash PreviousHashFromBinaryBlockData_(BinaryData const data) const;
-    //BlockHash HashFromBinaryBlockData_(BinaryData const data) const;
-    //BlockNonce NonceFromBinaryBlockData_(BinaryData const data) const;
-    //BlockContent ContentFromBinaryBlockData_(BinaryData const data) const;
+    std::size_t SizeOfBinaryBlockFromBinaryBlockData_(BinaryData const data) const;
+    BlockIndex IndexFromBinaryBlockData_(BinaryData const data) const;
+    BlockTimeInterval TimeStampFromBinaryBlockData_(BinaryData const data) const;
+    BlockHash PreviousHashFromBinaryBlockData_(BinaryData const data) const;
+    BlockHash HashFromBinaryBlockData_(BinaryData const data) const;
+    BlockNonce NonceFromBinaryBlockData_(BinaryData const data) const;
+    BlockContent ContentFromBinaryBlockData_(BinaryData const data) const;
 
     std::vector<BinaryData> HashableBinaryArr_() const;
     std::vector<BinaryData> BlockBinaryArr_() const;

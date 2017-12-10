@@ -36,6 +36,9 @@
 #include <iterator>
 
 
+// --------------------------------------------- Constructor & Destructor ---------------------------------------------
+
+
 template<typename BlockContent, template<typename> class ContentBinaryConverterTemplate, typename HashCalculator>
 ssybc::Block<BlockContent, ContentBinaryConverterTemplate, HashCalculator>::Block(
   BlockIndex block_index,
@@ -56,19 +59,40 @@ ssybc::Block<BlockContent, ContentBinaryConverterTemplate, HashCalculator>::Bloc
 
 template<typename BlockContent, template<typename> class ContentBinaryConverterTemplate, typename HashCalculator>
 ssybc::Block<BlockContent, ContentBinaryConverterTemplate, HashCalculator>::Block(const Block & block) :
-  Block(block.Index(), block.TimeStamp(), block.PreviousBlockHash(), block.Nonce(), block.Content())
+  Block(
+    block.Index(),
+    block.TimeStamp(),
+    block.PreviousBlockHash(),
+    block.Nonce(),
+    block.Content())
 { EMPTY_BLOCK }
 
 
 template<typename BlockContent, template<typename> class ContentBinaryConverterTemplate, typename HashCalculator>
 ssybc::Block<BlockContent, ContentBinaryConverterTemplate, HashCalculator>::Block(Block && block) :
-  Block(block.Index(), block.TimeStamp(), std::move(block.PreviousBlockHash()), block.Nonce(), std::move(block.Content()))
+  Block(
+    block.Index(),
+    block.TimeStamp(),
+    std::move(block.PreviousBlockHash()),
+    block.Nonce(),
+    std::move(block.Content()))
+{ EMPTY_BLOCK }
+
+
+template<typename BlockContent, template<typename> class ContentBinaryConverterTemplate, typename HashCalculator>
+ssybc::Block<BlockContent, ContentBinaryConverterTemplate, HashCalculator>::Block(BinaryData const binary_data) :
+  Block(
+    // TODO
+  )
 { EMPTY_BLOCK }
 
 
 template<typename BlockContent, template<typename> class ContentBinaryConverterTemplate, typename HashCalculator>
 ssybc::Block<BlockContent, ContentBinaryConverterTemplate, HashCalculator>::~Block()
 { EMPTY_BLOCK }
+
+
+// --------------------------------------------------- Public Method --------------------------------------------------
 
 
 template<typename BlockContent, template<typename> class ContentBinaryConverterTemplate, typename HashCalculator>
@@ -180,63 +204,93 @@ ssybc::BinaryData ssybc::Block<BlockContent, ContentBinaryConverterTemplate, Has
 }
 
 template<typename BlockContent, template<typename> class ContentBinaryConverterTemplate, typename HashCalculator>
-ssybc::BinaryData ssybc::Block<BlockContent, ContentBinaryConverterTemplate, HashCalculator>::HashableBinaryData() const
+ssybc::BinaryData ssybc::Block<
+  BlockContent,
+  ContentBinaryConverterTemplate,
+  HashCalculator>::HashableBinaryData() const
 {
   return util::ConcatenateMoveDestructive(HashableBinaryArr_());
 }
 
 
+// -------------------------------------------------- Private Method --------------------------------------------------
+
+
 template<typename BlockContent, template<typename> class ContentBinaryConverterTemplate, typename HashCalculator>
-inline ssybc::BinaryData ssybc::Block<BlockContent, ContentBinaryConverterTemplate, HashCalculator>::IndexAsBinary_() const
+inline ssybc::BinaryData ssybc::Block<
+  BlockContent,
+  ContentBinaryConverterTemplate,
+  HashCalculator>::IndexAsBinary_() const
 {
   return BinaryDataConverterDefault<BlockIndex>().BinaryDataFromData(Index());
 }
 
 
 template<typename BlockContent, template<typename> class ContentBinaryConverterTemplate, typename HashCalculator>
-inline ssybc::BinaryData ssybc::Block<BlockContent, ContentBinaryConverterTemplate, HashCalculator>::TimeStampAsBinary_() const
+inline ssybc::BinaryData ssybc::Block<
+  BlockContent,
+  ContentBinaryConverterTemplate,
+  HashCalculator>::TimeStampAsBinary_() const
 {
   return BinaryDataConverterDefault<BlockTimeInterval>().BinaryDataFromData(TimeStamp());
 }
 
 
 template<typename BlockContent, template<typename> class ContentBinaryConverterTemplate, typename HashCalculator>
-inline ssybc::BinaryData ssybc::Block<BlockContent, ContentBinaryConverterTemplate, HashCalculator>::PreviousHashAsBinary_() const
+inline ssybc::BinaryData ssybc::Block<
+  BlockContent,
+  ContentBinaryConverterTemplate,
+  HashCalculator>::PreviousHashAsBinary_() const
 {
   return BinaryDataConverterDefault<BlockHash>().BinaryDataFromData(PreviousBlockHash());
 }
 
 
 template<typename BlockContent, template<typename> class ContentBinaryConverterTemplate, typename HashCalculator>
-inline ssybc::BinaryData ssybc::Block<BlockContent, ContentBinaryConverterTemplate, HashCalculator>::NonceAsBinary_() const
+inline ssybc::BinaryData ssybc::Block<
+  BlockContent,
+  ContentBinaryConverterTemplate,
+  HashCalculator>::NonceAsBinary_() const
 {
   return BinaryDataConverterDefault<BlockNonce>().BinaryDataFromData(Nonce());
 }
 
 
 template<typename BlockContent, template<typename> class ContentBinaryConverterTemplate, typename HashCalculator>
-inline ssybc::BinaryData ssybc::Block<BlockContent, ContentBinaryConverterTemplate, HashCalculator>::ContentAsBinary_() const
+inline ssybc::BinaryData ssybc::Block<
+  BlockContent,
+  ContentBinaryConverterTemplate,
+  HashCalculator>::ContentAsBinary_() const
 {
   return ContentBinaryConverterType().BinaryDataFromData(Content());
 }
 
 
 template<typename BlockContent, template<typename> class ContentBinaryConverterTemplate, typename HashCalculator>
-inline ssybc::BinaryData ssybc::Block<BlockContent, ContentBinaryConverterTemplate, HashCalculator>::SizeOfBlockAsBinary_() const
+inline ssybc::BinaryData ssybc::Block<
+  BlockContent,
+  ContentBinaryConverterTemplate,
+  HashCalculator>::SizeOfBlockAsBinary_() const
 {
   return BinaryDataConverterDefault<std::size_t>().BinaryDataFromData(SizeOfBinaryBlock());
 }
 
 
 template<typename BlockContent, template<typename> class ContentBinaryConverterTemplate, typename HashCalculator>
-inline ssybc::BinaryData ssybc::Block<BlockContent, ContentBinaryConverterTemplate, HashCalculator>::HashAsBinary_() const
+inline ssybc::BinaryData ssybc::Block<
+  BlockContent,
+  ContentBinaryConverterTemplate,
+  HashCalculator>::HashAsBinary_() const
 {
   return BinaryDataConverterDefault<BlockHash>().BinaryDataFromData(Hash());
 }
 
 
 template<typename BlockContent, template<typename> class ContentBinaryConverterTemplate, typename HashCalculator>
-inline auto ssybc::Block<BlockContent, ContentBinaryConverterTemplate, HashCalculator>::BlockBinaryArr_() const -> std::vector<BinaryData>
+inline auto ssybc::Block<
+  BlockContent,
+  ContentBinaryConverterTemplate,
+  HashCalculator>::BlockBinaryArr_() const -> std::vector<BinaryData>
 {
   return {
     SizeOfBlockAsBinary_(),
@@ -251,7 +305,10 @@ inline auto ssybc::Block<BlockContent, ContentBinaryConverterTemplate, HashCalcu
 
 
 template<typename BlockContent, template<typename> class ContentBinaryConverterTemplate, typename HashCalculator>
-inline auto ssybc::Block<BlockContent, ContentBinaryConverterTemplate, HashCalculator>::HashableBinaryArr_() const -> std::vector<BinaryData>
+inline auto ssybc::Block<
+  BlockContent,
+  ContentBinaryConverterTemplate,
+  HashCalculator>::HashableBinaryArr_() const -> std::vector<BinaryData>
 {
   return {
     IndexAsBinary_(),
