@@ -299,8 +299,8 @@ template<typename T>
 inline auto ssybc::BinaryDataFromPrimitiveTypeIntegerData_(T const data) -> BinaryData
 {
   std::size_t const result_size{ sizeof(data) };
-  auto data_big_endian = util::ToBigEndian(data);
-  auto byte_ptr = reinterpret_cast<Byte const*>(&data_big_endian);
+  auto data_little_endian = util::ToLittleEndian(data);
+  auto byte_ptr = reinterpret_cast<Byte const*>(&data_little_endian);
   return BinaryData(byte_ptr, byte_ptr + result_size);
 }
 
@@ -319,7 +319,7 @@ template<typename T>
 inline T ssybc::PrimitiveTypeIntegerDataFromBinaryData_(BinaryData const binary_data)
 {
   BinaryData const binary_data_endian_converted =
-    kIsBigEndian ? binary_data : util::ByteSwap(binary_data_endian_converted);
+    kIsBigEndian ? util::ByteSwap(binary_data_endian_converted) : binary_data;
   Byte const *byte_ptr{&binary_data_endian_converted.front()};
   auto data_ptr = reinterpret_cast<T const *>(byte_ptr);
   return *data_ptr;

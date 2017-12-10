@@ -50,7 +50,7 @@ namespace util {
   T ByteSwap(T const value);
 
   template<typename T>
-  T ToBigEndian(T const value);
+  T ToLittleEndian(T const value);
   
   template<typename T>
   std::vector<T> ConcatenateMoveDestructive(std::vector<std::vector<T>> const &vectors);

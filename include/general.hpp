@@ -44,7 +44,12 @@ namespace ssybc {
   constexpr unsigned char kNumberOfBitsInByte{8};
   constexpr unsigned int kNumberOfBytesInMB{1024 * 1024};
 
-  constexpr bool kIsBigEndian{ (int(1) & 1) > 0 };
+  constexpr union {
+    uint32_t i;
+    char c[4];
+  } bint_ = { 0x01020304 };
+
+  const bool kIsBigEndian{ bint_.c[0] == 1 };
 
 }  // namespace ssybc
 

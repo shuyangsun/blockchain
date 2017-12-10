@@ -179,9 +179,9 @@ inline ssybc::BinaryData ssybc::util::ByteSwap(BinaryData const value)
 
 
 template<typename T>
-inline T ssybc::util::ToBigEndian(T const value)
+inline T ssybc::util::ToLittleEndian(T const value)
 {
-  return kIsBigEndian ? value : ByteSwap(value);
+  return kIsBigEndian ? ByteSwap(value) : value;
 }
 
 
