@@ -101,26 +101,38 @@ inline std::string ssybc::util::HexStringFromByte(Byte const byte)
 }
 
 
-inline std::string ssybc::util::BinaryStringFromByte(BinaryData const bytes)
+inline std::string ssybc::util::BinaryStringFromBytes(BinaryData const bytes)
+{
+  return BinaryStringFromBytes(bytes, "");
+}
+
+
+inline std::string ssybc::util::BinaryStringFromBytes(BinaryData const bytes, std::string const delimiter)
 {
   std::string result{};
   for (size_t i{ 0 }; i < bytes.size(); ++i) {
     result += BinaryStringFromByte(bytes[i]);
     if (i < bytes.size() - 1) {
-      result += " ";
+      result += delimiter;
     }
   }
   return result;
 }
 
 
-inline std::string ssybc::util::HexStringFromByte(BinaryData const bytes)
+inline std::string ssybc::util::HexStringFromBytes(BinaryData const bytes)
+{
+  return HexStringFromBytes(bytes, "");
+}
+
+
+inline std::string ssybc::util::HexStringFromBytes(BinaryData const bytes, std::string const delimiter)
 {
   std::string result{};
   for (size_t i{ 0 }; i < bytes.size(); ++i) {
     result += HexStringFromByte(bytes[i]);
     if (i < bytes.size() - 1) {
-      result += " ";
+      result += delimiter;
     }
   }
   return result;
