@@ -185,12 +185,12 @@ BlockContent ssybc::Block<BlockContent, ContentBinaryConverterTemplate, HashCalc
 template<typename BlockContent, template<typename> class ContentBinaryConverterTemplate, typename HashCalculator>
 ssybc::Block<BlockContent, ContentBinaryConverterTemplate, HashCalculator>::operator std::string() const
 {
-  return ToString();
+  return Description();
 }
 
 
 template<typename BlockContent, template<typename> class ContentBinaryConverterTemplate, typename HashCalculator>
-std::string ssybc::Block<BlockContent, ContentBinaryConverterTemplate, HashCalculator>::ToString() const
+std::string ssybc::Block<BlockContent, ContentBinaryConverterTemplate, HashCalculator>::Description() const
 {
   std::string result{ "{\n\tindex: " };
   result += std::to_string(Index());
@@ -210,7 +210,7 @@ std::string ssybc::Block<BlockContent, ContentBinaryConverterTemplate, HashCalcu
   auto content = Content();
 
   try {
-    content_str = util::ToString(content);
+    content_str = util::Description(content);
   }
   catch (const std::exception& e) {
     auto content_binary = ContentAsBinary_();

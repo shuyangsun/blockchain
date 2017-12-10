@@ -84,7 +84,7 @@ inline ssybc::BlockTimeInterval ssybc::util::UTCTime()
 
 
 template<typename T>
-std::string ssybc::util::ToString(T const &value)
+std::string ssybc::util::Description(T const &value)
 {
   return Stringify_(value);
 }
