@@ -28,6 +28,7 @@
 
 #include "include/general.hpp"
 #include <vector>
+#include <functional>
 
 namespace ssybc {
 
@@ -52,6 +53,9 @@ namespace util {
   
   template<typename T>
   std::vector<T> ConcatenateMoveDestructive(std::vector<std::vector<T>> const &vectors);
+
+  template<typename T>
+  std::string Join(std::vector<T> const vec, std::string delimiter, const std::function<std::string(T)>& map_func);
 
 }  // namespace util
 
