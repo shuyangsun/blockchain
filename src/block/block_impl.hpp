@@ -151,7 +151,7 @@ std::string ssybc::Block<BlockContent, ContentBinaryConverterTemplate, HashCalcu
   }
   catch (const std::exception& e) {
     auto content_binary = ContentAsBinary_();
-    content_str = util::HexStringFromBytes(content_binary);
+    content_str = util::HexStringFromBytes(content_binary, " ");
   }
 
   result += content_str;
