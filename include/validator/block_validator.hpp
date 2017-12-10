@@ -18,36 +18,35 @@
  *
  *********************************************************************************************************************/
 
-#ifndef BLOCKCHAIN_INCLUDE_VALIDATOR_BLOCK_VALIDATOR_LESS_HASH_HPP_
-#define BLOCKCHAIN_INCLUDE_VALIDATOR_BLOCK_VALIDATOR_LESS_HASH_HPP_
+#ifndef BLOCKCHAIN_INCLUDE_VALIDATOR_BLOCK_VALIDATOR_HPP_
+#define BLOCKCHAIN_INCLUDE_VALIDATOR_BLOCK_VALIDATOR_HPP_
 
-#include "include/validator/block_validator.hpp"
+#include "include/general.hpp"
 
 namespace ssybc {
 
   template<typename BlockT>
-  class BlockValidatorLessHash: public virtual BlockValidator<BlockT> {
+  class BlockValidator {
   public:
 
 // --------------------------------------------------- Public Method --------------------------------------------------
 
-    BlockValidatorLessHash();
+    using BlockType = BlockT;
 
-    bool IsValidGenesisBlockHash(BlockHash const &hash) const override final;
-    bool IsValidHashToAppend(BlockHash const &previous_hash, BlockHash const &hash) const override final;
+    virtual bool IsValidGenesisBlockHash(BlockHash const &hash) const = 0;
+    virtual bool IsValidHashToAppend(BlockHash const &previous_hash, BlockHash const &hash) const = 0;
 
-  private:
+    bool IsValidGenesisBlock(BlockT const &block) const;
+    bool IsValidToAppend(BlockT const &previous_block, BlockT const &block) const;
 
-// --------------------------------------------------- Private Member -------------------------------------------------
-    
-    BlockHash max_hash_{};
+    virtual ~BlockValidator() { EMPTY_BLOCK }
   };
 
 }  // namespace ssybc
 
 
-#include "src/validator/block_validator_less_hash_impl.hpp"
+#include "src/validator/block_validator_impl.hpp"
 
 
-#endif  // BLOCKCHAIN_INCLUDE_VALIDATOR_BLOCK_VALIDATOR_LESS_HASH_HPP_
+#endif  // BLOCKCHAIN_INCLUDE_VALIDATOR_BLOCK_VALIDATOR_HPP_
 

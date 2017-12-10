@@ -18,28 +18,30 @@
  *
  *********************************************************************************************************************/
 
-#ifndef BLOCKCHAIN_INCLUDE_VALIDATOR_BLOCK_VALIDATOR_INTERFACE_HPP_
-#define BLOCKCHAIN_INCLUDE_VALIDATOR_BLOCK_VALIDATOR_INTERFACE_HPP_
 
-#include "include/general.hpp"
+#ifndef BLOCKCHAIN_INCLUDE_VALIDATOR_BLOCK_VALIDATOR_IMPL_HPP_
+#define BLOCKCHAIN_INCLUDE_VALIDATOR_BLOCK_VALIDATOR_IMPL_HPP_
 
-namespace ssybc {
+#include "include/validator/block_validator.hpp"
 
-  template<typename BlockT>
-  class BlockValidatorInterface {
-  public:
 
-// -------------------------------------------------- Public Interface -------------------------------------------------
+// --------------------------------------------------- Public Method --------------------------------------------------
 
-    using BlockType = BlockT;
 
-    virtual bool IsValidGenesisBlock(BlockT const &block) const = 0;
-    virtual bool IsValidToAppend(BlockT const &previous_block, BlockT const &block) const = 0;
+template<typename BlockT>
+inline bool ssybc::BlockValidator<BlockT>::IsValidGenesisBlock(BlockT const & block) const
+{
+  return IsValidGenesisBlockHash(block.Hash());
+}
 
-    virtual ~BlockValidatorInterface() { EMPTY_BLOCK }
-  };
 
-}  // namespace ssybc
+template<typename BlockT>
+inline bool ssybc::BlockValidator<BlockT>::IsValidToAppend(
+  BlockT const & previous_block,
+  BlockT const & block) const
+{
+  return IsValidHashToAppend(previous_block.Hash(), block.Hash());
+}
 
-#endif  // BLOCKCHAIN_INCLUDE_VALIDATOR_BLOCK_VALIDATOR_INTERFACE_HPP_
 
+#endif  // BLOCKCHAIN_INCLUDE_VALIDATOR_BLOCK_VALIDATOR_IMPL_HPP_
