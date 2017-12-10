@@ -155,16 +155,16 @@ ssybc::BlockNonce ssybc::Block<BlockContent, ContentBinaryConverterTemplate, Has
 
 
 template<typename BlockContent, template<typename> class ContentBinaryConverterTemplate, typename HashCalculator>
-std::size_t ssybc::Block<BlockContent, ContentBinaryConverterTemplate, HashCalculator>::SizeOfBinaryContent() const
+auto ssybc::Block<BlockContent, ContentBinaryConverterTemplate, HashCalculator>::SizeOfBinaryContent() const -> SizeT
 {
   return ContentAsBinary_().size();
 }
 
 template<typename BlockContent, template<typename> class ContentBinaryConverterTemplate, typename HashCalculator>
-std::size_t ssybc::Block<BlockContent, ContentBinaryConverterTemplate, HashCalculator>::SizeOfBinaryBlock() const
+auto ssybc::Block<BlockContent, ContentBinaryConverterTemplate, HashCalculator>::SizeOfBinaryBlock() const -> SizeT
 {
-  std::size_t const result =
-    sizeof(std::size_t)
+  SizeT const result =
+    sizeof(SizeT)
     + IndexAsBinary_().size()
     + TimeStampAsBinary_().size()
     + NonceAsBinary_().size()
@@ -296,7 +296,7 @@ inline ssybc::BinaryData ssybc::Block<
   ContentBinaryConverterTemplate,
   HashCalculator>::SizeOfBlockAsBinary_() const
 {
-  return BinaryDataConverterDefault<std::size_t>().BinaryDataFromData(SizeOfBinaryBlock());
+  return BinaryDataConverterDefault<SizeT>().BinaryDataFromData(SizeOfBinaryBlock());
 }
 
 
@@ -348,13 +348,13 @@ template<typename BlockContent, template<typename> class ContentBinaryConverterT
 inline auto ssybc::Block<
   BlockContent,
   ContentBinaryConverterTemplate,
-  HashCalculator>::SizeOfBinaryBlockFromBinaryBlockData_(BinaryData const &data) const -> std::size_t
+  HashCalculator>::SizeOfBinaryBlockFromBinaryBlockData_(BinaryData const &data) const -> SizeT
 {
   auto begin_iter = data.begin();
   auto end_iter = data.begin();
-  std::advance(end_iter, sizeof(std::size_t));
+  std::advance(end_iter, sizeof(SizeT));
   BinaryData const data_tmp{begin_iter, end_iter};
-  return BinaryDataConverterDefault<std::size_t>().DataFromBinaryData(data_tmp);
+  return BinaryDataConverterDefault<SizeT>().DataFromBinaryData(data_tmp);
 }
 
 
@@ -365,7 +365,7 @@ inline auto ssybc::Block<
   HashCalculator>::IndexFromBinaryBlockData_(BinaryData const &data) const -> BlockIndex
 {
   auto begin_iter = data.begin();
-  std::advance(begin_iter, sizeof(std::size_t));
+  std::advance(begin_iter, sizeof(SizeT));
   auto end_iter = begin_iter;
   std::advance(end_iter, sizeof(BlockIndex));
   BinaryData const data_tmp{ begin_iter, end_iter };
@@ -380,7 +380,7 @@ inline auto ssybc::Block<
   HashCalculator>::TimeStampFromBinaryBlockData_(BinaryData const &data) const -> BlockTimeInterval
 {
   auto begin_iter = data.begin();
-  std::advance(begin_iter, sizeof(std::size_t) + sizeof(BlockIndex));
+  std::advance(begin_iter, sizeof(SizeT) + sizeof(BlockIndex));
   auto end_iter = begin_iter;
   std::advance(end_iter, sizeof(BlockTimeInterval));
   BinaryData const data_tmp{ begin_iter, end_iter };
@@ -395,7 +395,7 @@ inline auto ssybc::Block<
   HashCalculator>::NonceFromBinaryBlockData_(BinaryData const &data) const -> BlockNonce
 {
   auto begin_iter = data.begin();
-  std::advance(begin_iter, sizeof(std::size_t) + sizeof(BlockIndex) + sizeof(BlockTimeInterval));
+  std::advance(begin_iter, sizeof(SizeT) + sizeof(BlockIndex) + sizeof(BlockTimeInterval));
   auto end_iter = begin_iter;
   std::advance(end_iter, sizeof(BlockNonce));
   BinaryData const data_tmp{ begin_iter, end_iter };
@@ -410,7 +410,7 @@ inline auto ssybc::Block<
   HashCalculator>::PreviousHashFromBinaryBlockData_(BinaryData const &data) const -> BlockHash
 {
   auto begin_iter = data.begin();
-  std::advance(begin_iter, sizeof(std::size_t) + sizeof(BlockIndex) + sizeof(BlockTimeInterval) + sizeof(BlockNonce));
+  std::advance(begin_iter, sizeof(SizeT) + sizeof(BlockIndex) + sizeof(BlockTimeInterval) + sizeof(BlockNonce));
   auto end_iter = begin_iter;
   std::advance(end_iter, HashCalculator().SizeOfHashInBytes());
   BinaryData const data_tmp{ begin_iter, end_iter };
@@ -426,7 +426,7 @@ inline auto ssybc::Block<
 {
   auto begin_iter = data.begin();
   std::advance(begin_iter,
-    sizeof(size_t)
+    sizeof(SizeT)
     + sizeof(BlockIndex)
     + sizeof(BlockTimeInterval)
     + sizeof(BlockNonce)
@@ -445,14 +445,14 @@ inline auto ssybc::Block<
   HashCalculator>::ContentFromBinaryBlockData_(BinaryData const &data) const -> BlockContent
 {
   auto begin_iter = data.begin();
-  std::size_t const block_size_without_content{
-    sizeof(size_t)
+  SizeT const block_size_without_content{
+    sizeof(SizeT)
     + sizeof(BlockIndex)
     + sizeof(BlockTimeInterval)
     + sizeof(BlockNonce)
     + HashCalculator().SizeOfHashInBytes() * 2
   };
-  std::size_t const content_size{SizeOfBinaryBlockFromBinaryBlockData_(data) - block_size_without_content};
+  SizeT const content_size{SizeOfBinaryBlockFromBinaryBlockData_(data) - block_size_without_content};
   std::advance(begin_iter, block_size_without_content);
   auto end_iter = begin_iter;
   std::advance(end_iter, content_size);

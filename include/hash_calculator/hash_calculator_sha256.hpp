@@ -32,7 +32,7 @@ namespace ssybc {
 
   class SHA256Calculator: public virtual HashCalculatorInterface {
   public:
-    size_t SizeOfHashInBytes() const override final;
+    SizeT SizeOfHashInBytes() const override final;
     BlockHash Hash(BinaryData const data) const override final;
     BlockHash GenesisBlockPreviousHash() const override final;
   };
