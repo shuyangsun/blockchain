@@ -100,9 +100,22 @@ ssybc::BlockNonce ssybc::Block<BlockContent, ContentBinaryConverterTemplate, Has
 
 
 template<typename BlockContent, template<typename> class ContentBinaryConverterTemplate, typename HashCalculator>
-size_t ssybc::Block<BlockContent, ContentBinaryConverterTemplate, HashCalculator>::SizeOfBinaryContent() const
+std::size_t ssybc::Block<BlockContent, ContentBinaryConverterTemplate, HashCalculator>::SizeOfBinaryContent() const
 {
   return ContentAsBinary_().size();
+}
+
+template<typename BlockContent, template<typename> class ContentBinaryConverterTemplate, typename HashCalculator>
+std::size_t ssybc::Block<BlockContent, ContentBinaryConverterTemplate, HashCalculator>::SizeOfBinaryBlock() const
+{
+  return 
+    sizeof(std::size_t)
+    + IndexAsBinary_().size()
+    + TimeStampAsBinary_().size()
+    + NonceAsBinary_().size()
+    + PreviousHashAsBinary_().size()
+    + HashAsBinary_().size(),
+    + SizeOfBinaryContent();
 }
 
 
@@ -209,9 +222,9 @@ inline ssybc::BinaryData ssybc::Block<BlockContent, ContentBinaryConverterTempla
 
 
 template<typename BlockContent, template<typename> class ContentBinaryConverterTemplate, typename HashCalculator>
-inline ssybc::BinaryData ssybc::Block<BlockContent, ContentBinaryConverterTemplate, HashCalculator>::ContentSizeAsBinary_() const
+inline ssybc::BinaryData ssybc::Block<BlockContent, ContentBinaryConverterTemplate, HashCalculator>::SizeOfBlockAsBinary_() const
 {
-  return BinaryDataConverterDefault<size_t>().BinaryDataFromData(SizeOfBinaryContent());
+  return BinaryDataConverterDefault<std::size_t>().BinaryDataFromData(SizeOfBinaryBlock());
 }
 
 
@@ -226,12 +239,12 @@ template<typename BlockContent, template<typename> class ContentBinaryConverterT
 inline auto ssybc::Block<BlockContent, ContentBinaryConverterTemplate, HashCalculator>::BlockBinaryArr_() const -> std::vector<BinaryData>
 {
   return {
+    SizeOfBlockAsBinary_(),
     IndexAsBinary_(),
     TimeStampAsBinary_(),
     NonceAsBinary_(),
     PreviousHashAsBinary_(),
     HashAsBinary_(),
-    ContentSizeAsBinary_(),
     ContentAsBinary_()
   };
 }

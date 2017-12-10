@@ -34,6 +34,8 @@ namespace ssybc {
 
 namespace util {
 
+  BlockTimeInterval UTCTime();
+
   std::string DateTimeStringFromTimeStamp(BlockTimeInterval const time_stamp, std::string const time_format);
   std::string DateTimeStringFromTimeStamp(BlockTimeInterval const time_stamp);
 
