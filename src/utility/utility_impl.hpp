@@ -109,14 +109,7 @@ inline std::string ssybc::util::BinaryStringFromBytes(BinaryData const bytes)
 
 inline std::string ssybc::util::BinaryStringFromBytes(BinaryData const bytes, std::string const delimiter)
 {
-  std::string result{};
-  for (size_t i{ 0 }; i < bytes.size(); ++i) {
-    result += BinaryStringFromByte(bytes[i]);
-    if (i < bytes.size() - 1) {
-      result += delimiter;
-    }
-  }
-  return result;
+  return Join<Byte>(bytes, delimiter, [](Byte byte) { return BinaryStringFromByte(byte);  });
 }
 
 
@@ -128,14 +121,7 @@ inline std::string ssybc::util::HexStringFromBytes(BinaryData const bytes)
 
 inline std::string ssybc::util::HexStringFromBytes(BinaryData const bytes, std::string const delimiter)
 {
-  std::string result{};
-  for (size_t i{ 0 }; i < bytes.size(); ++i) {
-    result += HexStringFromByte(bytes[i]);
-    if (i < bytes.size() - 1) {
-      result += delimiter;
-    }
-  }
-  return result;
+  return Join<Byte>(bytes, delimiter, [](Byte byte) { return HexStringFromByte(byte);  });
 }
 
 template<typename T>
@@ -189,5 +175,19 @@ inline std::vector<T> ssybc::util::ConcatenateMoveDestructive(std::vector<std::v
   }
   return result;
 }
+
+template<typename T>
+std::string ssybc::util::Join(std::vector<T> const vec, std::string delimiter, const std::function<std::string(T)>& map_func)
+{
+  std::string result{};
+  for (size_t i{ 0 }; i < vec.size(); ++i) {
+    result += map_func(vec[i]);
+    if (i < vec.size() - 1) {
+      result += delimiter;
+    }
+  }
+  return result;
+}
+
 
 #endif  // BLOCKCHAIN_UTILITY_UTILITY_IMPL_HPP_
