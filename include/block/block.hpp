@@ -40,7 +40,9 @@ namespace ssybc {
 
   public:
 
-    using ContentBinaryConverter = ContentBinaryConverterTemplate<BlockContent>;
+    using BlockContentType = BlockContent;
+    using ContentBinaryConverterType = ContentBinaryConverterTemplate<BlockContent>;
+    using HashCalculatorType = HashCalculator;
 
     Block() = delete;
     Block(

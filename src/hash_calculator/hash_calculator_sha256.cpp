@@ -35,6 +35,12 @@ size_t ssybc::SHA256Calculator::SizeOfHashInBytes() const
 }
 
 
+ssybc::BlockHash ssybc::SHA256Calculator::GenesisBlockPreviousHash() const
+{
+  return "0000000000000000000000000000000000000000000000000000000000000000";
+}
+
+
 ssybc::BlockHash ssybc::SHA256Calculator::Hash(ssybc::BinaryData const data) const
 {
   size_t const data_size{data.size()};
