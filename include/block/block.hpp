@@ -74,6 +74,7 @@ namespace ssybc {
 
     BinaryData ToBinaryBlock() const;
     BinaryData HashableBinaryData() const;
+    Block BlockWithDifferentNonce(BlockNonce const nonce) const;
     
     operator std::string() const;
     virtual std::string ToString() const;

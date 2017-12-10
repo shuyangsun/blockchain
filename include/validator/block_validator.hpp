@@ -36,6 +36,7 @@ namespace ssybc {
     virtual bool IsValidGenesisBlockHash(BlockHash const &hash) const = 0;
     virtual bool IsValidHashToAppend(BlockHash const &previous_hash, BlockHash const &hash) const = 0;
 
+    bool IsBlockPreAdjacentTo(BlockT const &lhs, BlockT const &rhs);
     bool IsValidGenesisBlock(BlockT const &block) const;
     bool IsValidToAppend(BlockT const &previous_block, BlockT const &block) const;
 
