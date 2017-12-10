@@ -30,6 +30,7 @@
 #include <cassert>
 #include <algorithm>
 #include <iterator>
+#include <string>
 
 
 // --------------------------------------------- Constructor & Destructor ---------------------------------------------
@@ -207,8 +208,9 @@ std::string ssybc::Block<BlockContent, ContentBinaryConverterTemplate, HashCalcu
 
   std::string content_str{};
   auto content = Content();
+
   try {
-    content_str = std::string{ content };
+    content_str = util::ToString(content);
   }
   catch (const std::exception& e) {
     auto content_binary = ContentAsBinary_();

@@ -27,6 +27,7 @@
 #include <unordered_map>
 #include <algorithm>
 #include <iterator>
+#include <string>
 
 
  // ----------------------------------------------------- Helper ------------------------------------------------------
@@ -51,6 +52,18 @@ namespace ssybc{
     { 14, 'e' },
     { 15, 'f' }
   };
+
+   template<class T>
+   typename std::enable_if<std::is_fundamental<T>::value, std::string>::type Stringify_(const T& t)
+   {
+     return std::to_string(t);
+   }
+
+   template<class T>
+   typename std::enable_if<!std::is_fundamental<T>::value, std::string>::type  Stringify_(const T& t)
+   {
+     return std::string(t);
+   }
 }
 
 
@@ -66,6 +79,13 @@ inline ssybc::BlockTimeInterval ssybc::util::UTCTime()
   errno_t err{};
   err = gmtime_s(&ptm, &rawtime);
   return static_cast<BlockTimeInterval>(mktime(&ptm));
+}
+
+
+template<typename T>
+std::string ssybc::util::ToString(T const &value)
+{
+  return Stringify_(value);
 }
 
 
