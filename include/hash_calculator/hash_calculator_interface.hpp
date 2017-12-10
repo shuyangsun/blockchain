@@ -32,6 +32,7 @@ namespace ssybc {
 
   class HashCalculatorInterface {
   public:
+    virtual size_t SizeOfHashInBytes() const = 0;
     virtual BlockHash Hash(BinaryData const data) const = 0;
 
     virtual ~HashCalculatorInterface() { EMPTY_BLOCK }
