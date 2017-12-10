@@ -146,7 +146,7 @@ inline auto ssybc::BinaryDataConverterDefault<std::string>::BinaryDataFromData(s
   auto c_string = data.c_str();
   size_t const result_size{ data.size() };
   auto byte_ptr = reinterpret_cast<Byte const*>(c_string);
-  return BinaryData(byte_ptr, byte_ptr + result_size + 1);
+  return BinaryData(byte_ptr, byte_ptr + result_size);
 }
 
 template<typename T>
