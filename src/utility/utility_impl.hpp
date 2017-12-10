@@ -75,7 +75,7 @@ inline std::string ssybc::util::DateTimeStringFromTimeStamp(BlockTimeInterval co
   errno_t err{};
   err = gmtime_s(&ptm, &time_stamp);
 
-  size_t const buffer_size{30};
+  SizeT const buffer_size{30};
   char buffer[buffer_size];
   memset(buffer, 0, buffer_size * sizeof(char));
   strftime(buffer, sizeof(buffer), time_format.c_str(), &ptm);
@@ -93,7 +93,7 @@ inline std::string ssybc::util::BinaryStringFromByte(Byte const byte)
 {
   std::string result{"00000000"};
   Byte mask{0b00000001};
-  for (size_t i{0}; i < kNumberOfBitsInByte; ++i) {
+  for (SizeT i{0}; i < kNumberOfBitsInByte; ++i) {
     if ((byte & mask) > 0) {
       result[kNumberOfBitsInByte - 1 - i] = '1';
     }
@@ -153,14 +153,14 @@ inline ssybc::BlockHash ssybc::util::HashStrippedLeadingZeros(BlockHash const &h
 template<typename T>
 inline T ssybc::util::ByteSwap(T const value)
 {
-  size_t const num_bytes{ sizeof(T) };
+  SizeT const num_bytes{ sizeof(T) };
   if (num_bytes <= 1) {
     return value;
   }
   T mask_on_value{ static_cast<T>(0b11111111) };
   T mask_on_result{ static_cast<T>(0b11111111 << ((num_bytes - 1) * kNumberOfBitsInByte)) };
   T result{ static_cast<T>(0) };
-  for (size_t i{ 0 }; i < num_bytes; ++i) {
+  for (SizeT i{ 0 }; i < num_bytes; ++i) {
     int shift_amount{ static_cast<int>((num_bytes - 2 * i - 1) * kNumberOfBitsInByte) };
     bool const to_left{ shift_amount > 0 };
     if (!to_left) {
@@ -219,7 +219,7 @@ std::string ssybc::util::Join(
   const std::function<std::string(T)>& map_func)
 {
   std::string result{};
-  for (size_t i{ 0 }; i < vec.size(); ++i) {
+  for (SizeT i{ 0 }; i < vec.size(); ++i) {
     result += map_func(vec[i]);
     if (i < vec.size() - 1) {
       result += delimiter;

@@ -170,7 +170,7 @@ inline auto ssybc::BinaryDataConverterDefault<std::string>::BinaryDataFromData(
   std::string const data) const -> BinaryData
 {
   auto c_string = data.c_str();
-  size_t const result_size{ data.size() };
+  SizeT const result_size{ data.size() };
   auto byte_ptr = reinterpret_cast<Byte const*>(c_string);
   return BinaryData(byte_ptr, byte_ptr + result_size);
 }
@@ -295,7 +295,7 @@ template<>
 inline auto ssybc::BinaryDataConverterDefault<std::string>::DataFromBinaryData(
   BinaryData const &binary_data) const -> std::string
 {
-  std::size_t const string_len{ binary_data.size() };
+  SizeT const string_len{ binary_data.size() };
   return std::string(binary_data.begin(), binary_data.end());
 }
 
@@ -314,7 +314,7 @@ inline auto ssybc::BinaryDataConverterDefault<ssybc::BinaryData>::DataFromBinary
 template<typename T>
 inline auto ssybc::BinaryDataFromPrimitiveTypeIntegerData_(T const data) -> BinaryData
 {
-  std::size_t const result_size{ sizeof(data) };
+  SizeT const result_size{ sizeof(data) };
   auto data_little_endian = util::ToLittleEndian(data);
   auto byte_ptr = reinterpret_cast<Byte const*>(&data_little_endian);
   return BinaryData(byte_ptr, byte_ptr + result_size);
@@ -325,7 +325,7 @@ template<typename T>
 inline auto ssybc::BinaryDataFromPrimitiveTypeFloatData_(T const data) -> BinaryData
 {
   // TODO: handle little Endian.
-  std::size_t const result_size{ sizeof(data) };
+  SizeT const result_size{ sizeof(data) };
   auto byte_ptr = reinterpret_cast<Byte const*>(&data);
   return BinaryData(byte_ptr, byte_ptr + result_size);
 }

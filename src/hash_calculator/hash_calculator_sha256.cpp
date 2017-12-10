@@ -24,7 +24,7 @@
 #include "library/sha256/sha256.h"
 
 
-size_t ssybc::SHA256Calculator::SizeOfHashInBytes() const
+auto ssybc::SHA256Calculator::SizeOfHashInBytes() const -> SizeT
 {
   return SHA256_BLOCK_SIZE;
 }
@@ -38,7 +38,7 @@ ssybc::BlockHash ssybc::SHA256Calculator::GenesisBlockPreviousHash() const
 
 ssybc::BlockHash ssybc::SHA256Calculator::Hash(ssybc::BinaryData const data) const
 {
-  size_t const data_size{data.size()};
+  SizeT const data_size{data.size()};
   Byte const * data_ptr{ &data.front() };
 
   BYTE result[SHA256_BLOCK_SIZE];
