@@ -54,6 +54,18 @@ namespace ssybc{
 }
 
 
+inline ssybc::BlockTimeInterval ssybc::util::UTCTime()
+{
+  time_t rawtime;
+  struct tm ptm;
+
+  time(&rawtime);
+  errno_t err{};
+  err = gmtime_s(&ptm, &rawtime);
+  return static_cast<BlockTimeInterval>(mktime(&ptm));
+}
+
+
 inline std::string ssybc::util::DateTimeStringFromTimeStamp(BlockTimeInterval const time_stamp, std::string const time_format)
 {
   struct tm ptm {};
@@ -175,6 +187,7 @@ inline std::vector<T> ssybc::util::ConcatenateMoveDestructive(std::vector<std::v
   }
   return result;
 }
+
 
 template<typename T>
 std::string ssybc::util::Join(std::vector<T> const vec, std::string delimiter, const std::function<std::string(T)>& map_func)
