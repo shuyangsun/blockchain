@@ -453,9 +453,6 @@ inline auto ssybc::Block<
     + HashCalculator().SizeOfHashInBytes() * 2
   };
   std::size_t const content_size{SizeOfBinaryBlockFromBinaryBlockData_(data) - block_size_without_content};
-  std::cout << "*** real data size: " << data.size() << std::endl;
-  std::cout << "*** Fetched header size: " << block_size_without_content << std::endl;
-  std::cout << "*** Fetched content size: " << content_size << std::endl;
   std::advance(begin_iter, block_size_without_content);
   auto end_iter = begin_iter;
   std::advance(end_iter, content_size);
