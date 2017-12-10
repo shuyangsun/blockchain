@@ -77,7 +77,7 @@ namespace ssybc {
     Block BlockWithDifferentNonce(BlockNonce const nonce) const;
     
     operator std::string() const;
-    virtual std::string ToString() const;
+    virtual std::string Description() const;
 
   private:
 
