@@ -321,7 +321,68 @@ inline auto ssybc::Block<
   ContentBinaryConverterTemplate,
   HashCalculator>::SizeOfBinaryBlockFromBinaryBlockData_(BinaryData const data) const -> std::size_t
 {
-  
+  return BinaryDataConverterDefault<std::size_t>().DataFromBinaryData(data);
 }
+
+
+template<typename BlockContent, template<typename> class ContentBinaryConverterTemplate, typename HashCalculator>
+inline auto ssybc::Block<
+  BlockContent,
+  ContentBinaryConverterTemplate,
+  HashCalculator>::IndexFromBinaryBlockData_(BinaryData const data) const -> BlockIndex
+{
+  return BinaryDataConverterDefault<BlockIndex>().DataFromBinaryData(data);
+}
+
+
+template<typename BlockContent, template<typename> class ContentBinaryConverterTemplate, typename HashCalculator>
+inline auto ssybc::Block<
+  BlockContent,
+  ContentBinaryConverterTemplate,
+  HashCalculator>::TimeStampFromBinaryBlockData_(BinaryData const data) const -> BlockTimeInterval
+{
+  return BinaryDataConverterDefault<BlockTimeInterval>().DataFromBinaryData(data);
+}
+
+
+template<typename BlockContent, template<typename> class ContentBinaryConverterTemplate, typename HashCalculator>
+inline auto ssybc::Block<
+  BlockContent,
+  ContentBinaryConverterTemplate,
+  HashCalculator>::PreviousHashFromBinaryBlockData_(BinaryData const data) const -> BlockHash
+{
+  return BinaryDataConverterDefault<BlockHash>().DataFromBinaryData(data);
+}
+
+
+template<typename BlockContent, template<typename> class ContentBinaryConverterTemplate, typename HashCalculator>
+inline auto ssybc::Block<
+  BlockContent,
+  ContentBinaryConverterTemplate,
+  HashCalculator>::HashFromBinaryBlockData_(BinaryData const data) const -> BlockHash
+{
+  return BinaryDataConverterDefault<BlockHash>().DataFromBinaryData(data);
+}
+
+
+template<typename BlockContent, template<typename> class ContentBinaryConverterTemplate, typename HashCalculator>
+inline auto ssybc::Block<
+  BlockContent,
+  ContentBinaryConverterTemplate,
+  HashCalculator>::NonceFromBinaryBlockData_(BinaryData const data) const -> BlockNonce
+{
+  return BinaryDataConverterDefault<BlockNonce>().DataFromBinaryData(data);
+}
+
+
+template<typename BlockContent, template<typename> class ContentBinaryConverterTemplate, typename HashCalculator>
+inline auto ssybc::Block<
+  BlockContent,
+  ContentBinaryConverterTemplate,
+  HashCalculator>::ContentFromBinaryBlockData_(BinaryData const data) const -> BlockContent
+{
+  return BinaryDataConverterDefault<BlockContent>().DataFromBinaryData(data);
+}
+
 
 #endif  // BLOCKCHAIN_SRC_BLOCK_BLOCK_IMPL_HPP_
