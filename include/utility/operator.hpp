@@ -18,35 +18,30 @@
  *
  *********************************************************************************************************************/
 
-#ifndef BLOCKCHAIN_GENERAL_HPP_
-#define BLOCKCHAIN_GENERAL_HPP_
+#ifndef BLOCKCHAIN_INCLUDE_UTILITY_OPERATOR_HPP_
+#define BLOCKCHAIN_INCLUDE_UTILITY_OPERATOR_HPP_
 
-#include <string>
-#include <vector>
-#include <ctime>
-
-#define EMPTY_BLOCK
+#include "include/general.hpp"
 
 namespace ssybc {
 
-  using BlockIndex = uint64_t;
-  using BlockTimeInterval = int64_t;
-  using BlockNonce = uint64_t;
-  using Byte = unsigned char;
-  using BinaryData = std::vector<Byte>;
-  using BlockHash = BinaryData;
+namespace util {
 
-  constexpr unsigned char kNumberOfBitsInByte{8};
-  constexpr unsigned int kNumberOfBytesInMB{1024 * 1024};
+  
+// -------------------------------------------------- Public Function -------------------------------------------------
 
-  constexpr union {
-    uint32_t i;
-    char c[4];
-  } bint_ = { 0x01020304 };
+  bool operator!=(BlockHash const &lhs, BlockHash const &rhs);
+  bool operator==(BlockHash const &lhs, BlockHash const &rhs);
+  bool operator<=(BlockHash const &lhs, BlockHash const &rhs);
+  bool operator>=(BlockHash const &lhs, BlockHash const &rhs);
+  bool operator<(BlockHash const &lhs, BlockHash const &rhs);
+  bool operator>(BlockHash const &lhs, BlockHash const &rhs);
 
-  const bool kIsBigEndian{ bint_.c[0] == 1 };
+}  // namespace util
 
 }  // namespace ssybc
 
-#endif  // BLOCKCHAIN_GENERAL_HPP_
+#include "src/utility/utility_impl.hpp"
+
+#endif  // BLOCKCHAIN_INCLUDE_UTILITY_OPERATOR_HPP_
 

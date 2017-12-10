@@ -36,7 +36,7 @@ namespace ssybc {
 // --------------------------------------------------- Public Method --------------------------------------------------
 
     BinaryData BinaryDataFromData(DataType const data) const override final;
-    DataType DataFromBinaryData(BinaryData const data) const override final;
+    DataType DataFromBinaryData(BinaryData const &data) const override final;
 
   };  // BinaryDataConverterDefault
 
@@ -71,39 +71,43 @@ namespace ssybc {
   BinaryData BinaryDataConverterDefault<long double>::BinaryDataFromData(long double const data) const;
   template<>
   BinaryData BinaryDataConverterDefault<std::string>::BinaryDataFromData(std::string const data) const;
+  template<>
+  BinaryData BinaryDataConverterDefault<BinaryData>::BinaryDataFromData(BinaryData const data) const;
 
 
 // -------------------------------------- From Binary Specialization Declaration --------------------------------------
 
 
   template<>
-  unsigned char BinaryDataConverterDefault<unsigned char>::DataFromBinaryData(BinaryData const data) const;
+  unsigned char BinaryDataConverterDefault<unsigned char>::DataFromBinaryData(BinaryData const &data) const;
   template<>
-  char BinaryDataConverterDefault<char>::DataFromBinaryData(BinaryData const data) const;
+  char BinaryDataConverterDefault<char>::DataFromBinaryData(BinaryData const &data) const;
   template<>
-  unsigned short BinaryDataConverterDefault<unsigned short>::DataFromBinaryData(BinaryData const data) const;
+  unsigned short BinaryDataConverterDefault<unsigned short>::DataFromBinaryData(BinaryData const &data) const;
   template<>
-  short BinaryDataConverterDefault<short>::DataFromBinaryData(BinaryData const data) const;
+  short BinaryDataConverterDefault<short>::DataFromBinaryData(BinaryData const &data) const;
   template<>
-  unsigned int BinaryDataConverterDefault<unsigned int>::DataFromBinaryData(BinaryData const data) const;
+  unsigned int BinaryDataConverterDefault<unsigned int>::DataFromBinaryData(BinaryData const &data) const;
   template<>
-  int BinaryDataConverterDefault<int>::DataFromBinaryData(BinaryData const data) const;
+  int BinaryDataConverterDefault<int>::DataFromBinaryData(BinaryData const &data) const;
   template<>
-  unsigned long BinaryDataConverterDefault<unsigned long>::DataFromBinaryData(BinaryData const data) const;
+  unsigned long BinaryDataConverterDefault<unsigned long>::DataFromBinaryData(BinaryData const &data) const;
   template<>
-  long BinaryDataConverterDefault<long>::DataFromBinaryData(BinaryData const data) const;
+  long BinaryDataConverterDefault<long>::DataFromBinaryData(BinaryData const &data) const;
   template<>
-  unsigned long long BinaryDataConverterDefault<unsigned long long>::DataFromBinaryData(BinaryData const data) const;
+  unsigned long long BinaryDataConverterDefault<unsigned long long>::DataFromBinaryData(BinaryData const &data) const;
   template<>
-  long long BinaryDataConverterDefault<long long>::DataFromBinaryData(BinaryData const data) const;
+  long long BinaryDataConverterDefault<long long>::DataFromBinaryData(BinaryData const &data) const;
   template<>
-  float BinaryDataConverterDefault<float>::DataFromBinaryData(BinaryData const data) const;
+  float BinaryDataConverterDefault<float>::DataFromBinaryData(BinaryData const &data) const;
   template<>
-  double BinaryDataConverterDefault<double>::DataFromBinaryData(BinaryData const data) const;
+  double BinaryDataConverterDefault<double>::DataFromBinaryData(BinaryData const &data) const;
   template<>
-  long double BinaryDataConverterDefault<long double>::DataFromBinaryData(BinaryData const data) const;
+  long double BinaryDataConverterDefault<long double>::DataFromBinaryData(BinaryData const &data) const;
   template<>
-  std::string BinaryDataConverterDefault<std::string>::DataFromBinaryData(BinaryData const data) const;
+  std::string BinaryDataConverterDefault<std::string>::DataFromBinaryData(BinaryData const &data) const;
+  template<>
+  BinaryData BinaryDataConverterDefault<BinaryData>::DataFromBinaryData(BinaryData const &data) const;
 
 
 }  // namespace ssybc
