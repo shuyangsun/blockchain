@@ -25,17 +25,29 @@
 
 
 #include "include/hash_calculator/hash_calculator_sha256.hpp"
+#include "include/utility/utility.hpp"
+#include "library/sha256/sha256.h"
 
 
 size_t ssybc::SHA256Calculator::SizeOfHashInBytes() const
 {
-  return 33;
+  return SHA256_BLOCK_SIZE;
 }
 
 
 ssybc::BlockHash ssybc::SHA256Calculator::Hash(ssybc::BinaryData const data) const
 {
-  // TODO: implement correct hash function.
-  return "testhashvalue";
+  size_t const data_size{data.size()};
+  Byte const * data_ptr{ &data.front() };
+
+  BYTE result[SHA256_BLOCK_SIZE];
+  SHA256_CTX ctx;
+
+  sha256_init(&ctx);
+  sha256_update(&ctx, data_ptr, data_size);
+  sha256_final(&ctx, result);
+
+  auto res_data = BinaryData(result, result + SHA256_BLOCK_SIZE);
+  return util::HexStringFromBytes(res_data);
 }
 
