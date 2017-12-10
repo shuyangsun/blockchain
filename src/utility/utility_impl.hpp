@@ -23,6 +23,7 @@
 #define BLOCKCHAIN_UTILITY_UTILITY_IMPL_HPP_
 
 #include "include/utility/utility.hpp"
+#include "include/binary_data_converter/binary_data_converter_default.hpp"
 
 #include <unordered_map>
 #include <algorithm>
@@ -167,6 +168,29 @@ inline ssybc::BlockHash ssybc::util::HashStrippedLeadingZeros(BlockHash const &h
     ++iter;
   }
   return BlockHash{iter, hash.end()};
+}
+
+
+inline ssybc::BlockNonce ssybc::util::TrailingNonceFromBinaryData(BinaryData const & binary_data)
+{
+  BinaryDataConverterDefault<BlockNonce> converter{};
+  int const nonce_binary_size = sizeof(BlockNonce);
+  auto begin_iter = binary_data.end();
+  std::advance(begin_iter, -1 * nonce_binary_size);
+  auto const nonce_as_binary = BinaryData(begin_iter, binary_data.end());
+  return converter.DataFromBinaryData(nonce_as_binary);
+}
+
+
+inline void ssybc::util::UpdateBinaryDataWithTrailingNonce(BinaryData & binary_data, BlockNonce const nonce)
+{
+  BinaryDataConverterDefault<BlockNonce> converter{};
+  auto nonce_as_binary = converter.BinaryDataFromData(nonce);
+  size_t const nonce_binary_size{ nonce_as_binary.size() };
+  size_t const binary_start_idx{ binary_data.size() - nonce_binary_size };
+  for (size_t i{ 0 }; i < nonce_binary_size; ++i) {
+    binary_data[binary_start_idx + i] = nonce_as_binary[i];
+  }
 }
 
 

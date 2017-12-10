@@ -245,7 +245,7 @@ ssybc::Block<BlockContent, ContentBinaryConverterTemplate, HashCalculator> ssybc
   ContentBinaryConverterTemplate,
   HashCalculator>::BlockWithDifferentNonce(BlockNonce const nonce) const
 {
-  return Block(Index(), TimeStamp(), PreviousHash(), nonce, Content());
+  return Block(Index(), TimeStamp(), PreviousBlockHash(), nonce, Content());
 }
 
 
