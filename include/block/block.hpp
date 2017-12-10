@@ -95,13 +95,13 @@ namespace ssybc {
     BinaryData SizeOfBlockAsBinary_() const;
     BinaryData HashAsBinary_() const;
 
-    std::size_t SizeOfBinaryBlockFromBinaryBlockData_(BinaryData const data) const;
-    BlockIndex IndexFromBinaryBlockData_(BinaryData const data) const;
-    BlockTimeInterval TimeStampFromBinaryBlockData_(BinaryData const data) const;
-    BlockHash PreviousHashFromBinaryBlockData_(BinaryData const data) const;
-    BlockHash HashFromBinaryBlockData_(BinaryData const data) const;
-    BlockNonce NonceFromBinaryBlockData_(BinaryData const data) const;
-    BlockContent ContentFromBinaryBlockData_(BinaryData const data) const;
+    std::size_t SizeOfBinaryBlockFromBinaryBlockData_(BinaryData const &data) const;
+    BlockIndex IndexFromBinaryBlockData_(BinaryData const &data) const;
+    BlockTimeInterval TimeStampFromBinaryBlockData_(BinaryData const &data) const;
+    BlockHash PreviousHashFromBinaryBlockData_(BinaryData const &data) const;
+    BlockHash HashFromBinaryBlockData_(BinaryData const &data) const;
+    BlockNonce NonceFromBinaryBlockData_(BinaryData const &data) const;
+    BlockContent ContentFromBinaryBlockData_(BinaryData const &data) const;
 
     std::vector<BinaryData> HashableBinaryArr_() const;
     std::vector<BinaryData> BlockBinaryArr_() const;
