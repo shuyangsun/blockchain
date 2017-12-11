@@ -41,8 +41,8 @@ namespace ssybc {
     using BlockContentType = typename BlockType::BlockContentType;
     using ContentBinaryConverterType = typename BlockType::ContentBinaryConverterType;
     using HashCalculatorType = typename BlockType::HashCalculatorType;
-    using ValidatorType = typename Validator<BlockType>;
-    using MinerType = typename BlockMiner<ValidatorType>;
+    using ValidatorType = Validator<BlockType>;
+    using MinerType = BlockMiner<ValidatorType>;
 
 // --------------------------------------------- Constructor & Destructor ---------------------------------------------
 

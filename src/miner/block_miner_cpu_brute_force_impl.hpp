@@ -24,6 +24,7 @@
 
 #include "include/miner/block_miner.hpp"
 #include "include/miner/block_miner_cpu_brute_force.hpp"
+#include "include/validator/block_validator.hpp"
 #include "include/utility/utility.hpp"
 
 #include <exception>

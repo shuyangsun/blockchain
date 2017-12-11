@@ -38,9 +38,9 @@ namespace ssybc {
 
 // -------------------------------------------------- Type Definition -------------------------------------------------
 
-    using BlockContentType = typename BlockContent;
-    using ContentBinaryConverterType = typename ContentBinaryConverterTemplate<BlockContent>;
-    using HashCalculatorType = typename HashCalculator;
+    using BlockContentType = BlockContent;
+    using ContentBinaryConverterType = ContentBinaryConverterTemplate<BlockContent>;
+    using HashCalculatorType = HashCalculator;
 
 // --------------------------------------------- Constructor & Destructor ---------------------------------------------
 
