@@ -48,7 +48,7 @@ template<typename DataType>
 inline auto ssybc::BinaryDataConverterDefault<DataType>::BinaryDataFromData(DataType const data) const -> BinaryData
 {
   throw std::logic_error(
-    "Cannot convert object of type \"" + typeid(DataType) + "\" to binary data, "
+    "Cannot convert object of type \"" + std::string(typeid(DataType).name()) + "\" to binary data, "
     "template specilization implementation required."
   );
 }
@@ -58,7 +58,7 @@ template<typename DataType>
 inline auto ssybc::BinaryDataConverterDefault<DataType>::DataFromBinaryData(BinaryData const &data) const -> DataType
 {
   throw std::logic_error(
-    "Cannot extract object of type \"" + typeid(DataType)+"\" from binary data, "
+    "Cannot extract object of type \"" + std::string(typeid(DataType).name()) + "\" from binary data, "
     "template specilization implementation required."
   );
 }
@@ -335,7 +335,7 @@ template<typename T>
 inline T ssybc::PrimitiveTypeIntegerDataFromBinaryData_(BinaryData const &binary_data)
 {
   BinaryData const binary_data_endian_converted =
-    kIsBigEndian ? util::ByteSwap(binary_data_endian_converted) : binary_data;
+    kIsBigEndian ? util::ByteSwap(binary_data) : binary_data;
   Byte const *byte_ptr{&binary_data_endian_converted.front()};
   auto data_ptr = reinterpret_cast<T const *>(byte_ptr);
   return *data_ptr;

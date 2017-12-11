@@ -31,7 +31,7 @@ namespace ssybc {
 
 // --------------------------------------------------- Public Method --------------------------------------------------
 
-    using BlockType = typename BlockT;
+    using BlockType = BlockT;
 
     virtual bool IsValidGenesisBlockHash(BlockHash const &hash) const = 0;
     virtual bool IsValidHashToAppend(BlockHash const &previous_hash, BlockHash const &hash) const = 0;
