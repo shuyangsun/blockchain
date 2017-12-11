@@ -65,14 +65,14 @@ int main(int const argc, char const **argv) {
 
   // Visualize binary data.
   std::cout << std::endl;
-  std::cout << "Binary block chain as hex:" << std::endl;
+  std::cout << "Binary blockchain as hex:" << std::endl;
   std::cout << ssybc::util::HexStringFromBytes(str_chain_as_binary, " ") << std::endl;
 
   // Reconstruct Blockchain from binary data.
   StringBlockChain resconstructed_strchain{ str_chain_as_binary };
   std::cout << std::endl;
   std::cout
-    << "Reconstructed blockchain from is identical with original: "
+    << "Reconstructed blockchain from binary data is identical with original: "
     << (str_blockchain == resconstructed_strchain) << std::endl;
 
   return 0;
@@ -113,7 +113,7 @@ int main(int const argc, char const **argv) {
  * Found last block by hash lookup: 1
  * 
  * 
- * Binary block chain as hex:
+ * Binary blockchain as hex:
  * 8a 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 38 cd 2e 5a 00 00 00 00 43 d8 00 00 00 00 00 00 00 00 00 00 00 00 00
  * 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ed 47 f0 74 7d e3 74 92 26 83 e8 3b
  * 8e 25 9a 80 f8 e8 9c 31 c9 60 25 aa bd e0 c6 9d 67 ef 54 68 69 73 20 69 73 20 61 20 47 65 6e 65 73 69 73 20 42 6c 6f
@@ -126,7 +126,7 @@ int main(int const argc, char const **argv) {
  * 01 e5 b6 de 8e 81 99 80 fb 4b d5 e8 67 55 a2 63 a6 5e 45 15 c0 73 be 7e 76 97 74 00 54 68 69 72 64 20 62 6c 6f 63 6b
  * 20 69 73 20 73 6c 6f 77 65 72 2e
  * 
- * Reconstructed blockchain from is identical with original: 1
+ * Reconstructed blockchain from binary data is identical with original: 1
  * 
  **********************************************************************************************************************/
 
