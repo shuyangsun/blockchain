@@ -77,7 +77,7 @@ ssybc::Block<BlockContent, ContentBinaryConverterTemplate, HashCalculator>::Bloc
 
 
 template<typename BlockContent, template<typename> class ContentBinaryConverterTemplate, typename HashCalculator>
-ssybc::Block<BlockContent, ContentBinaryConverterTemplate, HashCalculator>::Block(BinaryData const binary_data) :
+ssybc::Block<BlockContent, ContentBinaryConverterTemplate, HashCalculator>::Block(BinaryData const &binary_data) :
   Block(
     IndexFromBinaryBlockData_(binary_data),
     TimeStampFromBinaryBlockData_(binary_data),

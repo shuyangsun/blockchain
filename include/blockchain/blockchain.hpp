@@ -49,6 +49,8 @@ namespace ssybc {
     Blockchain(BlockType const &genesis_block);
     Blockchain(BlockContentType const &content);
     Blockchain(BlockContentType const &content, MinerType const &miner);
+    Blockchain(BinaryData const &binary_data);
+    Blockchain(BinaryData &&binary_data);
     ~Blockchain();
 
 // --------------------------------------------------- Public Method --------------------------------------------------
@@ -65,6 +67,8 @@ namespace ssybc {
 
     BlockType GenesisBlock() const;
     BlockType TailBlock() const;
+
+    BinaryData ToBinary() const;
 
 // -------------------------------------------------- Private Member --------------------------------------------------
 

@@ -53,9 +53,9 @@ namespace ssybc {
       BlockNonce const nonce,
       BlockContent const &content
     );
-    Block(const Block &block);
+    Block(Block const &block);
     Block(Block &&block);
-    Block(BinaryData const binary_data);
+    Block(BinaryData const &binary_data);
     ~Block();
 
 // --------------------------------------------------- Public Method --------------------------------------------------
@@ -78,6 +78,9 @@ namespace ssybc {
     
     operator std::string() const;
     virtual std::string Description() const;
+
+    Block& operator=(Block &&) = delete;
+    Block& operator=(Block const &) = delete;
 
   private:
 
