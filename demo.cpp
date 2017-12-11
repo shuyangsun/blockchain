@@ -21,8 +21,8 @@
 
 #include<iostream>
 
-#include "include/utility/utility.hpp"
 #include "include/blockchain/blockchain.hpp"
+#include "include/utility/utility.hpp"
 
 
 int main(int const argc, char const **argv) {
@@ -56,7 +56,7 @@ int main(int const argc, char const **argv) {
   std::cout << "Found last block by negative index: " << (last_block_by_negative_idx == last_block) << std::endl;
   std::cout << "Found last block by hash lookup: " << (last_block_by_hash == last_block) << std::endl;
 
-  // Convert Blockchain to binary data, to be save to file later.
+  // Convert Blockchain to binary data, can be save to file later.
   auto str_chain_as_binary = str_blockchain.ToBinary();
 
   // Visualize binary data.
