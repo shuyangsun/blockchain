@@ -22,6 +22,7 @@
 #define BLOCKCHAIN_INCLUDE_BLOCKCHAIN_BLOCKCHAIN_HPP_
 
 #include "include/general.hpp"
+#include "include/block/block.hpp"
 #include "include/validator/block_validator_less_hash.hpp"
 #include "include/miner/block_miner_cpu_brute_force.hpp"
 
@@ -55,6 +56,8 @@ namespace ssybc {
 
 // --------------------------------------------------- Public Method --------------------------------------------------
 
+    SizeT Size() const;
+
     bool Append(BlockType const &block);
     bool Append(BlockContentType const &content);
     bool Append(BlockContentType const &content, MinerType const &miner);
@@ -63,7 +66,9 @@ namespace ssybc {
     virtual std::string Description() const;
 
     BlockType operator[](long long const index) const;
-    BlockType operator[](std::string const hash_string) const;
+    BlockType operator[](std::string const hash_string);
+    bool operator==(Blockchain const &blockchain) const;
+    bool operator!=(Blockchain const &blockchain) const;
 
     BlockType GenesisBlock() const;
     BlockType TailBlock() const;

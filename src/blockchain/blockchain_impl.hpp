@@ -98,6 +98,13 @@ ssybc::Blockchain<BlockType, Validator>::~Blockchain()
 
 
 template<typename BlockType, template<typename> class Validator>
+inline auto ssybc::Blockchain<BlockType, Validator>::Size() const -> SizeT
+{
+  return static_cast<SizeT>(blocks_.size());
+}
+
+
+template<typename BlockType, template<typename> class Validator>
 inline bool ssybc::Blockchain<BlockType, Validator>::Append(BlockType const & block)
 {
   if (ValidatorType().IsValidToAppend(TailBlock(), block)) {
@@ -153,10 +160,30 @@ inline BlockType ssybc::Blockchain<BlockType, Validator>::operator[](long long c
 
 
 template<typename BlockType, template<typename> class Validator>
-inline BlockType ssybc::Blockchain<BlockType, Validator>::operator[](std::string const hash_string) const
+inline BlockType ssybc::Blockchain<BlockType, Validator>::operator[](std::string const hash_string)
 {
-  auto const index = hash_to_index_dict_[hash_string];
+  std::size_t index = hash_to_index_dict_[hash_string];
   return (*this)[index];
+}
+
+
+template<typename BlockType, template<typename> class Validator>
+inline bool ssybc::Blockchain<BlockType, Validator>::operator==(Blockchain const & blockchain) const
+{
+  if (Size() != blockchain.Size()) { return false; }
+  for (std::size_t i{ 0 }; i < Size(); ++i) {
+    if ((*this)[i] != blockchain[i]) {
+      return false;
+    }
+  }
+  return true;
+}
+
+
+template<typename BlockType, template<typename> class Validator>
+inline bool ssybc::Blockchain<BlockType, Validator>::operator!=(Blockchain const & blockchain) const
+{
+  return !((*this) == blockchain);
 }
 
 

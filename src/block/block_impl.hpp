@@ -249,6 +249,31 @@ ssybc::Block<BlockContent, ContentBinaryConverterTemplate, HashCalculator> ssybc
 }
 
 
+template<typename BlockContent, template<typename> class ContentBinaryConverterTemplate, typename HashCalculator>
+inline bool ssybc::Block<
+  BlockContent,
+  ContentBinaryConverterTemplate,
+  HashCalculator>::operator==(Block const & block) const
+{
+  return
+    Index() == block.Index() &&
+    TimeStamp() == block.TimeStamp() &&
+    PreviousBlockHash() == block.PreviousBlockHash() &&
+    Hash() == block.Hash() &&
+    Nonce() == block.Nonce();
+}
+
+
+template<typename BlockContent, template<typename> class ContentBinaryConverterTemplate, typename HashCalculator>
+inline bool ssybc::Block<
+  BlockContent,
+  ContentBinaryConverterTemplate,
+  HashCalculator>::operator!=(Block const & block) const
+{
+  return !((*this) == block);
+}
+
+
 // -------------------------------------------------- Private Method --------------------------------------------------
 
 

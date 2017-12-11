@@ -82,6 +82,9 @@ namespace ssybc {
     Block& operator=(Block &&) = delete;
     Block& operator=(Block const &) = delete;
 
+    bool operator==(Block const & block) const;
+    bool operator!=(Block const & block) const;
+
   private:
 
 // -------------------------------------------------- Private Field ---------------------------------------------------
