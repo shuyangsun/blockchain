@@ -49,9 +49,9 @@ namespace ssybc {
     (
       BlockIndex const block_index,
       BlockTimeInterval const time_stamp,
-      BlockHash const previous_hash,
+      BlockHash const &previous_hash,
       BlockNonce const nonce,
-      BlockContent const content
+      BlockContent const &content
     );
     Block(const Block &block);
     Block(Block &&block);

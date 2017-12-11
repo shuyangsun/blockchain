@@ -22,53 +22,71 @@
 #define BLOCKCHAIN_INCLUDE_BLOCKCHAIN_BLOCKCHAIN_HPP_
 
 #include "include/general.hpp"
-#include "include/miner/block_miner.hpp"
+#include "include/validator/block_validator_less_hash.hpp"
+#include "include/miner/block_miner_cpu_brute_force.hpp"
 
 #include <unordered_map>
 #include <string>
 
 namespace ssybc {
 
-  template<typename Block, typename Validator>
-  class BlockChain {
+  template<typename BlockType, template<typename> class Validator = BlockValidatorLessHash>
+  class Blockchain {
   public:
 
 
 // -------------------------------------------------- Type Definition -------------------------------------------------
 
-    using BlockType = typename Block;
-    using BlockContentType = typename Block::BlockContent;
-    using ContentBinaryConverterType = typename Block::ContentBinaryConverterType;
-    using HashCalculatorType = typename Block::HashCalculator;
-    using ValidatorType = typename Validator;
+    using BlockContentType = typename BlockType::BlockContentType;
+    using ContentBinaryConverterType = typename BlockType::ContentBinaryConverterType;
+    using HashCalculatorType = typename BlockType::HashCalculatorType;
+    using ValidatorType = typename Validator<BlockType>;
+    using MinerType = typename BlockMiner<ValidatorType>;
 
 // --------------------------------------------- Constructor & Destructor ---------------------------------------------
 
-
-    BlockChain() = delete;
-    BlockChain(Block const &genesis_block);
-    ~BlockChain();
+    Blockchain() = delete;
+    Blockchain(BlockType const &genesis_block);
+    Blockchain(BlockContentType const &content);
+    Blockchain(BlockContentType const &content, MinerType const &miner);
+    ~Blockchain();
 
 // --------------------------------------------------- Public Method --------------------------------------------------
 
-    bool Append(Block const &block);
-    bool AppendContent(BlockContentType const &content);
-    bool AppendContent(BlockContentType const &content, BlockMiner const &miner);
+    bool Append(BlockType const &block);
+    bool Append(BlockContentType const &content);
+    bool Append(BlockContentType const &content, MinerType const &miner);
 
     operator std::string() const;
     virtual std::string Description() const;
+
+    BlockType operator[](long long const index) const;
+    BlockType operator[](std::string const hash_string) const;
+
+    BlockType GenesisBlock() const;
+    BlockType TailBlock() const;
 
 // -------------------------------------------------- Private Member --------------------------------------------------
 
   private:
 
-    std::vector<Block const> blocks_{};
-    std::unordered_map<BlockHash, size_t> hash_to_index_dict_{};
+    std::vector<BlockType> blocks_{};
+    std::unordered_map<std::string, std::size_t> hash_to_index_dict_{};
 
+    void PushBackBlock_(BlockType const &block);
+    BlockType MinedGenesisWithContent_(BlockContentType const &content, MinerType const &miner) const;
+    BlockMinerCPUBruteForce<ValidatorType> DefaultMiner_() const;
+    BlockType BlockInitializedWithContent_(
+      BlockContentType const &content,
+      BlockIndex const index,
+      BlockHash const &previous_hash) const;
   };
 
 
 }  // namespace ssybc
+
+
+#include "src/blockchain/blockchain_impl.hpp"
 
 
 #endif  // BLOCKCHAIN_INCLUDE_BLOCKCHAIN_BLOCKCHAIN_HPP_
