@@ -29,11 +29,11 @@
 
 template<typename BlockT>
 inline ssybc::BlockValidatorLessHash<BlockT>::BlockValidatorLessHash():
-  BlockValidator()
+  BlockValidator<BlockT>()
 {
   unsigned short const genesis_difficulty_level{ 2 };
   auto const byte_max{ std::numeric_limits<Byte>::max() };
-  auto max_hash = BlockHash(BlockType::HashCalculatorType().SizeOfHashInBytes());
+  auto max_hash = BlockHash(BlockT::HashCalculatorType().SizeOfHashInBytes());
   for (std::size_t i{ genesis_difficulty_level }; i < max_hash.size(); ++i) {
     max_hash[i] = byte_max;
   }
