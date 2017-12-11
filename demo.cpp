@@ -44,6 +44,8 @@ int main(int const argc, char const **argv) {
   auto genesis_block = str_blockchain.GenesisBlock();
   auto second_block = str_blockchain[1];
   auto last_block = str_blockchain.TailBlock();
+
+  std::cout << std::endl;
   std::cout
     << "Block indices: "
     << genesis_block.Index() << " "
@@ -53,18 +55,22 @@ int main(int const argc, char const **argv) {
   auto last_block_by_negative_idx = str_blockchain[-1];
   auto last_block_by_hash = str_blockchain[last_block.HashAsString()];
 
+  std::cout << std::endl;
   std::cout << "Found last block by negative index: " << (last_block_by_negative_idx == last_block) << std::endl;
   std::cout << "Found last block by hash lookup: " << (last_block_by_hash == last_block) << std::endl;
+  std::cout << std::endl;
 
   // Convert Blockchain to binary data, can be save to file later.
   auto str_chain_as_binary = str_blockchain.ToBinary();
 
   // Visualize binary data.
+  std::cout << std::endl;
   std::cout << "Binary block chain as hex:" << std::endl;
   std::cout << ssybc::util::HexStringFromBytes(str_chain_as_binary, " ") << std::endl;
 
   // Reconstruct Blockchain from binary data.
   StringBlockChain resconstructed_strchain{ str_chain_as_binary };
+  std::cout << std::endl;
   std::cout
     << "Reconstructed blockchain from is identical with original: "
     << (str_blockchain == resconstructed_strchain) << std::endl;

@@ -83,7 +83,12 @@ ssybc::Blockchain<BlockType, Validator>::Blockchain(BinaryData &&binary_data)
   auto cur_iter = blocks.begin();
   std::advance(cur_iter, 1);
   while (cur_iter != blocks.end()) {
-    Append(*cur_iter);
+    bool const append_succeed{ Append(*cur_iter) };
+    if (!append_succeed) {
+      throw std::logic_error(
+        "Cannot construct Blockchain from binary data."
+      );
+    }
     std::advance(cur_iter, 1);
   }
 }
