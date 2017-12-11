@@ -39,6 +39,7 @@ namespace ssybc {
 
   constexpr unsigned char kNumberOfBitsInByte{8};
   constexpr unsigned int kNumberOfBytesInMB{1024 * 1024};
+  constexpr BlockNonce kDefaultNonce{ 0 };
 
   constexpr union {
     uint32_t i;

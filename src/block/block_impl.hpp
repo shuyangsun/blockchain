@@ -38,11 +38,11 @@
 
 template<typename BlockContent, template<typename> class ContentBinaryConverterTemplate, typename HashCalculator>
 ssybc::Block<BlockContent, ContentBinaryConverterTemplate, HashCalculator>::Block(
-  BlockIndex block_index,
-  BlockTimeInterval time_stamp,
-  BlockHash previous_hash,
-  BlockNonce nonce,
-  BlockContent content) :
+  BlockIndex const block_index,
+  BlockTimeInterval const time_stamp,
+  BlockHash const &previous_hash,
+  BlockNonce const nonce,
+  BlockContent const &content) :
   index_{block_index},
   time_stamp_{time_stamp},
   previous_hash_{previous_hash},
@@ -198,9 +198,9 @@ std::string ssybc::Block<BlockContent, ContentBinaryConverterTemplate, HashCalcu
   result += util::DateTimeStringFromTimeStamp(TimeStamp());
   result += ",\n\tnonce: ";
   result += std::to_string(Nonce());
-  result += ",\n\tprevious_hash: ";
+  result += ",\n\tpre_hash: ";
   result += PreviousBlockHashAsString();
-  result += ",\n\thash: ";
+  result += ",\n\tcur_hash: ";
   result += HashAsString();
   result += ",\n\tcontent_size_in_bytes: ";
   result += std::to_string(SizeOfBinaryContent());

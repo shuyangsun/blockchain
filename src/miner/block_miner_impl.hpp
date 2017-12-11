@@ -76,8 +76,8 @@ inline auto ssybc::BlockMiner<Validator>::Mine(
   auto const result = block.BlockWithDifferentNonce(result_nonce);
   if (!Validator().IsValidToAppend(previous_block, result)) {
     throw std::logic_error(
-      "Cannot mine Genesis Block, mined result does not pass validator, "
-      "check implementation of \"MineGenesisNonce\" method in \"" + std::string(typeid(*this).name()) + "\"."
+      "Cannot mine Block, mined result does not pass validator, "
+      "check implementation of \"MineNonce\" method in \"" + std::string(typeid(*this).name()) + "\"."
     );
   }
   return result;
