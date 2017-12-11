@@ -61,7 +61,7 @@ namespace util {
   T ToLittleEndian(T const value);
   
   template<typename T>
-  std::vector<T> ConcatenateMoveDestructive(std::vector<std::vector<T>> const &vectors);
+  std::vector<T> ConcatenateMoveDestructive(std::vector<std::vector<T>> &vectors);
 
   template<typename T>
   std::string Join(std::vector<T> const &vec, std::string delimiter, const std::function<std::string(T)>& map_func);

@@ -242,7 +242,7 @@ inline T ssybc::util::ToLittleEndian(T const value)
 
 
 template<typename T>
-inline std::vector<T> ssybc::util::ConcatenateMoveDestructive(std::vector<std::vector<T>> const &vectors)
+inline std::vector<T> ssybc::util::ConcatenateMoveDestructive(std::vector<std::vector<T>> &vectors)
 {
   BinaryData result{};
   for (auto &vec : vectors) {

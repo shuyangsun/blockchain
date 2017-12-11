@@ -25,8 +25,11 @@
 
 #include "include/blockchain/blockchain.hpp"
 #include "include/utility/utility.hpp"
+#include "include/binary_data_converter/binary_data_converter_default.hpp"
 
 #include <exception>
+#include <iterator>
+#include <algorithm>
 
 
 // --------------------------------------------- Constructor & Destructor ---------------------------------------------
@@ -52,6 +55,38 @@ template<typename BlockType, template<typename> class Validator>
 ssybc::Blockchain<BlockType, Validator>::Blockchain(BlockContentType const & content, MinerType const & miner):
   Blockchain(MinedGenesisWithContent_(content, miner))
 { EMPTY_BLOCK }
+
+
+template<typename BlockType, template<typename> class Validator>
+ssybc::Blockchain<BlockType, Validator>::Blockchain(BinaryData const &binary_data):
+  Blockchain(std::move(BinaryData(binary_data.begin(), binary_data.end())))
+{ EMPTY_BLOCK }
+
+
+template<typename BlockType, template<typename> class Validator>
+ssybc::Blockchain<BlockType, Validator>::Blockchain(BinaryData &&binary_data)
+{
+  auto converter = BinaryDataConverterDefault<SizeT>();
+  std::vector<BlockType> blocks{};
+  while (binary_data.size() > 0) {
+    SizeT const size_of_block_binary{ converter.DataFromBinaryData(binary_data) };
+    auto block_begin_iter = binary_data.begin();
+    auto block_end_iter = binary_data.begin();
+    std::advance(block_end_iter, static_cast<std::size_t>(size_of_block_binary));
+    blocks.push_back(BlockType(binary_data));
+    binary_data.erase(block_begin_iter, block_end_iter);
+  }
+  if (!ValidatorType().IsValidGenesisBlock(blocks.front())) {
+    throw std::logic_error("Cannot construct Blockchain with invalid Genesis Block.");
+  }
+  PushBackBlock_(blocks.front());
+  auto cur_iter = blocks.begin();
+  std::advance(cur_iter, 1);
+  while (cur_iter != blocks.end()) {
+    Append(*cur_iter);
+    std::advance(cur_iter, 1);
+  }
+}
 
 
 template<typename BlockType, template<typename> class Validator>
@@ -136,6 +171,17 @@ template<typename BlockType, template<typename> class Validator>
 ssybc::Blockchain<BlockType, Validator>::operator std::string() const
 {
   return Description();
+}
+
+
+template<typename BlockType, template<typename> class Validator>
+inline auto ssybc::Blockchain<BlockType, Validator>::ToBinary() const -> BinaryData
+{
+  std::vector<BinaryData> result{};
+  for (auto const &block : blocks_) {
+    result.push_back(block.ToBinaryBlock());
+  }
+  return util::ConcatenateMoveDestructive(result);
 }
 
 
