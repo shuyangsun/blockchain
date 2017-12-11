@@ -78,3 +78,55 @@ int main(int const argc, char const **argv) {
   return 0;
 }
 
+/**************************************************** Sample Output ****************************************************
+ * {
+ *   index: 0,
+ *   time_stamp: 2017-12-11T18:23:52UTC,
+ *   nonce: 55363,
+ *   pre_hash: 0000000000000000000000000000000000000000000000000000000000000000,
+ *   cur_hash: 0000ed47f0747de374922683e83b8e259a80f8e89c31c96025aabde0c69d67ef,
+ *   content_size_in_bytes: 42,
+ *   content: This is a Genesis Block on SSY Blockchain!
+ * },
+ * {
+ *   index: 1,
+ *   time_stamp: 2017-12-11T18:23:53UTC,
+ *   nonce: 31830,
+ *   pre_hash: 0000ed47f0747de374922683e83b8e259a80f8e89c31c96025aabde0c69d67ef,
+ *   cur_hash: 0000b32832a0e14debac17037abf5103e49c1f7cfd330e74a14518b438e8508e,
+ *   content_size_in_bytes: 49,
+ *   content: The second block needs a little bit time to mine.
+ * },
+ * {
+ *   index: 2,
+ *   time_stamp: 2017-12-11T18:23:54UTC,
+ *   nonce: 115547,
+ *   pre_hash: 0000b32832a0e14debac17037abf5103e49c1f7cfd330e74a14518b438e8508e,
+ *   cur_hash: 000044d101e5b6de8e819980fb4bd5e86755a263a65e4515c073be7e76977400,
+ *   content_size_in_bytes: 22,
+ *   content: Third block is slower.
+ * }
+ * 
+ * Block indices: 0 1 2
+ * 
+ * Found last block by negative index: 1
+ * Found last block by hash lookup: 1
+ * 
+ * 
+ * Binary block chain as hex:
+ * 8a 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 38 cd 2e 5a 00 00 00 00 43 d8 00 00 00 00 00 00 00 00 00 00 00 00 00
+ * 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ed 47 f0 74 7d e3 74 92 26 83 e8 3b
+ * 8e 25 9a 80 f8 e8 9c 31 c9 60 25 aa bd e0 c6 9d 67 ef 54 68 69 73 20 69 73 20 61 20 47 65 6e 65 73 69 73 20 42 6c 6f
+ * 63 6b 20 6f 6e 20 53 53 59 20 42 6c 6f 63 6b 63 68 61 69 6e 21 91 00 00 00 00 00 00 00 01 00 00 00 00 00 00 00 39 cd
+ * 2e 5a 00 00 00 00 56 7c 00 00 00 00 00 00 00 00 ed 47 f0 74 7d e3 74 92 26 83 e8 3b 8e 25 9a 80 f8 e8 9c 31 c9 60 25
+ * aa bd e0 c6 9d 67 ef 00 00 b3 28 32 a0 e1 4d eb ac 17 03 7a bf 51 03 e4 9c 1f 7c fd 33 0e 74 a1 45 18 b4 38 e8 50 8e
+ * 54 68 65 20 73 65 63 6f 6e 64 20 62 6c 6f 63 6b 20 6e 65 65 64 73 20 61 20 6c 69 74 74 6c 65 20 62 69 74 20 74 69 6d
+ * 65 20 74 6f 20 6d 69 6e 65 2e 76 00 00 00 00 00 00 00 02 00 00 00 00 00 00 00 3a cd 2e 5a 00 00 00 00 5b c3 01 00 00
+ * 00 00 00 00 00 b3 28 32 a0 e1 4d eb ac 17 03 7a bf 51 03 e4 9c 1f 7c fd 33 0e 74 a1 45 18 b4 38 e8 50 8e 00 00 44 d1
+ * 01 e5 b6 de 8e 81 99 80 fb 4b d5 e8 67 55 a2 63 a6 5e 45 15 c0 73 be 7e 76 97 74 00 54 68 69 72 64 20 62 6c 6f 63 6b
+ * 20 69 73 20 73 6c 6f 77 65 72 2e
+ * 
+ * Reconstructed blockchain from is identical with original: 1
+ * 
+ **********************************************************************************************************************/
+
