@@ -18,30 +18,30 @@
  *
  *********************************************************************************************************************/
 
-#ifndef SSYBC_INCLUDE_SSYBC_SSYBC_HPP
-#define SSYBC_INCLUDE_SSYBC_SSYBC_HPP
 
-#include "include/ssybc/general/general.hpp"
-
-#include "include/ssybc/utility/utility.hpp"
-#include "include/ssybc/utility/operator.hpp"
-
-#include "include/ssybc/binary_data_converter/binary_data_converter_interface.hpp"
-#include "include/ssybc/binary_data_converter/binary_data_converter_default.hpp"
-
-#include "include/ssybc/hash_calculator/hash_calculator_interface.hpp"
-#include "include/ssybc/hash_calculator/hash_calculator_sha256.hpp"
 #include "include/ssybc/hash_calculator/hash_calculator_double_sha256.hpp"
+#include "include/ssybc/hash_calculator/hash_calculator_sha256.hpp"
+#include "include/ssybc/binary_data_converter/binary_data_converter_default.hpp"
+#include "include/ssybc/utility/utility.hpp"
 
-#include "include/ssybc/block/block.hpp"
 
-#include "include/ssybc/validator/block_validator.hpp"
-#include "include/ssybc/validator/block_validator_less_hash.hpp"
+auto ssybc::DoubleSHA256Calculator::SizeOfHashInBytes() const -> SizeT
+{
+  return SHA256Calculator().SizeOfHashInBytes();
+}
 
-#include "include/ssybc/blockchain/blockchain.hpp"
 
-#include "include/ssybc/miner/block_miner.hpp"
-#include "include/ssybc/miner/block_miner_cpu_brute_force.hpp"
+ssybc::BlockHash ssybc::DoubleSHA256Calculator::GenesisBlockPreviousHash() const
+{
+  return SHA256Calculator().GenesisBlockPreviousHash();
+}
 
-#endif  // SSYBC_INCLUDE_SSYBC_SSYBC_HPP
+
+ssybc::BlockHash ssybc::DoubleSHA256Calculator::Hash(ssybc::BinaryData const data) const
+{
+  BlockHash const first_level_hash{ SHA256Calculator().Hash(data) };
+  BinaryData const binary_hash{ BinaryDataConverterDefault<BlockHash>().BinaryDataFromData(first_level_hash) };
+  BlockHash const result{ SHA256Calculator().Hash(binary_hash) };
+  return result;
+}
 

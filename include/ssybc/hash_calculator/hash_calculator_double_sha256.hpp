@@ -18,30 +18,21 @@
  *
  *********************************************************************************************************************/
 
-#ifndef SSYBC_INCLUDE_SSYBC_SSYBC_HPP
-#define SSYBC_INCLUDE_SSYBC_SSYBC_HPP
-
-#include "include/ssybc/general/general.hpp"
-
-#include "include/ssybc/utility/utility.hpp"
-#include "include/ssybc/utility/operator.hpp"
-
-#include "include/ssybc/binary_data_converter/binary_data_converter_interface.hpp"
-#include "include/ssybc/binary_data_converter/binary_data_converter_default.hpp"
+#ifndef SSYBC_INCLUDE_SSYBC_HASH_CALCULATOR_HASH_CALCULATOR_DOUBLE_SHA256_HPP_
+#define SSYBC_INCLUDE_SSYBC_HASH_CALCULATOR_HASH_CALCULATOR_DOUBLE_SHA256_HPP_
 
 #include "include/ssybc/hash_calculator/hash_calculator_interface.hpp"
-#include "include/ssybc/hash_calculator/hash_calculator_sha256.hpp"
-#include "include/ssybc/hash_calculator/hash_calculator_double_sha256.hpp"
 
-#include "include/ssybc/block/block.hpp"
+namespace ssybc {
 
-#include "include/ssybc/validator/block_validator.hpp"
-#include "include/ssybc/validator/block_validator_less_hash.hpp"
+  class DoubleSHA256Calculator: public virtual HashCalculatorInterface {
+  public:
+    SizeT SizeOfHashInBytes() const override final;
+    BlockHash Hash(BinaryData const data) const override final;
+    BlockHash GenesisBlockPreviousHash() const override final;
+  };
 
-#include "include/ssybc/blockchain/blockchain.hpp"
+}  // namespace ssybc
 
-#include "include/ssybc/miner/block_miner.hpp"
-#include "include/ssybc/miner/block_miner_cpu_brute_force.hpp"
-
-#endif  // SSYBC_INCLUDE_SSYBC_SSYBC_HPP
+#endif  // SSYBC_INCLUDE_SSYBC_HASH_CALCULATOR_HASH_CALCULATOR_DOUBLE_SHA256_HPP_
 
