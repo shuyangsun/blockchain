@@ -22,7 +22,7 @@ The framework comes with support for many commonly used data types like `std::st
 
 Hashing is the fundamental of blockchain security, each `Block` must has a `HashCalculator`, which is responsible for generating hash value for the block. Notice `HashCalculator` is only responsible for generating hash, it is not responsible for the validation of hash.
 
-The default hash function is [SHA256](https://en.wikipedia.org/wiki/SHA-2), but developers can implement their own hash function by inheriting from a abstract class.
+The default hash function is Double-[SHA256](https://en.wikipedia.org/wiki/SHA-2), but developers can implement their own hash function by inheriting from a abstract class.
 
 ## Validator
 
