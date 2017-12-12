@@ -19,10 +19,10 @@
  *********************************************************************************************************************/
 
 
-#ifndef BLOCKCHAIN_SRC_VALIDATOR_BLOCK_VALIDATOR_IMPL_HPP_
-#define BLOCKCHAIN_SRC_VALIDATOR_BLOCK_VALIDATOR_IMPL_HPP_
+#ifndef SSYBC_SRC_VALIDATOR_BLOCK_VALIDATOR_IMPL_HPP_
+#define SSYBC_SRC_VALIDATOR_BLOCK_VALIDATOR_IMPL_HPP_
 
-#include "include/validator/block_validator.hpp"
+#include "include/ssybc/validator/block_validator.hpp"
 
 
 // --------------------------------------------------- Public Method --------------------------------------------------
@@ -55,4 +55,4 @@ inline bool ssybc::BlockValidator<BlockT>::IsValidToAppend(
 }
 
 
-#endif  // BLOCKCHAIN_SRC_VALIDATOR_BLOCK_VALIDATOR_IMPL_HPP_
+#endif  // SSYBC_SRC_VALIDATOR_BLOCK_VALIDATOR_IMPL_HPP_

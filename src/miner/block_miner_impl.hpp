@@ -19,10 +19,10 @@
  *********************************************************************************************************************/
 
 
-#ifndef BLOCKCHAIN_SRC_MINER_BLOCK_MINER_IMPL_HPP_
-#define BLOCKCHAIN_SRC_MINER_BLOCK_MINER_IMPL_HPP_
+#ifndef SSYBC_SRC_MINER_BLOCK_MINER_IMPL_HPP_
+#define SSYBC_SRC_MINER_BLOCK_MINER_IMPL_HPP_
 
-#include "include/miner/block_miner.hpp"
+#include "include/ssybc/miner/block_miner.hpp"
 
 #include <exception>
 #include <typeinfo>
@@ -84,4 +84,4 @@ inline auto ssybc::BlockMiner<Validator>::Mine(
 }
 
 
-#endif  // BLOCKCHAIN_SRC_MINER_BLOCK_MINER_IMPL_HPP_
+#endif  // SSYBC_SRC_MINER_BLOCK_MINER_IMPL_HPP_

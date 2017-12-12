@@ -18,11 +18,11 @@
  *
  *********************************************************************************************************************/
 
-#ifndef BLOCKCHAIN_BINARY_DATA_CONVERTER_BINARY_DATA_CONVERTER_DEFAULT_IMPL_HPP_
-#define BLOCKCHAIN_BINARY_DATA_CONVERTER_BINARY_DATA_CONVERTER_DEFAULT_IMPL_HPP_
+#ifndef SSYBC_SRC_BINARY_DATA_CONVERTER_BINARY_DATA_CONVERTER_DEFAULT_IMPL_HPP_
+#define SSYBC_SRC_BINARY_DATA_CONVERTER_BINARY_DATA_CONVERTER_DEFAULT_IMPL_HPP_
 
-#include "include/binary_data_converter/binary_data_converter_default.hpp"
-#include "include/utility/utility.hpp"
+#include "include/ssybc/binary_data_converter/binary_data_converter_default.hpp"
+#include "include/ssybc/utility/utility.hpp"
 
 #include <algorithm>
 
@@ -352,4 +352,4 @@ inline T ssybc::PrimitiveTypeFloatDataFromBinaryData_(BinaryData const &binary_d
 }
 
 
-#endif  // BLOCKCHAIN_BINARY_DATA_CONVERTER_BINARY_DATA_CONVERTER_DEFAULT_IMPL_HPP_
+#endif  // SSYBC_SRC_BINARY_DATA_CONVERTER_BINARY_DATA_CONVERTER_DEFAULT_IMPL_HPP_

@@ -18,37 +18,29 @@
  *
  *********************************************************************************************************************/
 
-#ifndef BLOCKCHAIN_GENERAL_HPP_
-#define BLOCKCHAIN_GENERAL_HPP_
+#ifndef SSYBC_INCLUDE_SSYBC_MINER_BLOCK_MINER_CPU_BRUTE_FORCE_HPP_
+#define SSYBC_INCLUDE_SSYBC_MINER_BLOCK_MINER_CPU_BRUTE_FORCE_HPP_
 
-#include <string>
-#include <vector>
-#include <ctime>
-
-#define EMPTY_BLOCK
+#include "include/ssybc/miner/block_miner.hpp"
 
 namespace ssybc {
 
-  using SizeT = uint64_t;
-  using BlockIndex = uint64_t;
-  using BlockTimeInterval = int64_t;
-  using BlockNonce = uint64_t;
-  using Byte = unsigned char;
-  using BinaryData = std::vector<Byte>;
-  using BlockHash = BinaryData;
+  template<typename Validator>
+  class BlockMinerCPUBruteForce: public virtual BlockMiner<Validator> {
+  public:
 
-  constexpr unsigned char kNumberOfBitsInByte{8};
-  constexpr unsigned int kNumberOfBytesInMB{1024 * 1024};
-  constexpr BlockNonce kDefaultNonce{ 0 };
+// --------------------------------------------------- Public Method --------------------------------------------------
 
-  constexpr union {
-    uint32_t i;
-    char c[4];
-  } bint_ = { 0x01020304 };
+    BlockNonce MineGenesisNonce(BinaryData const &hashable_binary) const override;
+    BlockNonce MineNonce(BlockHash const &previous_hash, BinaryData const &hashable_binary) const override;
+  };
 
-  const bool kIsBigEndian{ bint_.c[0] == 1 };
 
 }  // namespace ssybc
 
-#endif  // BLOCKCHAIN_GENERAL_HPP_
+
+#include "src/miner/block_miner_cpu_brute_force_impl.hpp"
+
+
+#endif  // SSYBC_INCLUDE_SSYBC_MINER_BLOCK_MINER_CPU_BRUTE_FORCE_HPP_
 

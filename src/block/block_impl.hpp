@@ -19,12 +19,12 @@
  *********************************************************************************************************************/
 
 
-#ifndef BLOCKCHAIN_SRC_BLOCK_BLOCK_IMPL_HPP_
-#define BLOCKCHAIN_SRC_BLOCK_BLOCK_IMPL_HPP_
+#ifndef SSYBC_SRC_BLOCK_BLOCK_IMPL_HPP_
+#define SSYBC_SRC_BLOCK_BLOCK_IMPL_HPP_
 
-#include "include/block/block.hpp"
-#include "include/utility/utility.hpp"
-#include "include/utility/operator.hpp"
+#include "include/ssybc/block/block.hpp"
+#include "include/ssybc/utility/utility.hpp"
+#include "include/ssybc/utility/operator.hpp"
 
 #include <exception>
 #include <cassert>

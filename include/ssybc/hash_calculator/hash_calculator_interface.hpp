@@ -18,36 +18,23 @@
  *
  *********************************************************************************************************************/
 
-#ifndef BLOCKCHAIN_INCLUDE_VALIDATOR_BLOCK_VALIDATOR_LESS_HASH_HPP_
-#define BLOCKCHAIN_INCLUDE_VALIDATOR_BLOCK_VALIDATOR_LESS_HASH_HPP_
+#ifndef SSYBC_INCLUDE_SSYBC_HASH_CALCULATOR_HASH_CALCULATOR_INTERFACE_HPP_
+#define SSYBC_INCLUDE_SSYBC_HASH_CALCULATOR_HASH_CALCULATOR_INTERFACE_HPP_
 
-#include "include/validator/block_validator.hpp"
+#include "include/ssybc/general/general.hpp"
 
 namespace ssybc {
 
-  template<typename BlockT>
-  class BlockValidatorLessHash: public virtual BlockValidator<BlockT> {
+  class HashCalculatorInterface {
   public:
+    virtual SizeT SizeOfHashInBytes() const = 0;
+    virtual BlockHash Hash(BinaryData const data) const = 0;
+    virtual BlockHash GenesisBlockPreviousHash() const = 0;
 
-// --------------------------------------------------- Public Method --------------------------------------------------
-
-    BlockValidatorLessHash();
-
-    bool IsValidGenesisBlockHash(BlockHash const &hash) const override final;
-    bool IsValidHashToAppend(BlockHash const &previous_hash, BlockHash const &hash) const override final;
-
-  private:
-
-// --------------------------------------------------- Private Member -------------------------------------------------
-    
-    BlockHash max_hash_{};
+    virtual ~HashCalculatorInterface() { EMPTY_BLOCK }
   };
 
 }  // namespace ssybc
 
-
-#include "src/validator/block_validator_less_hash_impl.hpp"
-
-
-#endif  // BLOCKCHAIN_INCLUDE_VALIDATOR_BLOCK_VALIDATOR_LESS_HASH_HPP_
+#endif  // SSYBC_INCLUDE_SSYBC_HASH_CALCULATOR_HASH_CALCULATOR_INTERFACE_HPP_
 

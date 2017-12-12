@@ -19,13 +19,12 @@
  *********************************************************************************************************************/
 
 
-#ifndef BLOCKCHAIN_SRC_MINER_BLOCK_MINER_CPU_BRUTE_FORCE_IMPL_HPP_
-#define BLOCKCHAIN_SRC_MINER_BLOCK_MINER_CPU_BRUTE_FORCE_IMPL_HPP_
+#ifndef SSYBC_SRC_MINER_BLOCK_MINER_CPU_BRUTE_FORCE_IMPL_HPP_
+#define SSYBC_SRC_MINER_BLOCK_MINER_CPU_BRUTE_FORCE_IMPL_HPP_
 
-#include "include/miner/block_miner.hpp"
-#include "include/miner/block_miner_cpu_brute_force.hpp"
-#include "include/validator/block_validator.hpp"
-#include "include/utility/utility.hpp"
+#include "include/ssybc/miner/block_miner_cpu_brute_force.hpp"
+#include "include/ssybc/validator/block_validator.hpp"
+#include "include/ssybc/utility/utility.hpp"
 
 #include <exception>
 #include <typeinfo>
@@ -71,4 +70,4 @@ inline auto ssybc::BlockMinerCPUBruteForce<Validator>::MineNonce(
 }
 
 
-#endif  // BLOCKCHAIN_SRC_MINER_BLOCK_MINER_CPU_BRUTE_FORCE_IMPL_HPP_
+#endif  // SSYBC_SRC_MINER_BLOCK_MINER_CPU_BRUTE_FORCE_IMPL_HPP_

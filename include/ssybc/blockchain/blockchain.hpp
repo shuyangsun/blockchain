@@ -18,13 +18,13 @@
  *
  *********************************************************************************************************************/
 
-#ifndef BLOCKCHAIN_INCLUDE_BLOCKCHAIN_BLOCKCHAIN_HPP_
-#define BLOCKCHAIN_INCLUDE_BLOCKCHAIN_BLOCKCHAIN_HPP_
+#ifndef SSYBC_INCLUDE_SSYBC_BLOCKCHAIN_BLOCKCHAIN_HPP_
+#define SSYBC_INCLUDE_SSYBC_BLOCKCHAIN_BLOCKCHAIN_HPP_
 
-#include "include/general.hpp"
-#include "include/block/block.hpp"
-#include "include/validator/block_validator_less_hash.hpp"
-#include "include/miner/block_miner_cpu_brute_force.hpp"
+#include "include/ssybc/general/general.hpp"
+#include "include/ssybc/block/block.hpp"
+#include "include/ssybc/validator/block_validator_less_hash.hpp"
+#include "include/ssybc/miner/block_miner_cpu_brute_force.hpp"
 
 #include <unordered_map>
 #include <string>
@@ -98,5 +98,5 @@ namespace ssybc {
 #include "src/blockchain/blockchain_impl.hpp"
 
 
-#endif  // BLOCKCHAIN_INCLUDE_BLOCKCHAIN_BLOCKCHAIN_HPP_
+#endif  // SSYBC_INCLUDE_SSYBC_BLOCKCHAIN_BLOCKCHAIN_HPP_
 
