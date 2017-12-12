@@ -18,30 +18,37 @@
  *
  *********************************************************************************************************************/
 
-#ifndef BLOCKCHAIN_INCLUDE_UTILITY_OPERATOR_HPP_
-#define BLOCKCHAIN_INCLUDE_UTILITY_OPERATOR_HPP_
+#ifndef SSYBC_INCLUDE_SSYBC_MINER_BLOCK_MINER_HPP_
+#define SSYBC_INCLUDE_SSYBC_MINER_BLOCK_MINER_HPP_
 
-#include "include/general.hpp"
+#include "include/ssybc/general/general.hpp"
 
 namespace ssybc {
 
-namespace util {
+  template<typename Validator>
+  class BlockMiner {
+  public:
 
-  
-// -------------------------------------------------- Public Function -------------------------------------------------
+// --------------------------------------------------- Public Method --------------------------------------------------
 
-  bool operator!=(BlockHash const &lhs, BlockHash const &rhs);
-  bool operator==(BlockHash const &lhs, BlockHash const &rhs);
-  bool operator<=(BlockHash const &lhs, BlockHash const &rhs);
-  bool operator>=(BlockHash const &lhs, BlockHash const &rhs);
-  bool operator<(BlockHash const &lhs, BlockHash const &rhs);
-  bool operator>(BlockHash const &lhs, BlockHash const &rhs);
+    using BlockType = typename Validator::BlockType;
+    using HashCalculatorType = typename BlockType::HashCalculatorType;
 
-}  // namespace util
+    virtual BlockNonce MineGenesisNonce(BinaryData const &hashable_binary) const = 0;
+    virtual BlockNonce MineNonce(BlockHash const &previous_hash, BinaryData const &hashable_binary) const = 0;
+
+    BlockType MineGenesis(BlockType const &block) const;
+    BlockType Mine(BlockType const &previous_block, BlockType const &block) const;
+
+    virtual ~BlockMiner() { EMPTY_BLOCK }
+  };
+
 
 }  // namespace ssybc
 
-#include "src/utility/utility_impl.hpp"
 
-#endif  // BLOCKCHAIN_INCLUDE_UTILITY_OPERATOR_HPP_
+#include "src/miner/block_miner_impl.hpp"
+
+
+#endif  // SSYBC_INCLUDE_SSYBC_MINER_BLOCK_MINER_HPP_
 

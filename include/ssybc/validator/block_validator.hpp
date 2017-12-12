@@ -18,24 +18,36 @@
  *
  *********************************************************************************************************************/
 
-#ifndef BLOCKCHAIN_BINARY_DATA_CONVERTER_BINARY_DATA_CONVERTER_INTERFACE_HPP_
-#define BLOCKCHAIN_BINARY_DATA_CONVERTER_BINARY_DATA_CONVERTER_INTERFACE_HPP_
+#ifndef SSYBC_INCLUDE_SSYBC_VALIDATOR_BLOCK_VALIDATOR_HPP_
+#define SSYBC_INCLUDE_SSYBC_VALIDATOR_BLOCK_VALIDATOR_HPP_
 
-#include "include/general.hpp"
+#include "include/ssybc/general/general.hpp"
 
 namespace ssybc {
 
-  template<typename DataType>
-  class BinaryDataConverterInterface {
+  template<typename BlockT>
+  class BlockValidator {
   public:
 
-    virtual BinaryData BinaryDataFromData(DataType const data) const = 0;
-    virtual DataType DataFromBinaryData(BinaryData const &binary_data) const = 0;
+// --------------------------------------------------- Public Method --------------------------------------------------
 
-    virtual ~BinaryDataConverterInterface() { EMPTY_BLOCK }
+    using BlockType = BlockT;
+
+    virtual bool IsValidGenesisBlockHash(BlockHash const &hash) const = 0;
+    virtual bool IsValidHashToAppend(BlockHash const &previous_hash, BlockHash const &hash) const = 0;
+
+    bool IsBlockPreAdjacentTo(BlockT const &lhs, BlockT const &rhs) const;
+    bool IsValidGenesisBlock(BlockT const &block) const;
+    bool IsValidToAppend(BlockT const &previous_block, BlockT const &block) const;
+
+    virtual ~BlockValidator() { EMPTY_BLOCK }
   };
 
 }  // namespace ssybc
 
-#endif  // BLOCKCHAIN_BINARY_DATA_CONVERTER_BINARY_DATA_CONVERTER_INTERFACE_HPP_
+
+#include "src/validator/block_validator_impl.hpp"
+
+
+#endif  // SSYBC_INCLUDE_SSYBC_VALIDATOR_BLOCK_VALIDATOR_HPP_
 

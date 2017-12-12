@@ -19,11 +19,11 @@
  *********************************************************************************************************************/
 
 
-#ifndef BLOCKCHAIN_INCLUDE_VALIDATOR_BLOCK_VALIDATOR_LESS_HASH_IMPL_HPP_
-#define BLOCKCHAIN_INCLUDE_VALIDATOR_BLOCK_VALIDATOR_LESS_HASH_IMPL_HPP_
+#ifndef SSYBC_SRC_VALIDATOR_BLOCK_VALIDATOR_LESS_HASH_IMPL_HPP_
+#define SSYBC_SRC_VALIDATOR_BLOCK_VALIDATOR_LESS_HASH_IMPL_HPP_
 
-#include "include/validator/block_validator_less_hash.hpp"
-#include "include/utility/operator.hpp"
+#include "include/ssybc/validator/block_validator_less_hash.hpp"
+#include "include/ssybc/utility/operator.hpp"
 #include <limits>
 
 
@@ -60,4 +60,4 @@ inline bool ssybc::BlockValidatorLessHash<BlockT>::IsValidHashToAppend(
 }
 
 
-#endif  // BLOCKCHAIN_INCLUDE_VALIDATOR_BLOCK_VALIDATOR_LESS_HASH_IMPL_HPP_
+#endif  // SSYBC_SRC_VALIDATOR_BLOCK_VALIDATOR_LESS_HASH_IMPL_HPP_

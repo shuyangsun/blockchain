@@ -18,36 +18,37 @@
  *
  *********************************************************************************************************************/
 
-#ifndef BLOCKCHAIN_INCLUDE_VALIDATOR_BLOCK_VALIDATOR_HPP_
-#define BLOCKCHAIN_INCLUDE_VALIDATOR_BLOCK_VALIDATOR_HPP_
+#ifndef SSYBC_INCLUDE_SSYBC_GENERAL_GENERAL_HPP_
+#define SSYBC_INCLUDE_SSYBC_GENERAL_GENERAL_HPP_
 
-#include "include/general.hpp"
+#include <string>
+#include <vector>
+#include <ctime>
+
+#define EMPTY_BLOCK
 
 namespace ssybc {
 
-  template<typename BlockT>
-  class BlockValidator {
-  public:
+  using SizeT = uint64_t;
+  using BlockIndex = uint64_t;
+  using BlockTimeInterval = int64_t;
+  using BlockNonce = uint64_t;
+  using Byte = unsigned char;
+  using BinaryData = std::vector<Byte>;
+  using BlockHash = BinaryData;
 
-// --------------------------------------------------- Public Method --------------------------------------------------
+  constexpr unsigned char kNumberOfBitsInByte{8};
+  constexpr unsigned int kNumberOfBytesInMB{1024 * 1024};
+  constexpr BlockNonce kDefaultNonce{ 0 };
 
-    using BlockType = BlockT;
+  constexpr union {
+    uint32_t i;
+    char c[4];
+  } bint_ = { 0x01020304 };
 
-    virtual bool IsValidGenesisBlockHash(BlockHash const &hash) const = 0;
-    virtual bool IsValidHashToAppend(BlockHash const &previous_hash, BlockHash const &hash) const = 0;
-
-    bool IsBlockPreAdjacentTo(BlockT const &lhs, BlockT const &rhs) const;
-    bool IsValidGenesisBlock(BlockT const &block) const;
-    bool IsValidToAppend(BlockT const &previous_block, BlockT const &block) const;
-
-    virtual ~BlockValidator() { EMPTY_BLOCK }
-  };
+  const bool kIsBigEndian{ bint_.c[0] == 1 };
 
 }  // namespace ssybc
 
-
-#include "src/validator/block_validator_impl.hpp"
-
-
-#endif  // BLOCKCHAIN_INCLUDE_VALIDATOR_BLOCK_VALIDATOR_HPP_
+#endif  // SSYBC_INCLUDE_SSYBC_GENERAL_GENERAL_HPP_
 

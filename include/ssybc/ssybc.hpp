@@ -18,36 +18,29 @@
  *
  *********************************************************************************************************************/
 
+#ifndef SSYBC_INCLUDE_SSYBC_SSYBC_HPP
+#define SSYBC_INCLUDE_SSYBC_SSYBC_HPP
 
-#include "include/ssybc/hash_calculator/hash_calculator_sha256.hpp"
+#include "include/ssybc/general/general.hpp"
+
 #include "include/ssybc/utility/utility.hpp"
-#include "library/sha256/sha256.h"
+#include "include/ssybc/utility/operator.hpp"
 
+#include "include/ssybc/binary_data_converter/binary_data_converter_interface.hpp"
+#include "include/ssybc/binary_data_converter/binary_data_converter_default.hpp"
 
-auto ssybc::SHA256Calculator::SizeOfHashInBytes() const -> SizeT
-{
-  return SHA256_BLOCK_SIZE;
-}
+#include "include/ssybc/hash_calculator/hash_calculator_interface.hpp"
+#include "include/ssybc/hash_calculator/hash_calculator_sha256.hpp"
 
+#include "include/ssybc/block/block.hpp"
 
-ssybc::BlockHash ssybc::SHA256Calculator::GenesisBlockPreviousHash() const
-{
-  return BinaryData(SizeOfHashInBytes());
-}
+#include "include/ssybc/validator/block_validator.hpp"
+#include "include/ssybc/validator/block_validator_less_hash.hpp"
 
+#include "include/ssybc/blockchain/blockchain.hpp"
 
-ssybc::BlockHash ssybc::SHA256Calculator::Hash(ssybc::BinaryData const data) const
-{
-  SizeT const data_size{data.size()};
-  Byte const * data_ptr{ &data.front() };
+#include "include/ssybc/miner/block_miner.hpp"
+#include "include/ssybc/miner/block_miner_cpu_brute_force.hpp"
 
-  BYTE result[SHA256_BLOCK_SIZE];
-  SHA256_CTX ctx;
-
-  sha256_init(&ctx);
-  sha256_update(&ctx, data_ptr, data_size);
-  sha256_final(&ctx, result);
-
-  return BinaryData(result, result + SHA256_BLOCK_SIZE);
-}
+#endif  // SSYBC_INCLUDE_SSYBC_SSYBC_HPP
 

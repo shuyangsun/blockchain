@@ -21,12 +21,10 @@
 
 #include<iostream>
 
-#include "include/blockchain/blockchain.hpp"
-#include "include/utility/utility.hpp"
+#include "include/ssybc/ssybc.hpp"
 
 
 int main(int const argc, char const **argv) {
-
   // Define a type alias for a blockchain with content type on each block as string.
   using StringBlockChain = typename ssybc::Blockchain<ssybc::Block<std::string>>;
   

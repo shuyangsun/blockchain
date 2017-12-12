@@ -19,11 +19,11 @@
  *********************************************************************************************************************/
 
 
-#ifndef BLOCKCHAIN_UTILITY_UTILITY_IMPL_HPP_
-#define BLOCKCHAIN_UTILITY_UTILITY_IMPL_HPP_
+#ifndef SSYBC_SRC_UTILITY_UTILITY_IMPL_HPP_
+#define SSYBC_SRC_UTILITY_UTILITY_IMPL_HPP_
 
-#include "include/utility/utility.hpp"
-#include "include/binary_data_converter/binary_data_converter_default.hpp"
+#include "include/ssybc/utility/utility.hpp"
+#include "include/ssybc/binary_data_converter/binary_data_converter_default.hpp"
 
 #include <unordered_map>
 #include <algorithm>
@@ -273,4 +273,4 @@ std::string ssybc::util::Join(
 }
 
 
-#endif  // BLOCKCHAIN_UTILITY_UTILITY_IMPL_HPP_
+#endif  // SSYBC_SRC_UTILITY_UTILITY_IMPL_HPP_

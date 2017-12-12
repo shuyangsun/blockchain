@@ -18,10 +18,10 @@
  *
  *********************************************************************************************************************/
 
-#ifndef BLOCKCHAIN_BINARY_DATA_CONVERTER_BINARY_DATA_CONVERTER_DEFAULT_HPP_
-#define BLOCKCHAIN_BINARY_DATA_CONVERTER_BINARY_DATA_CONVERTER_DEFAULT_HPP_
+#ifndef SSYBC_INCLUDE_SSYBC_BINARY_DATA_CONVERTER_BINARY_DATA_CONVERTER_DEFAULT_HPP_
+#define SSYBC_INCLUDE_SSYBC_BINARY_DATA_CONVERTER_BINARY_DATA_CONVERTER_DEFAULT_HPP_
 
-#include "include/binary_data_converter/binary_data_converter_interface.hpp"
+#include "include/ssybc/binary_data_converter/binary_data_converter_interface.hpp"
 
 #include <string>
 #include <exception>
@@ -114,5 +114,5 @@ namespace ssybc {
 
 #include "src/binary_data_converter/binary_data_converter_default_impl.hpp"
 
-#endif  // BLOCKCHAIN_BINARY_DATA_CONVERTER_BINARY_DATA_CONVERTER_DEFAULT_HPP_
+#endif  // SSYBC_INCLUDE_SSYBC_BINARY_DATA_CONVERTER_BINARY_DATA_CONVERTER_DEFAULT_HPP_
 

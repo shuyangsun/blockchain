@@ -19,12 +19,12 @@
  *********************************************************************************************************************/
 
 
-#ifndef BLOCKCHAIN_INCLUDE_BLOCK_BLOCK_HPP_
-#define BLOCKCHAIN_INCLUDE_BLOCK_BLOCK_HPP_
+#ifndef SSYBC_INCLUDE_SSYBC_BLOCK_BLOCK_HPP_
+#define SSYBC_INCLUDE_SSYBC_BLOCK_BLOCK_HPP_
 
-#include "include/general.hpp"
-#include "include/hash_calculator/hash_calculator_sha256.hpp"
-#include "include/binary_data_converter/binary_data_converter_default.hpp"
+#include "include/ssybc/general/general.hpp"
+#include "include/ssybc/hash_calculator/hash_calculator_sha256.hpp"
+#include "include/ssybc/binary_data_converter/binary_data_converter_default.hpp"
 
 namespace ssybc {
 
@@ -124,5 +124,5 @@ namespace ssybc {
 #include "src/block/block_impl.hpp"
 
 
-#endif  // BLOCKCHAIN_INCLUDE_BLOCK_BLOCK_HPP_
+#endif  // SSYBC_INCLUDE_SSYBC_BLOCK_BLOCK_HPP_
 

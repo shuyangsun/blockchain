@@ -18,10 +18,10 @@
  *
  *********************************************************************************************************************/
 
-#ifndef BLOCKCHAIN_UTILITY_UTILITY_HPP_
-#define BLOCKCHAIN_UTILITY_UTILITY_HPP_
+#ifndef SSYBC_INCLUDE_SSYBC_UTILITY_UTILITY_HPP_
+#define SSYBC_INCLUDE_SSYBC_UTILITY_UTILITY_HPP_
 
-#include "include/general.hpp"
+#include "include/ssybc/general/general.hpp"
 #include <vector>
 #include <functional>
 
@@ -78,5 +78,5 @@ namespace util {
 
 #include "src/utility/utility_impl.hpp"
 
-#endif  // BLOCKCHAIN_UTILITY_UTILITY_HPP_
+#endif  // SSYBC_INCLUDE_SSYBC_UTILITY_UTILITY_HPP_
 

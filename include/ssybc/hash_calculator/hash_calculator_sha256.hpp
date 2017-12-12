@@ -18,29 +18,21 @@
  *
  *********************************************************************************************************************/
 
-#ifndef BLOCKCHAIN_INCLUDE_MINER_BLOCK_MINER_CPU_BRUTE_FORCE_HPP_
-#define BLOCKCHAIN_INCLUDE_MINER_BLOCK_MINER_CPU_BRUTE_FORCE_HPP_
+#ifndef SSYBC_INCLUDE_SSYBC_HASH_CALCULATOR_HASH_CALCULATOR_SHA256_HPP_
+#define SSYBC_INCLUDE_SSYBC_HASH_CALCULATOR_HASH_CALCULATOR_SHA256_HPP_
 
-#include "include/miner/block_miner.hpp"
+#include "include/ssybc/hash_calculator/hash_calculator_interface.hpp"
 
 namespace ssybc {
 
-  template<typename Validator>
-  class BlockMinerCPUBruteForce: public virtual BlockMiner<Validator> {
+  class SHA256Calculator: public virtual HashCalculatorInterface {
   public:
-
-// --------------------------------------------------- Public Method --------------------------------------------------
-
-    BlockNonce MineGenesisNonce(BinaryData const &hashable_binary) const override;
-    BlockNonce MineNonce(BlockHash const &previous_hash, BinaryData const &hashable_binary) const override;
+    SizeT SizeOfHashInBytes() const override final;
+    BlockHash Hash(BinaryData const data) const override final;
+    BlockHash GenesisBlockPreviousHash() const override final;
   };
-
 
 }  // namespace ssybc
 
-
-#include "src/miner/block_miner_cpu_brute_force_impl.hpp"
-
-
-#endif  // BLOCKCHAIN_INCLUDE_MINER_BLOCK_MINER_CPU_BRUTE_FORCE_HPP_
+#endif  // SSYBC_INCLUDE_SSYBC_HASH_CALCULATOR_HASH_CALCULATOR_SHA256_HPP_
 

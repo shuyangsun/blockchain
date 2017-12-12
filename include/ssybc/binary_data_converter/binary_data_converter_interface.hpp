@@ -18,21 +18,24 @@
  *
  *********************************************************************************************************************/
 
-#ifndef BLOCKCHAIN_HASH_CALCULATOR_HASH_CALCULATOR_SHA256_HPP_
-#define BLOCKCHAIN_HASH_CALCULATOR_HASH_CALCULATOR_SHA256_HPP_
+#ifndef SSYBC_INCLUDE_SSYBC_BINARY_DATA_CONVERTER_BINARY_DATA_CONVERTER_INTERFACE_HPP_
+#define SSYBC_INCLUDE_SSYBC_BINARY_DATA_CONVERTER_BINARY_DATA_CONVERTER_INTERFACE_HPP_
 
-#include "include/hash_calculator/hash_calculator_interface.hpp"
+#include "include/ssybc/general/general.hpp"
 
 namespace ssybc {
 
-  class SHA256Calculator: public virtual HashCalculatorInterface {
+  template<typename DataType>
+  class BinaryDataConverterInterface {
   public:
-    SizeT SizeOfHashInBytes() const override final;
-    BlockHash Hash(BinaryData const data) const override final;
-    BlockHash GenesisBlockPreviousHash() const override final;
+
+    virtual BinaryData BinaryDataFromData(DataType const data) const = 0;
+    virtual DataType DataFromBinaryData(BinaryData const &binary_data) const = 0;
+
+    virtual ~BinaryDataConverterInterface() { EMPTY_BLOCK }
   };
 
 }  // namespace ssybc
 
-#endif  // BLOCKCHAIN_HASH_CALCULATOR_HASH_CALCULATOR_SHA256_HPP_
+#endif  // SSYBC_INCLUDE_SSYBC_BINARY_DATA_CONVERTER_BINARY_DATA_CONVERTER_DEFAULT_HPP_
 

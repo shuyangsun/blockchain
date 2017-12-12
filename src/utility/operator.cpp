@@ -19,7 +19,7 @@
  *********************************************************************************************************************/
 
 
-#include "include/utility/operator.hpp"
+#include "include/ssybc/utility/operator.hpp"
 
 #include <utility>
 
