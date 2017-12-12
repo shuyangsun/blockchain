@@ -23,7 +23,7 @@
 #define SSYBC_INCLUDE_SSYBC_BLOCK_BLOCK_HPP_
 
 #include "include/ssybc/general/general.hpp"
-#include "include/ssybc/hash_calculator/hash_calculator_sha256.hpp"
+#include "include/ssybc/hash_calculator/hash_calculator_double_sha256.hpp"
 #include "include/ssybc/binary_data_converter/binary_data_converter_default.hpp"
 
 namespace ssybc {
@@ -31,7 +31,7 @@ namespace ssybc {
   template<
     typename BlockContent,
     template<typename> class ContentBinaryConverterTemplate = BinaryDataConverterDefault,
-    typename HashCalculator = SHA256Calculator>
+    typename HashCalculator = DoubleSHA256Calculator>
   class Block {
 
   public:
