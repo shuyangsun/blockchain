@@ -30,6 +30,7 @@
 namespace ssybc {
 
   using SizeT = uint64_t;
+  using BlockVersion = uint32_t;
   using BlockIndex = uint64_t;
   using BlockTimeInterval = int64_t;
   using BlockNonce = uint64_t;
