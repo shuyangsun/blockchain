@@ -40,8 +40,17 @@ namespace ssybc {
     BlockHeader(
       BlockVersion const version,
       BlockIndex const index,
-      BlockHash const previous_hash,
-      BlockHash const merkle_root,
+      BlockHash const &previous_hash,
+      BlockHash const &merkle_root,
+      BlockTimeInterval const time_stamp,
+      BlockNonce const nonce
+    );
+
+    BlockHeader(
+      BlockVersion const version,
+      BlockIndex const index,
+      BlockHash &&previous_hash,
+      BlockHash &&merkle_root,
       BlockTimeInterval const time_stamp,
       BlockNonce const nonce
     );
