@@ -28,6 +28,7 @@
 
 #include <exception>
 #include <typeinfo>
+#include <limits>
 
 
 // --------------------------------------------------- Public Method --------------------------------------------------
@@ -38,12 +39,20 @@ inline auto ssybc::BlockMinerCPUBruteForce<Validator>::MineGenesisNonce(
   BinaryData const & hashable_binary) const -> BlockNonce
 {
   auto const validator = Validator();
+  BlockTimeInterval result_ts{ util::TrailingTimeStampBeforeNonceFromBinaryData(hashable_binary) };
   if (validator.IsValidGenesisBlockHash(HashCalculatorType().Hash(hashable_binary))) {
     return util::TrailingNonceFromBinaryData(hashable_binary);
   }
   BlockNonce result_nonce{};
+  BlockNonce const nonce_max_limit{ std::numeric_limits<BlockNonce>::max() };
   auto binary_mutable_copy = BinaryData(hashable_binary.begin(), hashable_binary.end());
   while (!validator.IsValidGenesisBlockHash(HashCalculatorType().Hash(binary_mutable_copy))) {
+    if (result_nonce >= nonce_max_limit) {
+      result_nonce = 0;
+      ++result_ts;
+      util::UpdateBinaryDataWithTrailingTimeStampBeforeNonce(binary_mutable_copy, result_ts);
+      continue;
+    }
     ++result_nonce;
     util::UpdateBinaryDataWithTrailingNonce(binary_mutable_copy, result_nonce);
   }
@@ -57,12 +66,20 @@ inline auto ssybc::BlockMinerCPUBruteForce<Validator>::MineNonce(
   BinaryData const & hashable_binary) const -> BlockNonce
 {
   auto const validator = Validator();
+  BlockTimeInterval result_ts{ util::TrailingTimeStampBeforeNonceFromBinaryData(hashable_binary) };
   if (validator.IsValidHashToAppend(previous_hash, HashCalculatorType().Hash(hashable_binary))) {
     return util::TrailingNonceFromBinaryData(hashable_binary);
   }
   BlockNonce result_nonce{};
+  BlockNonce const nonce_max_limit{ std::numeric_limits<BlockNonce>::max() };
   auto binary_mutable_copy = BinaryData(hashable_binary.begin(), hashable_binary.end());
   while (!validator.IsValidHashToAppend(previous_hash, HashCalculatorType().Hash(binary_mutable_copy))) {
+    if (result_nonce >= nonce_max_limit) {
+      result_nonce = 0;
+      ++result_ts;
+      util::UpdateBinaryDataWithTrailingTimeStampBeforeNonce(binary_mutable_copy, result_ts);
+      continue;
+    }
     ++result_nonce;
     util::UpdateBinaryDataWithTrailingNonce(binary_mutable_copy, result_nonce);
   }
