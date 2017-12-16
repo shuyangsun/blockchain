@@ -34,6 +34,8 @@
 #include "include/ssybc/hash_calculator/hash_calculator_double_sha256.hpp"
 
 #include "include/ssybc/block/block.hpp"
+#include "include/ssybc/block/block_header/block_header.hpp"
+#include "include/ssybc/block/block_content/block_content.hpp"
 
 #include "include/ssybc/validator/block_validator.hpp"
 #include "include/ssybc/validator/block_validator_less_hash.hpp"
