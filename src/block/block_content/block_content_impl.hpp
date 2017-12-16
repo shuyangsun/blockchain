@@ -135,7 +135,7 @@ template<typename DataT, template<typename> class BinaryConverterTemplateT, type
 inline std::string ssybc::BlockContent<DataT, BinaryConverterTemplateT, HashCalculatorT>::Description() const
 {
   try {
-    return util::Description(*data_ptr_);
+    return util::ToString(*data_ptr_);
   }
   catch (const std::exception& e) {
     return util::HexStringFromBytes(Binary(), " ");

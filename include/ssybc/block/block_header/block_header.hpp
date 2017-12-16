@@ -86,8 +86,8 @@ namespace ssybc {
     BlockHeader& operator=(BlockHeader &&) = delete;
     BlockHeader& operator=(BlockHeader const &) = delete;
 
-    bool operator==(BlockHeader const & block) const;
-    bool operator!=(BlockHeader const & block) const;
+    bool operator==(BlockHeader const & header) const;
+    bool operator!=(BlockHeader const & header) const;
 
   private:
 

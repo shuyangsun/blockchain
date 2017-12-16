@@ -210,7 +210,7 @@ std::string ssybc::Block<BlockContent, ContentBinaryConverterTemplate, HashCalcu
   auto content = Content();
 
   try {
-    content_str = util::Description(content);
+    content_str = util::ToString(content);
   }
   catch (const std::exception& e) {
     auto content_binary = ContentAsBinary_();
