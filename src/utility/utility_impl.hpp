@@ -171,6 +171,20 @@ inline ssybc::BlockHash ssybc::util::HashStrippedLeadingZeros(BlockHash const &h
 }
 
 
+inline ssybc::BlockTimeInterval ssybc::util::TrailingTimeStampBeforeNonceFromBinaryData(BinaryData const & binary_data)
+{
+  BinaryDataConverterDefault<BlockTimeInterval> converter{};
+  int const nonce_binary_size = sizeof(BlockNonce);
+  int const ts_binary_size = sizeof(BlockTimeInterval);
+  auto begin_iter = binary_data.end();
+  auto end_iter = binary_data.end();
+  std::advance(begin_iter, -1 * (ts_binary_size + nonce_binary_size));
+  std::advance(end_iter, -1 * (nonce_binary_size));
+  auto const ts_as_binary = BinaryData(begin_iter, end_iter);
+  return converter.DataFromBinaryData(ts_as_binary);
+}
+
+
 inline ssybc::BlockNonce ssybc::util::TrailingNonceFromBinaryData(BinaryData const & binary_data)
 {
   BinaryDataConverterDefault<BlockNonce> converter{};
@@ -179,6 +193,22 @@ inline ssybc::BlockNonce ssybc::util::TrailingNonceFromBinaryData(BinaryData con
   std::advance(begin_iter, -1 * nonce_binary_size);
   auto const nonce_as_binary = BinaryData(begin_iter, binary_data.end());
   return converter.DataFromBinaryData(nonce_as_binary);
+}
+
+
+void ssybc::util::UpdateBinaryDataWithTrailingTimeStampBeforeNonce(
+  BinaryData & binary_data,
+  BlockTimeInterval const time_stamp)
+{
+  BinaryDataConverterDefault<BlockTimeInterval> ts_converter{};
+  BinaryDataConverterDefault<BlockNonce> nonce_converter{};
+  auto time_stamp_as_binary = ts_converter.BinaryDataFromData(time_stamp);
+  std::size_t const nonce_binary_size{ nonce_converter.BinaryDataFromData(BlockNonce{}).size() };
+  std::size_t const time_stamp_binary_size{ time_stamp_as_binary.size() };
+  std::size_t const binary_start_idx{ binary_data.size() - time_stamp_binary_size - nonce_binary_size };
+  for (size_t i{ 0 }; i < time_stamp_binary_size; ++i) {
+    binary_data[binary_start_idx + i] = time_stamp_as_binary[i];
+  }
 }
 
 

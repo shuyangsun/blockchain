@@ -51,7 +51,10 @@ namespace util {
 
   BlockHash HashStrippedLeadingZeros(BlockHash const &hash);
 
+  BlockTimeInterval TrailingTimeStampBeforeNonceFromBinaryData(BinaryData const &binary_data);
   BlockNonce TrailingNonceFromBinaryData(BinaryData const &binary_data);
+
+  void UpdateBinaryDataWithTrailingTimeStampBeforeNonce(BinaryData &binary_data, BlockTimeInterval const time_stamp);
   void UpdateBinaryDataWithTrailingNonce(BinaryData &binary_data, BlockNonce const nonce);
 
   template<typename T>
