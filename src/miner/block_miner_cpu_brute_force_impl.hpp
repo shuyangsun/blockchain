@@ -41,7 +41,7 @@ inline auto ssybc::BlockMinerCPUBruteForce<Validator>::MineGenesisNonce(
   auto const validator = Validator();
   BlockTimeInterval result_ts{ util::TrailingTimeStampBeforeNonceFromBinaryData(hashable_binary) };
   if (validator.IsValidGenesisBlockHash(HashCalculatorType().Hash(hashable_binary))) {
-    return util::TrailingNonceFromBinaryData(hashable_binary);
+    return { result_ts, util::TrailingNonceFromBinaryData(hashable_binary) };
   }
   BlockNonce result_nonce{};
   BlockNonce const nonce_max_limit{ std::numeric_limits<BlockNonce>::max() };
@@ -68,7 +68,7 @@ inline auto ssybc::BlockMinerCPUBruteForce<Validator>::MineNonce(
   auto const validator = Validator();
   BlockTimeInterval result_ts{ util::TrailingTimeStampBeforeNonceFromBinaryData(hashable_binary) };
   if (validator.IsValidHashToAppend(previous_hash, HashCalculatorType().Hash(hashable_binary))) {
-    return util::TrailingNonceFromBinaryData(hashable_binary);
+    return { result_ts, util::TrailingNonceFromBinaryData(hashable_binary) };
   }
   BlockNonce result_nonce{};
   BlockNonce const nonce_max_limit{ std::numeric_limits<BlockNonce>::max() };

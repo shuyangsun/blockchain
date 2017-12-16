@@ -28,7 +28,7 @@ namespace ssybc {
   struct MinedResult {
   public:
     BlockTimeInterval time_stamp{};
-    BlockNone nonce{};
+    BlockNonce nonce{};
   };
 
   template<typename Validator>
