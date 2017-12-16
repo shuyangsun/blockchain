@@ -84,7 +84,7 @@ inline ssybc::BlockTimeInterval ssybc::util::UTCTime()
 
 
 template<typename T>
-std::string ssybc::util::Description(T const &value)
+std::string ssybc::util::ToString(T const &value)
 {
   return Stringify_(value);
 }
@@ -196,7 +196,7 @@ inline ssybc::BlockNonce ssybc::util::TrailingNonceFromBinaryData(BinaryData con
 }
 
 
-void ssybc::util::UpdateBinaryDataWithTrailingTimeStampBeforeNonce(
+inline void ssybc::util::UpdateBinaryDataWithTrailingTimeStampBeforeNonce(
   BinaryData & binary_data,
   BlockTimeInterval const time_stamp)
 {
