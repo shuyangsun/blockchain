@@ -27,6 +27,7 @@
 #include "include/ssybc/block/block_content/block_content.hpp"
 #include "include/ssybc/hash_calculator/hash_calculator_double_sha256.hpp"
 #include "include/ssybc/binary_data_converter/binary_data_converter_default.hpp"
+#include "include/ssybc/miner/block_miner.hpp"
 
 namespace ssybc {
 

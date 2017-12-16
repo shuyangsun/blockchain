@@ -36,7 +36,7 @@
 
 template<typename Validator>
 inline auto ssybc::BlockMinerCPUBruteForce<Validator>::MineGenesisNonce(
-  BinaryData const & hashable_binary) const -> BlockNonce
+  BinaryData const & hashable_binary) const -> MinedResult
 {
   auto const validator = Validator();
   BlockTimeInterval result_ts{ util::TrailingTimeStampBeforeNonceFromBinaryData(hashable_binary) };
@@ -51,19 +51,19 @@ inline auto ssybc::BlockMinerCPUBruteForce<Validator>::MineGenesisNonce(
       result_nonce = 0;
       ++result_ts;
       util::UpdateBinaryDataWithTrailingTimeStampBeforeNonce(binary_mutable_copy, result_ts);
-      continue;
+    } else {
+      ++result_nonce;
     }
-    ++result_nonce;
     util::UpdateBinaryDataWithTrailingNonce(binary_mutable_copy, result_nonce);
   }
-  return result_nonce;
+  return { result_ts, result_nonce };
 }
 
 
 template<typename Validator>
 inline auto ssybc::BlockMinerCPUBruteForce<Validator>::MineNonce(
   BlockHash const & previous_hash,
-  BinaryData const & hashable_binary) const -> BlockNonce
+  BinaryData const & hashable_binary) const -> MinedResult
 {
   auto const validator = Validator();
   BlockTimeInterval result_ts{ util::TrailingTimeStampBeforeNonceFromBinaryData(hashable_binary) };
@@ -78,12 +78,12 @@ inline auto ssybc::BlockMinerCPUBruteForce<Validator>::MineNonce(
       result_nonce = 0;
       ++result_ts;
       util::UpdateBinaryDataWithTrailingTimeStampBeforeNonce(binary_mutable_copy, result_ts);
-      continue;
+    } else {
+      ++result_nonce;
     }
-    ++result_nonce;
     util::UpdateBinaryDataWithTrailingNonce(binary_mutable_copy, result_nonce);
   }
-  return result_nonce;
+  return { result_ts, result_nonce };
 }
 
 
