@@ -31,8 +31,8 @@ namespace ssybc {
 
 // --------------------------------------------------- Public Method --------------------------------------------------
 
-    BlockNonce MineGenesisNonce(BinaryData const &hashable_binary) const override;
-    BlockNonce MineNonce(BlockHash const &previous_hash, BinaryData const &hashable_binary) const override;
+    MinedResult MineGenesisNonce(BinaryData const &hashable_binary) const override;
+    MinedResult MineNonce(BlockHash const &previous_hash, BinaryData const &hashable_binary) const override;
   };
 
 

@@ -37,14 +37,14 @@ template<typename HashCalculatorT>
 inline ssybc::BlockHeader<HashCalculatorT>::BlockHeader(
   BlockVersion const version,
   BlockIndex const index,
-  BlockHash const & previous_hash,
   BlockHash const & merkle_root,
+  BlockHash const & previous_hash,
   BlockTimeInterval const time_stamp,
   BlockNonce const nonce):
   version_{ version },
   index_{ index },
-  previous_hash_{ previous_hash },
-  merkle_root_{ merkle_root },
+  merkle_root_{ merkle_root.begin(), merkle_root.end() },
+  previous_hash_{ previous_hash.begin(), previous_hash.end() },
   time_stamp_{ time_stamp },
   nonce_{ nonce },
   hash_{ HashCalculatorT().Hash(Binary()) }
@@ -55,14 +55,14 @@ template<typename HashCalculatorT>
 inline ssybc::BlockHeader<HashCalculatorT>::BlockHeader(
   BlockVersion const version,
   BlockIndex const index,
-  BlockHash && previous_hash,
   BlockHash && merkle_root,
+  BlockHash && previous_hash,
   BlockTimeInterval const time_stamp,
   BlockNonce const nonce) :
   version_{ version },
   index_{ index },
-  previous_hash_{ previous_hash },
   merkle_root_{ merkle_root },
+  previous_hash_{ previous_hash },
   time_stamp_{ time_stamp },
   nonce_{ nonce },
   hash_{ HashCalculatorT().Hash(Binary()) }
@@ -74,8 +74,8 @@ inline ssybc::BlockHeader<HashCalculatorT>::BlockHeader(BlockHeader const & head
   BlockHeader(
     header.Version(),
     header.Index(),
-    header.PreviousHash(),
     header.MerkleRoot(),
+    header.PreviousHash(),
     header.TimeStamp(),
     header.Nonce())
 { EMPTY_BLOCK }
@@ -86,8 +86,8 @@ inline ssybc::BlockHeader<HashCalculatorT>::BlockHeader(BlockHeader && header) :
   BlockHeader(
     header.Version(),
     header.Index(),
-    header.PreviousHash(),
     header.MerkleRoot(),
+    header.PreviousHash(),
     header.TimeStamp(),
     header.Nonce())
 { EMPTY_BLOCK }
@@ -95,15 +95,27 @@ inline ssybc::BlockHeader<HashCalculatorT>::BlockHeader(BlockHeader && header) :
 
 template<typename HashCalculatorT>
 inline ssybc::BlockHeader<HashCalculatorT>::BlockHeader(BinaryData const & binary_data):
-  // TODO
-  BlockHeader()
+  BlockHeader(
+    VersionFromBinaryData_(binary_data),
+    IndexFromBinaryData_(binary_data),
+    MerkleRootFromBinaryData_(binary_data),
+    PreviousHashFromBinaryData_(binary_data),
+    TimeStampFromBinaryData_(binary_data),
+    NonceFromBinaryData_(binary_data)
+  )
 { EMPTY_BLOCK }
 
 
 template<typename HashCalculatorT>
 inline ssybc::BlockHeader<HashCalculatorT>::BlockHeader(BinaryData && binary_data):
-  // TODO
-  BlockHeader()
+  BlockHeader(
+    VersionFromBinaryData_(binary_data),
+    IndexFromBinaryData_(binary_data),
+    MerkleRootFromBinaryData_(binary_data),
+    PreviousHashFromBinaryData_(binary_data),
+    TimeStampFromBinaryData_(binary_data),
+    NonceFromBinaryData_(binary_data)
+  )
 { EMPTY_BLOCK }
 
 
@@ -123,15 +135,15 @@ inline ssybc::BlockIndex ssybc::BlockHeader<HashCalculatorT>::Index() const
 }
 
 template<typename HashCalculatorT>
-inline ssybc::BlockHash ssybc::BlockHeader<HashCalculatorT>::PreviousHash() const
-{
-  return BinaryData{ previous_hash_.begin(), previous_hash_.end() };;
-}
-
-template<typename HashCalculatorT>
 inline ssybc::BlockHash ssybc::BlockHeader<HashCalculatorT>::MerkleRoot() const
 {
   return BinaryData{ merkle_root_.begin(), merkle_root_.end() };
+}
+
+template<typename HashCalculatorT>
+inline ssybc::BlockHash ssybc::BlockHeader<HashCalculatorT>::PreviousHash() const
+{
+  return BinaryData{ previous_hash_.begin(), previous_hash_.end() };;
 }
 
 template<typename HashCalculatorT>
@@ -150,13 +162,12 @@ template<typename HashCalculatorT>
 inline ssybc::BinaryData ssybc::BlockHeader<HashCalculatorT>::Binary() const
 {
   return util::ConcatenateMoveDestructive({
-    BinaryDataConverterDefault<BlockVersion>().BinaryDataFromData(Version()),
-    BinaryDataConverterDefault<BlockIndex>().BinaryDataFromData(Index()),
-    BinaryDataConverterDefault<BlockVersion>().BinaryDataFromData(Version()),
-    BinaryDataConverterDefault<BlockHash>().BinaryDataFromData(PreviousHash()),
-    BinaryDataConverterDefault<BlockHash>().BinaryDataFromData(MerkleRoot()),
-    BinaryDataConverterDefault<BlockTimeInterval>().BinaryDataFromData(TimeStamp()),
-    BinaryDataConverterDefault<BlockNonce>().BinaryDataFromData(Nonce())
+    VersionAsBinary_(),
+    IndexAsBinary_(),
+    MerkleRootAsBinary_(),
+    PreviousHashAsBinary_(),
+    TimeStampAsBinary_(),
+    NonceAsBinary_()
   });
 }
 
@@ -187,6 +198,13 @@ template<typename HashCalculatorT>
 inline std::string ssybc::BlockHeader<HashCalculatorT>::HashAsString() const
 {
   return util::HexStringFromBytes(Hash());
+}
+
+template<typename HashCalculatorT>
+inline BlockHeader ssybc::BlockHeader<HashCalculatorT>::HeaderWithDifferentMinedResult(
+  MinedResult const mined_result) const
+{
+  return BlockHeader(Version(), Index(), PreviousHash(), MerkleRoot(), mined_result.time_stamp, mined_result.nonce);
 }
 
 template<typename HashCalculatorT>
@@ -235,6 +253,111 @@ inline bool ssybc::BlockHeader<HashCalculatorT>::operator!=(BlockHeader const & 
 
 // -------------------------------------------------- Private Method --------------------------------------------------
 
+
+template<typename HashCalculatorT>
+inline ssybc::BinaryData ssybc::BlockHeader<HashCalculatorT>::VersionAsBinary_() const
+{
+  return BinaryDataConverterDefault<BlockVersion>().BinaryDataFromData(Version());
+}
+
+template<typename HashCalculatorT>
+inline ssybc::BinaryData ssybc::BlockHeader<HashCalculatorT>::IndexAsBinary_() const
+{
+  return BinaryDataConverterDefault<BlockIndex>().BinaryDataFromData(Index());
+}
+
+template<typename HashCalculatorT>
+inline ssybc::BinaryData ssybc::BlockHeader<HashCalculatorT>::MerkleRootAsBinary_() const
+{
+  return BinaryDataConverterDefault<BlockHash>().BinaryDataFromData(MerkleRoot());
+}
+
+template<typename HashCalculatorT>
+inline ssybc::BinaryData ssybc::BlockHeader<HashCalculatorT>::PreviousHashAsBinary_() const
+{
+  return BinaryDataConverterDefault<BlockHash>().BinaryDataFromData(PreviousHash());
+}
+
+template<typename HashCalculatorT>
+inline ssybc::BinaryData ssybc::BlockHeader<HashCalculatorT>::TimeStampAsBinary_() const
+{
+  return BinaryDataConverterDefault<BlockTimeStamp>().BinaryDataFromData(TimeStamp());
+}
+
+template<typename HashCalculatorT>
+inline ssybc::BinaryData ssybc::BlockHeader<HashCalculatorT>::NonceAsBinary_() const
+{
+  return BinaryDataConverterDefault<BlockNonce>().BinaryDataFromData(Nonce());
+}
+
+template<typename HashCalculatorT>
+inline ssybc::BlockVersion ssybc::BlockHeader<HashCalculatorT>::VersionFromBinaryData_(BinaryData const & data) const
+{
+  auto begin_iter = data.begin();
+  auto end_iter = begin_iter;
+  std::advance(end_iter, sizeof(BlockVersion));
+  BinaryData const data_tmp{ begin_iter, end_iter };
+  return BinaryDataConverterDefault<BlockVersion>().DataFromBinaryData(data_tmp);
+}
+
+template<typename HashCalculatorT>
+inline ssybc::BlockIndex ssybc::BlockHeader<HashCalculatorT>::IndexFromBinaryData_(BinaryData const & data) const
+{
+  auto begin_iter = data.begin();
+  std::advance(begin_iter, sizeof(BlockVersion));
+  auto end_iter = begin_iter;
+  std::advance(end_iter, sizeof(BlockIndex));
+  BinaryData const data_tmp{ begin_iter, end_iter };
+  return BinaryDataConverterDefault<BlockIndex>().DataFromBinaryData(data_tmp);
+}
+
+template<typename HashCalculatorT>
+inline ssybc::BlockHash ssybc::BlockHeader<HashCalculatorT>::MerkleRootFromBinaryData_(BinaryData const & data) const
+{
+  auto begin_iter = data.begin();
+  std::advance(begin_iter, sizeof(BlockVersion) + sizeof(BlockIndex));
+  auto end_iter = begin_iter;
+  std::advance(end_iter, std::static_cast<std::size_t>(HashCalculatorT().SizeOfHashInBytes()));
+  BinaryData const data_tmp{ begin_iter, end_iter };
+  return BinaryDataConverterDefault<BlockHash>().DataFromBinaryData(data_tmp);
+}
+
+template<typename HashCalculatorT>
+inline ssybc::BlockHash ssybc::BlockHeader<HashCalculatorT>::PreviousHashFromBinaryData_(BinaryData const & data) const
+{
+  auto begin_iter = data.begin();
+  auto const size_of_hash = std::static_cast<std::size_t>(HashCalculatorT().SizeOfHashInBytes());
+  std::advance(begin_iter, sizeof(BlockVersion) + sizeof(BlockIndex) + size_of_hash);
+  auto end_iter = begin_iter;
+  std::advance(end_iter, size_of_hash);
+  BinaryData const data_tmp{ begin_iter, end_iter };
+  return BinaryDataConverterDefault<BlockHash>().DataFromBinaryData(data_tmp);
+}
+
+template<typename HashCalculatorT>
+inline ssybc::BlockTimeInterval ssybc::BlockHeader<HashCalculatorT>::TimeStampFromBinaryData_(
+  BinaryData const & data) const
+{
+  auto begin_iter = data.begin();
+  auto const size_of_hash = std::static_cast<std::size_t>(HashCalculatorT().SizeOfHashInBytes());
+  std::advance(begin_iter, sizeof(BlockVersion) + sizeof(BlockIndex) + size_of_hash * 2);
+  auto end_iter = begin_iter;
+  std::advance(end_iter, sizeof(BlockTimeInterval));
+  BinaryData const data_tmp{ begin_iter, end_iter };
+  return BinaryDataConverterDefault<BlockTimeInterval>().DataFromBinaryData(data_tmp);
+}
+
+template<typename HashCalculatorT>
+inline ssybc::BlockNonce ssybc::BlockHeader<HashCalculatorT>::NonceFromBinaryData_(BinaryData const & data) const
+{
+  auto begin_iter = data.begin();
+  auto const size_of_hash = std::static_cast<std::size_t>(HashCalculatorT().SizeOfHashInBytes());
+  std::advance(begin_iter, sizeof(BlockVersion) + sizeof(BlockIndex) + size_of_hash * 2 + sizeof(BlockTimeInterval));
+  auto end_iter = begin_iter;
+  std::advance(end_iter, sizeof(BlockNonce));
+  BinaryData const data_tmp{ begin_iter, end_iter };
+  return BinaryDataConverterDefault<BlockNonce>().DataFromBinaryData(data_tmp);
+}
 
 
 #endif  // SSYBC_SRC_BLOCK_BLOCK_HEADER_BLOCK_HEADER_IMPL_HPP_

@@ -23,6 +23,7 @@
 #define SSYBC_INCLUDE_SSYBC_BLOCK_BLOCK_HEADER_BLOCK_HEADER_HPP_
 
 #include "include/ssybc/general/general.hpp"
+#include "include/ssybc/miner/block_miner.hpp"
 
 #include <string>
 
@@ -40,8 +41,8 @@ namespace ssybc {
     BlockHeader(
       BlockVersion const version,
       BlockIndex const index,
-      BlockHash const &previous_hash,
       BlockHash const &merkle_root,
+      BlockHash const &previous_hash,
       BlockTimeInterval const time_stamp,
       BlockNonce const nonce
     );
@@ -49,8 +50,8 @@ namespace ssybc {
     BlockHeader(
       BlockVersion const version,
       BlockIndex const index,
-      BlockHash &&previous_hash,
       BlockHash &&merkle_root,
+      BlockHash &&previous_hash,
       BlockTimeInterval const time_stamp,
       BlockNonce const nonce
     );
@@ -67,8 +68,8 @@ namespace ssybc {
 
     BlockVersion Version() const;
     BlockIndex Index() const;
-    BlockHash PreviousHash() const;
     BlockHash MerkleRoot() const;
+    BlockHash PreviousHash() const;
     BlockTimeInterval TimeStamp() const;
     BlockNonce Nonce() const;
 
@@ -78,6 +79,8 @@ namespace ssybc {
     SizeT SizeOfBinary() const;
     std::string PreviousBlockHashAsString() const;
     std::string HashAsString() const;
+
+    BlockHeader HeaderWithDifferentMinedResult(MinedResult const mined_result) const;
 
     operator std::string() const;
     std::string Description() const;
@@ -103,6 +106,19 @@ namespace ssybc {
 
 // -------------------------------------------------- Private Method --------------------------------------------------
 
+    BinaryData VersionAsBinary_() const;
+    BinaryData IndexAsBinary_() const;
+    BinaryData MerkleRootAsBinary_() const;
+    BinaryData PreviousHashAsBinary_() const;
+    BinaryData TimeStampAsBinary_() const;
+    BinaryData NonceAsBinary_() const;
+
+    BlockVersion VersionFromBinaryData_(BinaryData const &data) const;
+    BlockIndex IndexFromBinaryData_(BinaryData const &data) const;
+    BlockHash MerkleRootFromBinaryData_(BinaryData const &data) const;
+    BlockHash PreviousHashFromBinaryData_(BinaryData const &data) const;
+    BlockTimeInterval TimeStampFromBinaryData_(BinaryData const &data) const;
+    BlockNonce NonceFromBinaryData_(BinaryData const &data) const;
     
   };
 

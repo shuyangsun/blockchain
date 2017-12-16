@@ -48,8 +48,8 @@ inline auto ssybc::BlockMiner<Validator>::MineGenesis(BlockType const & block) c
     );
   }
   auto const hashable_binary = block.HashableBinaryData();
-  auto const result_nonce = MineGenesisNonce(hashable_binary);
-  auto result = block.BlockWithDifferentNonce(result_nonce);
+  auto const mined_result = MineGenesisNonce(hashable_binary);
+  auto result = block.BlockWithDifferentNonce(mined_result);
   if (!Validator().IsValidGenesisBlock(result)) {
     throw std::logic_error(
       "Cannot mine Genesis Block, mined result does not pass validator, "

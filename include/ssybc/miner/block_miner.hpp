@@ -25,6 +25,12 @@
 
 namespace ssybc {
 
+  struct MinedResult {
+  public:
+    BlockTimeInterval time_stamp{};
+    BlockNone nonce{};
+  };
+
   template<typename Validator>
   class BlockMiner {
   public:
@@ -34,8 +40,8 @@ namespace ssybc {
     using BlockType = typename Validator::BlockType;
     using HashCalculatorType = typename BlockType::HashCalculatorType;
 
-    virtual BlockNonce MineGenesisNonce(BinaryData const &hashable_binary) const = 0;
-    virtual BlockNonce MineNonce(BlockHash const &previous_hash, BinaryData const &hashable_binary) const = 0;
+    virtual MinedResult MineGenesisNonce(BinaryData const &hashable_binary) const = 0;
+    virtual MinedResult MineNonce(BlockHash const &previous_hash, BinaryData const &hashable_binary) const = 0;
 
     BlockType MineGenesis(BlockType const &block) const;
     BlockType Mine(BlockType const &previous_block, BlockType const &block) const;
