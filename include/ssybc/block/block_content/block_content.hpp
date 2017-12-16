@@ -36,6 +36,8 @@ namespace ssybc {
 
   public:
 
+    using BinaryConverterT = typename BinaryConverterTemplateT<DataT>;
+
 // --------------------------------------------- Constructor & Destructor ---------------------------------------------
 
     BlockContent() = delete;
@@ -61,8 +63,7 @@ namespace ssybc {
     std::string HashAsString() const;
 
     operator std::string() const;
-    std::string Description() const;
-    virtual std::string Description(std::string const &lead_padding) const;
+    virtual std::string Description() const;
 
     BlockContent& operator=(BlockContent &&) = delete;
     BlockContent& operator=(BlockContent const &) = delete;
@@ -74,14 +75,19 @@ namespace ssybc {
 
 // -------------------------------------------------- Private Field ---------------------------------------------------
 
-    std::unique_ptr<DataT> const data_ptr_;
+    std::unique_ptr<DataT const> const data_ptr_;
+    mutable bool did_cache_size_of_binary_{false};
+    mutable SizeT size_of_binary_{};
 
 // -------------------------------------------------- Private Method --------------------------------------------------
-
-    
+   
+    void CacheSizeOfBinary_(SizeT const size) const;
   };
 
 }  // namespace ssybc
+
+
+#include "src/block/block_content/block_content_impl.hpp"
 
 
 #endif  // SSYBC_INCLUDE_SSYBC_BLOCK_BLOCK_CONTENT_BLOCK_CONTENT_HPP_
