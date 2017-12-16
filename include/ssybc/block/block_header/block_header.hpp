@@ -109,5 +109,8 @@ namespace ssybc {
 }  // namespace ssybc
 
 
+#include "src/block/block_header/block_header_impl.hpp"
+
+
 #endif  // SSYBC_INCLUDE_SSYBC_BLOCK_BLOCK_HEADER_BLOCK_HEADER_HPP_
 
