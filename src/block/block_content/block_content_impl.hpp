@@ -163,6 +163,9 @@ inline bool ssybc::BlockContent<
 }
 
 
+// -------------------------------------------------- Private Method --------------------------------------------------
+
+
 template<typename DataT, template<typename> class BinaryConverterTemplateT, typename HashCalculatorT>
 inline void ssybc::BlockContent<
   DataT,
