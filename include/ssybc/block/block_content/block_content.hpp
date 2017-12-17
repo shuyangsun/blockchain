@@ -63,7 +63,8 @@ namespace ssybc {
     std::string HashAsString() const;
 
     operator std::string() const;
-    virtual std::string Description() const;
+    std::string Description() const;
+    virtual std::string Description(std::string const &lead_padding) const;
 
     BlockContent& operator=(BlockContent &&) = delete;
     BlockContent& operator=(BlockContent const &) = delete;

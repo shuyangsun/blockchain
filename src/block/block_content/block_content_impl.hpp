@@ -132,14 +132,30 @@ inline std::string ssybc::BlockContent<DataT, BinaryConverterTemplateT, HashCalc
 
 
 template<typename DataT, template<typename> class BinaryConverterTemplateT, typename HashCalculatorT>
+inline std::string ssybc::BlockContent<
+  DataT,
+  BinaryConverterTemplateT,
+  HashCalculatorT>::Description(std::string const &lead_padding) const
+{
+  auto const size_str = util::ToString(SizeOfBinary());
+  std::string data_str{};
+  try {
+    data_str = util::ToString(*data_ptr_);
+  } catch (const std::exception& e) {
+    data_str = util::HexStringFromBytes(Binary(), " ");
+  }
+  std::string result{lead_padding + "size: "};
+  result += (lead_padding + size_str + ",\n");
+  result += (lead_padding + "data: ");
+  result += (lead_padding + data_str);
+  return result;
+}
+
+
+template<typename DataT, template<typename> class BinaryConverterTemplateT, typename HashCalculatorT>
 inline std::string ssybc::BlockContent<DataT, BinaryConverterTemplateT, HashCalculatorT>::Description() const
 {
-  try {
-    return util::ToString(*data_ptr_);
-  }
-  catch (const std::exception& e) {
-    return util::HexStringFromBytes(Binary(), " ");
-  }
+  return Description("");
 }
 
 
