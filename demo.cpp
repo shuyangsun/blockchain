@@ -72,7 +72,6 @@ int main(int const argc, char const **argv) {
   std::cout
     << "Reconstructed blockchain from binary data is identical with original: "
     << (str_blockchain == resconstructed_strchain) << std::endl;
-
   return 0;
 }
 
