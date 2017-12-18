@@ -33,7 +33,7 @@
 
 template<typename DataT, template<typename> class BinaryConverterTemplateT, typename HashCalculatorT>
 inline ssybc::BlockContent<DataT, BinaryConverterTemplateT, HashCalculatorT>::BlockContent(DataT const & data):
-  data_ptr_{ std::make_unique<DataT const>(DataT(data)) }
+  data_ptr_{ std::make_unique<DataT const>(data) }
 {
   if (SizeOfBinary() <= 0) {
     throw std::logic_error("Cannot construct BlockContent from data with size 0 as binary.");
@@ -43,7 +43,7 @@ inline ssybc::BlockContent<DataT, BinaryConverterTemplateT, HashCalculatorT>::Bl
 
 template<typename DataT, template<typename> class BinaryConverterTemplateT, typename HashCalculatorT>
 inline ssybc::BlockContent<DataT, BinaryConverterTemplateT, HashCalculatorT>::BlockContent(DataT &&data):
-  data_ptr_{ std::make_unique<DataT const>(DataT(data)) }
+  data_ptr_{ std::make_unique<DataT const>(data) }
 {
   if (SizeOfBinary() <= 0) {
     throw std::logic_error("Cannot construct BlockContent from data with size 0 as binary.");
@@ -74,7 +74,7 @@ inline ssybc::BlockContent<
   DataT,
   BinaryConverterTemplateT,
   HashCalculatorT>::BlockContent(BlockContent const & content):
-  BlockContent(DataT(std::forward(content)))
+  BlockContent(content.Data())
 { EMPTY_BLOCK }
 
 
@@ -83,7 +83,7 @@ inline ssybc::BlockContent<
   DataT,
   BinaryConverterTemplateT,
   HashCalculatorT>::BlockContent(BlockContent && content) :
-  BlockContent(DataT(content))
+  BlockContent(content.Data())
 { EMPTY_BLOCK }
 
 
@@ -132,6 +132,16 @@ inline std::string ssybc::BlockContent<DataT, BinaryConverterTemplateT, HashCalc
 
 
 template<typename DataT, template<typename> class BinaryConverterTemplateT, typename HashCalculatorT>
+inline ssybc::BlockContent<
+  DataT,
+  BinaryConverterTemplateT,
+  HashCalculatorT>::operator std::string() const
+{
+  return Description();
+}
+
+
+template<typename DataT, template<typename> class BinaryConverterTemplateT, typename HashCalculatorT>
 inline std::string ssybc::BlockContent<
   DataT,
   BinaryConverterTemplateT,
@@ -145,9 +155,9 @@ inline std::string ssybc::BlockContent<
     data_str = util::HexStringFromBytes(Binary(), " ");
   }
   std::string result{lead_padding + "size: "};
-  result += (lead_padding + size_str + ",\n");
+  result += (size_str + ",\n");
   result += (lead_padding + "data: ");
-  result += (lead_padding + data_str);
+  result += (data_str);
   return result;
 }
 

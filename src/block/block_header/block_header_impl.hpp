@@ -177,16 +177,18 @@ inline ssybc::BlockHash ssybc::BlockHeader<HashCalculatorT>::Hash() const
   return BinaryData{ hash_.begin(), hash_.end() };
 }
 
+
 template<typename HashCalculatorT>
-inline ssybc::SizeT ssybc::BlockHeader<HashCalculatorT>::SizeOfBinary() const
+inline ssybc::SizeT ssybc::BlockHeader<HashCalculatorT>::SizeOfBinary()
 {
   return
-    sizeof(decltype(version_))
-    + sizeof(decltype(index_))
+    sizeof(BlockVersion)
+    + sizeof(BlockIndex)
     + HashCalculatorT().SizeOfHashInBytes() * 2
-    + sizeof(decltype(time_stamp_))
-    + sizeof(decltype(nonce_));
+    + sizeof(BlockTimeInterval)
+    + sizeof(BlockNonce);
 }
+
 
 template<typename HashCalculatorT>
 inline std::string ssybc::BlockHeader<HashCalculatorT>::PreviousBlockHashAsString() const
@@ -217,19 +219,19 @@ template<typename HashCalculatorT>
 inline std::string ssybc::BlockHeader<HashCalculatorT>::Description(std::string const & lead_padding) const
 {
   std::string result{ lead_padding + "version: " };
-  result += (lead_padding + util::ToString(Version()) + ",\n");
+  result += (util::ToString(Version()) + ",\n");
   result += (lead_padding + "index: ");
-  result += (lead_padding + util::ToString(Index()) + ",\n");
+  result += (util::ToString(Index()) + ",\n");
   result += (lead_padding + "time_stamp: ");
-  result += (lead_padding + util::ToString(TimeStamp()) + ",\n");
+  result += (util::ToString(TimeStamp()) + ",\n");
   result += (lead_padding + "nonce: ");
-  result += (lead_padding + util::ToString(Nonce()) + ",\n");
+  result += (util::ToString(Nonce()) + ",\n");
   result += (lead_padding + "merkel_root: ");
-  result += (lead_padding + util::HexStringFromBytes(MerkleRoot()) + ",\n");
+  result += ( util::HexStringFromBytes(MerkleRoot()) + ",\n");
   result += (lead_padding + "previous_hash: ");
-  result += (lead_padding + util::HexStringFromBytes(PreviousHash()) + ",\n");
+  result += (util::HexStringFromBytes(PreviousHash()) + ",\n");
   result += (lead_padding + "hash: ");
-  result += (lead_padding + util::HexStringFromBytes(Hash()) + "\n");
+  result += util::HexStringFromBytes(Hash());
   return result;
 }
 

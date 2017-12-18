@@ -76,7 +76,7 @@ namespace ssybc {
     BinaryData Binary() const;
     BlockHash Hash() const;
 
-    SizeT SizeOfBinary() const;
+    static SizeT SizeOfBinary();
     std::string PreviousBlockHashAsString() const;
     std::string HashAsString() const;
 

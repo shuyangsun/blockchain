@@ -27,57 +27,90 @@
 #include "include/ssybc/block/block_content/block_content.hpp"
 #include "include/ssybc/hash_calculator/hash_calculator_double_sha256.hpp"
 #include "include/ssybc/binary_data_converter/binary_data_converter_default.hpp"
-#include "include/ssybc/miner/block_miner.hpp"
+
+#include <memory>
 
 namespace ssybc {
 
   template<
-    typename BlockContent,
+    typename DataT,
     template<typename> class ContentBinaryConverterTemplate = BinaryDataConverterDefault,
-    typename HashCalculator = DoubleSHA256Calculator>
+    typename HeaderHashCalculatorT = DoubleSHA256Calculator,
+    typename ContentHashCalculatorT = HeaderHashCalculatorT>
   class Block {
 
   public:
 
 // -------------------------------------------------- Type Definition -------------------------------------------------
 
-    using BlockContentType = BlockContent;
-    using ContentBinaryConverterType = ContentBinaryConverterTemplate<BlockContent>;
-    using HashCalculatorType = HashCalculator;
+    using DataType = DataT;
+    using ContentBinaryConverterType = ContentBinaryConverterTemplate<DataT>;
+    using BlockHeaderType = BlockHeader<HeaderHashCalculatorT>;
+    using BlockContentType = BlockContent<DataT, ContentBinaryConverterTemplate, ContentHashCalculatorT>;
+    using HeaderHashCalculatorType = HeaderHashCalculatorT;
+    using ContentHashCalculatorType = ContentHashCalculatorT;
 
 // --------------------------------------------- Constructor & Destructor ---------------------------------------------
 
     Block() = delete;
-    Block
-    (
+
+    Block(BlockHeaderType const &header);
+    Block(BlockHeaderType &&header);
+
+    Block(BlockHeaderType const &header, BlockContentType const &content);
+    Block(BlockHeaderType &&header, BlockContentType &&content);
+
+    Block(
+      BlockVersion const block_version,
       BlockIndex const block_index,
-      BlockTimeInterval const time_stamp,
       BlockHash const &previous_hash,
+      BlockTimeInterval const time_stamp,
       BlockNonce const nonce,
-      BlockContent const &content
+      DataT const &data
     );
+
+    Block(
+      BlockVersion const block_version,
+      BlockIndex const block_index,
+      BlockHash &&previous_hash,
+      BlockTimeInterval const time_stamp,
+      BlockNonce const nonce,
+      DataT &&data
+    );
+
+    Block(
+      BlockVersion const block_version,
+      BlockIndex const block_index,
+      BlockHash const &merkle_root,
+      BlockHash const &previous_hash,
+      BlockTimeInterval const time_stamp,
+      BlockNonce const nonce
+    );
+
+    Block(
+      BlockVersion const block_version,
+      BlockIndex const block_index,
+      BlockHash &&merkle_root,
+      BlockHash &&previous_hash,
+      BlockTimeInterval const time_stamp,
+      BlockNonce const nonce
+    );
+
     Block(Block const &block);
     Block(Block &&block);
+
     Block(BinaryData const &binary_data);
-    ~Block();
+    Block(BinaryData &&binary_data);
+    
+    ~Block() = default;
 
 // --------------------------------------------------- Public Method --------------------------------------------------
 
-    BlockIndex Index() const;
-    BlockTimeInterval TimeStamp() const;
-    BlockHash PreviousBlockHash() const;
-    BlockHash Hash() const;
-    BlockNonce Nonce() const;
-    SizeT SizeOfBinaryContent() const;
-    SizeT SizeOfBinaryBlock() const;
-    BlockContent Content() const;
-    
-    std::string PreviousBlockHashAsString() const;
-    std::string HashAsString() const;
+    bool IsHeaderOnly() const;
+    BlockHeaderType Header() const;
+    BlockContentType Content() const;
 
-    BinaryData ToBinaryBlock() const;
-    BinaryData HashableBinaryData() const;
-    Block BlockWithDifferentNonce(BlockNonce const nonce) const;
+    BinaryData Binary() const;
     
     operator std::string() const;
     virtual std::string Description() const;
@@ -92,33 +125,14 @@ namespace ssybc {
 
 // -------------------------------------------------- Private Field ---------------------------------------------------
 
-    BlockIndex const index_;
-    BlockTimeInterval const time_stamp_;
-    BlockHash const previous_hash_;
-    BlockNonce const nonce_;
-    BlockContent const content_;
-    BlockHash const hash_;
+    BlockHeaderType header_;
+    std::unique_ptr<BlockContentType const> content_ptr_;
 
 // -------------------------------------------------- Private Method --------------------------------------------------
 
-    BinaryData IndexAsBinary_() const;
-    BinaryData TimeStampAsBinary_() const;
-    BinaryData PreviousHashAsBinary_() const;
-    BinaryData NonceAsBinary_() const;
-    BinaryData ContentAsBinary_() const;
-    BinaryData SizeOfBlockAsBinary_() const;
-    BinaryData HashAsBinary_() const;
-
-    SizeT SizeOfBinaryBlockFromBinaryBlockData_(BinaryData const &data) const;
-    BlockIndex IndexFromBinaryBlockData_(BinaryData const &data) const;
-    BlockTimeInterval TimeStampFromBinaryBlockData_(BinaryData const &data) const;
-    BlockHash PreviousHashFromBinaryBlockData_(BinaryData const &data) const;
-    BlockHash HashFromBinaryBlockData_(BinaryData const &data) const;
-    BlockNonce NonceFromBinaryBlockData_(BinaryData const &data) const;
-    BlockContent ContentFromBinaryBlockData_(BinaryData const &data) const;
-
-    std::vector<BinaryData> HashableBinaryArr_() const;
-    std::vector<BinaryData> BlockBinaryArr_() const;
+    BlockHeaderType HeaderFromBinaryData_(BinaryData &&binary_data) const;
+    std::unique_ptr<BlockContentType const> ContentPtrFromBinaryData_(BinaryData &&binary_data) const;
+    void ThrowContentHashDoesNotMatchMerkleRootException_() const;
   };
 
 }  // namespace ssybc
