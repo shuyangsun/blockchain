@@ -80,6 +80,11 @@ namespace ssybc {
     BinaryData Binary() const;
     BinaryData BinaryHeadersOnly() const;
 
+    bool SaveBinaryToFileAtPath(std::string const &file_path);
+    bool SaveHeadersOnlyBinaryToFileAtPath(std::string const &file_path);
+
+    static Blockchain LoadFromBinaryFileAtPath(std::string const &file_path);
+
 // -------------------------------------------------- Private Member --------------------------------------------------
 
   private:

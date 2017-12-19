@@ -23,8 +23,8 @@
 
 #include "include/ssybc/ssybc.hpp"
 
-
 int main(int const argc, char const **argv) {
+
   // Define a type alias for a blockchain with content type on each block as string.
   using StringBlockChain = typename ssybc::Blockchain<ssybc::Block<std::string>>;
   
@@ -91,6 +91,7 @@ int main(int const argc, char const **argv) {
 
   // Reconstruct Blockchain headers from binary data.
   StringBlockChain resconstructed_strchain_header{ strchain_header_binary };
+  std::cout << std::endl;
   std::cout << "Reconstructed headers from binary data:" << std::endl;
   std::cout << resconstructed_strchain_header.Description() << std::endl;
 
@@ -98,6 +99,16 @@ int main(int const argc, char const **argv) {
   std::cout
     << "Reconstructed blockchain headers from binary data is identical with original: "
     << (str_blockchain == resconstructed_strchain_header) << std::endl;
+
+  // Save to binary file.
+  std::string const file_path{ "temp.ssybc" };
+  bool const save_succeeded{ str_blockchain.SaveHeadersOnlyBinaryToFileAtPath(file_path) };
+  std::cout << std::endl;
+  std::cout << "Save binary header to file succeeded: " << save_succeeded << std::endl;
+
+  // Load from binary file.
+  auto loaded_blockchain = StringBlockChain::LoadFromBinaryFileAtPath(file_path);
+  std::cout << "Loaded Blockchain is identical with original: " << (loaded_blockchain == str_blockchain) << std::endl;
 
   return 0;
 }
@@ -186,6 +197,7 @@ int main(int const argc, char const **argv) {
  * 00 00 00 00 00 00 00 00 00 02 00 00 00 00 00 00 00 18 a0 30 9f 56 4a 3e 67 80 5e 83 9f 48 f8 4a f3 92 cb b7 94 7a a8
  * 31 67 6b 6d 7b 4d f5 e7 a2 73 00 00 19 bc be 6d e9 da 3f 0c 43 b3 16 5c 6a 72 14 0c 90 6d 46 7c 17 54 f1 8f 9e 84 30
  * 95 ee ae c9 b9 38 5a 00 00 00 00 cd d0 04 00 00 00 00 00 00 00 00 00 00 00 00 00
+ *
  * Reconstructed headers from binary data:
  * [{
  *   header: {
@@ -225,6 +237,9 @@ int main(int const argc, char const **argv) {
  * }]
  * 
  * Reconstructed blockchain headers from binary data is identical with original: 1
+ *
+ * Save binary header to file succeeded: 1
+ * Loaded Blockchain is identical with original: 1
  *
  **********************************************************************************************************************/
 
