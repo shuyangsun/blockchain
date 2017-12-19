@@ -116,7 +116,7 @@ int main(int const argc, char const **argv) {
  *     index: 0,
  *     time_stamp: 2017-12-19T07:03:12UTC,
  *     nonce: 249433,
- *     merkel_root: 0414a621607c50202d805f2baef57d2c6344bc1560a783270e0e2db108e34c96,
+ *     merkel_root:   0414a621607c50202d805f2baef57d2c6344bc1560a783270e0e2db108e34c96,
  *     previous_hash: 0000000000000000000000000000000000000000000000000000000000000000,
  *     hash:          000051d4822d71d6cfe1e9a640eaaa600a3ba41f15072d014c435848e51b5197
  *   },
@@ -131,7 +131,7 @@ int main(int const argc, char const **argv) {
  *     index: 1,
  *     time_stamp: 2017-12-19T07:03:23UTC,
  *     nonce: 312238,
- *     merkel_root: 961530065a089857eb23a18837a5881e89356e7fd61695502126ffc041ac55ce,
+ *     merkel_root:   961530065a089857eb23a18837a5881e89356e7fd61695502126ffc041ac55ce,
  *     previous_hash: 000051d4822d71d6cfe1e9a640eaaa600a3ba41f15072d014c435848e51b5197,
  *     hash:          000019bcbe6de9da3f0c43b3165c6a72140c906d467c1754f18f9e843095eeae
  *   },
@@ -146,7 +146,7 @@ int main(int const argc, char const **argv) {
  *     index: 2,
  *     time_stamp: 2017-12-19T07:03:37UTC,
  *     nonce: 315597,
- *     merkel_root: 18a0309f564a3e67805e839f48f84af392cbb7947aa831676b6d7b4df5e7a273,
+ *     merkel_root:   18a0309f564a3e67805e839f48f84af392cbb7947aa831676b6d7b4df5e7a273,
  *     previous_hash: 000019bcbe6de9da3f0c43b3165c6a72140c906d467c1754f18f9e843095eeae,
  *     hash:          00000c178f4e7f3e150b400a8d016425d4fa9eb10f72348b6730fece6f9df216
  *   },
@@ -193,7 +193,7 @@ int main(int const argc, char const **argv) {
  *     index: 0,
  *     time_stamp: 2017-12-19T07:03:12UTC,
  *     nonce: 249433,
- *     merkel_root: 0414a621607c50202d805f2baef57d2c6344bc1560a783270e0e2db108e34c96,
+ *     merkel_root:   0414a621607c50202d805f2baef57d2c6344bc1560a783270e0e2db108e34c96,
  *     previous_hash: 0000000000000000000000000000000000000000000000000000000000000000,
  *     hash:          000051d4822d71d6cfe1e9a640eaaa600a3ba41f15072d014c435848e51b5197
  *   },
@@ -205,7 +205,7 @@ int main(int const argc, char const **argv) {
  *     index: 1,
  *     time_stamp: 2017-12-19T07:03:23UTC,
  *     nonce: 312238,
- *     merkel_root: 961530065a089857eb23a18837a5881e89356e7fd61695502126ffc041ac55ce,
+ *     merkel_root:   961530065a089857eb23a18837a5881e89356e7fd61695502126ffc041ac55ce,
  *     previous_hash: 000051d4822d71d6cfe1e9a640eaaa600a3ba41f15072d014c435848e51b5197,
  *     hash:          000019bcbe6de9da3f0c43b3165c6a72140c906d467c1754f18f9e843095eeae
  *   },
@@ -217,7 +217,7 @@ int main(int const argc, char const **argv) {
  *     index: 2,
  *     time_stamp: 2017-12-19T07:03:37UTC,
  *     nonce: 315597,
- *     merkel_root: 18a0309f564a3e67805e839f48f84af392cbb7947aa831676b6d7b4df5e7a273,
+ *     merkel_root:   18a0309f564a3e67805e839f48f84af392cbb7947aa831676b6d7b4df5e7a273,
  *     previous_hash: 000019bcbe6de9da3f0c43b3165c6a72140c906d467c1754f18f9e843095eeae,
  *     hash:          00000c178f4e7f3e150b400a8d016425d4fa9eb10f72348b6730fece6f9df216
  *   },

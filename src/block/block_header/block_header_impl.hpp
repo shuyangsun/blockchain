@@ -226,7 +226,7 @@ inline std::string ssybc::BlockHeader<HashCalculatorT>::Description(std::string 
   result += (util::DateTimeStringFromTimeStamp(TimeStamp()) + ",\n");
   result += (lead_padding + "nonce: ");
   result += (util::ToString(Nonce()) + ",\n");
-  result += (lead_padding + "merkel_root: ");
+  result += (lead_padding + "merkel_root:   ");
   result += ( util::HexStringFromBytes(MerkleRoot()) + ",\n");
   result += (lead_padding + "previous_hash: ");
   result += (util::HexStringFromBytes(PreviousHash()) + ",\n");
