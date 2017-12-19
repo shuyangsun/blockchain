@@ -203,7 +203,7 @@ ssybc::Block<
   HeaderHashCalculatorT,
   ContentHashCalculatorT>::Block(Block const & block) :
   header_{ block.Header() },
-  content_ptr{ block.IsHeaderOnly()
+  content_ptr_{ block.IsHeaderOnly()
   ? nullptr : std::make_unique<BlockContentType const>(BlockContentType(block.Content())) }
 { EMPTY_BLOCK }
 
@@ -220,7 +220,7 @@ ssybc::Block<
   HeaderHashCalculatorT,
   ContentHashCalculatorT>::Block(Block &&block) :
   header_{ block.Header() },
-  content_ptr{ block.IsHeaderOnly()
+  content_ptr_{ block.IsHeaderOnly()
   ? nullptr : std::make_unique<BlockContentType const>(BlockContentType(block.Content())) }
 { EMPTY_BLOCK }
 

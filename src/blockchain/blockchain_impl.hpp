@@ -46,20 +46,20 @@ ssybc::Blockchain<BlockType, Validator>::Blockchain(BlockType const & genesis_bl
 
 
 template<typename BlockType, template<typename> class Validator>
-ssybc::Blockchain<BlockType, Validator>::Blockchain(BlockContentType const & content):
-  Blockchain(content, DefaultMiner_())
+ssybc::Blockchain<BlockType, Validator>::Blockchain(BlockDataType const & data):
+  Blockchain(data, DefaultMiner_())
 { EMPTY_BLOCK }
 
 
 template<typename BlockType, template<typename> class Validator>
-ssybc::Blockchain<BlockType, Validator>::Blockchain(BlockContentType const & content, MinerType const & miner):
-  Blockchain(MinedGenesisWithContent_(content, miner))
+ssybc::Blockchain<BlockType, Validator>::Blockchain(BlockDataType const & data, MinerType const & miner):
+  Blockchain(MinedGenesisWithData_(data, miner))
 { EMPTY_BLOCK }
 
 
 template<typename BlockType, template<typename> class Validator>
 ssybc::Blockchain<BlockType, Validator>::Blockchain(BinaryData const &binary_data):
-  Blockchain(std::move(BinaryData(binary_data.begin(), binary_data.end())))
+  Blockchain(BinaryData(binary_data.begin(), binary_data.end()))
 { EMPTY_BLOCK }
 
 
@@ -69,12 +69,18 @@ ssybc::Blockchain<BlockType, Validator>::Blockchain(BinaryData &&binary_data)
   auto converter = BinaryDataConverterDefault<SizeT>();
   std::vector<BlockType> blocks{};
   while (binary_data.size() > 0) {
-    SizeT const size_of_block_binary{ converter.DataFromBinaryData(binary_data) };
-    auto block_begin_iter = binary_data.begin();
-    auto block_end_iter = binary_data.begin();
-    std::advance(block_end_iter, static_cast<std::size_t>(size_of_block_binary));
-    blocks.push_back(BlockType(binary_data));
-    binary_data.erase(block_begin_iter, block_end_iter);
+    auto data_size_begin_iter = binary_data.begin();
+    std::advance(data_size_begin_iter, BlockType::BlockHeaderType::SizeOfBinary());
+    auto data_size_end_iter = data_size_begin_iter;
+    std::advance(data_size_end_iter, sizeof(SizeT));
+    BinaryData data_size_binary{ data_size_begin_iter, data_size_end_iter };
+    auto const data_size = converter.DataFromBinaryData(data_size_binary);
+    auto block_end_iter = data_size_end_iter;
+    std::advance(block_end_iter, data_size);
+
+    auto block_binary_copy = BinaryData{ binary_data.begin(), block_end_iter };
+    blocks.push_back(BlockType(std::move(block_binary_copy)));
+    binary_data.erase(binary_data.begin(), block_end_iter);
   }
   if (!ValidatorType().IsValidGenesisBlock(blocks.front())) {
     throw std::logic_error("Cannot construct Blockchain with invalid Genesis Block.");
@@ -121,20 +127,24 @@ inline bool ssybc::Blockchain<BlockType, Validator>::Append(BlockType const & bl
 
 
 template<typename BlockType, template<typename> class Validator>
-inline bool ssybc::Blockchain<BlockType, Validator>::Append(BlockContentType const & content)
+inline bool ssybc::Blockchain<BlockType, Validator>::Append(BlockDataType const & data)
 {
-  return Append(content, DefaultMiner_());
+  return Append(data, DefaultMiner_());
 }
 
 
 template<typename BlockType, template<typename> class Validator>
 inline bool ssybc::Blockchain<BlockType, Validator>::Append(
-  BlockContentType const & content,
+  BlockDataType const & data,
   MinerType const &miner)
 {
   auto const tail_block = TailBlock();
-  auto const next_block_init = BlockInitializedWithContent_(content, blocks_.size(), tail_block.Hash());
-  auto const block = miner.Mine(tail_block, next_block_init);
+  auto const next_block_init = BlockInitializedWithData_(
+    data,
+    tail_block.Header().Version(),
+    blocks_.size(),
+    tail_block.Header().Hash());
+  auto block = miner.Mine(tail_block, next_block_init);
   return Append(block);
 }
 
@@ -195,7 +205,8 @@ inline bool ssybc::Blockchain<BlockType, Validator>::operator!=(Blockchain const
 template<typename BlockType, template<typename> class Validator>
 inline std::string ssybc::Blockchain<BlockType, Validator>::Description() const
 {
-  return util::Join<BlockType>(blocks_, ",\n", [&](BlockType block) { return block.Description();  });
+  auto result = util::Join<BlockType>(blocks_, ",\n", [&](BlockType block) { return block.Description();  });
+  return "[" + result + "]";
 }
 
 
@@ -207,11 +218,11 @@ ssybc::Blockchain<BlockType, Validator>::operator std::string() const
 
 
 template<typename BlockType, template<typename> class Validator>
-inline auto ssybc::Blockchain<BlockType, Validator>::ToBinary() const -> BinaryData
+inline auto ssybc::Blockchain<BlockType, Validator>::Binary() const -> BinaryData
 {
   std::vector<BinaryData> result{};
   for (auto const &block : blocks_) {
-    result.push_back(block.ToBinaryBlock());
+    result.push_back(block.Binary());
   }
   return util::ConcatenateMoveDestructive(result);
 }
@@ -224,16 +235,16 @@ template<typename BlockType, template<typename> class Validator>
 inline void ssybc::Blockchain<BlockType, Validator>::PushBackBlock_(BlockType const & block)
 {
   blocks_.push_back(block);
-  hash_to_index_dict_[block.HashAsString()] = static_cast<std::size_t>(block.Index());
+  hash_to_index_dict_[block.Header().HashAsString()] = static_cast<std::size_t>(block.Header().Index());
 }
 
 
 template<typename BlockType, template<typename> class Validator>
 BlockType ssybc::Blockchain<
   BlockType,
-  Validator>::MinedGenesisWithContent_(BlockContentType const & content, MinerType const &miner) const
+  Validator>::MinedGenesisWithData_(BlockDataType const & data, MinerType const &miner) const
 {
-  auto genesis_init = BlockInitializedWithContent_(content, 0, HashCalculatorType().GenesisBlockPreviousHash());
+  auto genesis_init = BlockInitializedWithData_(data, 0, 0, HeaderHashCalculatorType().GenesisBlockPreviousHash());
   return miner.MineGenesis(genesis_init);
 }
 
@@ -248,17 +259,19 @@ inline auto ssybc::Blockchain<BlockType, Validator>::DefaultMiner_() const -> Bl
 template<typename BlockType, template<typename> class Validator>
 inline BlockType ssybc::Blockchain<
   BlockType,
-  Validator>::BlockInitializedWithContent_(
-    BlockContentType const & content,
+  Validator>::BlockInitializedWithData_(
+    BlockDataType const & data,
+    BlockVersion const version,
     BlockIndex const index,
     BlockHash const &previous_hash) const
 {
   BlockType result {
+    version,
     index,
-    util::UTCTime(),
     previous_hash,
+    util::UTCTime(),
     kDefaultNonce,
-    content
+    data
   };
   return result;
 }

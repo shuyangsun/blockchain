@@ -28,12 +28,21 @@ int main(int const argc, char const **argv) {
   // Define a type alias for a blockchain with content type on each block as string.
   using StringBlockChain = typename ssybc::Blockchain<ssybc::Block<std::string>>;
   
+  std::cout << "Started mining blocks..." << std::endl;
+
   // Initializing the Genesis Block with a string.
   StringBlockChain str_blockchain{ "This is a Genesis Block on SSY Blockchain!" };
+  std::cout << "Genesis block mined!" << std::endl;
 
   // Appending content onto the chain.
   str_blockchain.Append("The second block needs a little bit time to mine.");
+  std::cout << "Second block mined!" << std::endl;
+
   str_blockchain.Append("Third block is slower.");
+  std::cout << "Third block mined!" << std::endl;
+
+  std::cout << "Block mining finished." << std::endl;
+  std::cout << std::endl;
 
   // Print Blockchain to human readable text.
   std::cout << str_blockchain.Description() << std::endl;
@@ -46,12 +55,12 @@ int main(int const argc, char const **argv) {
   std::cout << std::endl;
   std::cout
     << "Block indices: "
-    << genesis_block.Index() << " "
-    << second_block.Index() << " "
-    << last_block.Index() << std::endl;
+    << genesis_block.Header().Index() << " "
+    << second_block.Header().Index() << " "
+    << last_block.Header().Index() << std::endl;
   
   auto last_block_by_negative_idx = str_blockchain[-1];
-  auto last_block_by_hash = str_blockchain[last_block.HashAsString()];
+  auto last_block_by_hash = str_blockchain[last_block.Header().HashAsString()];
 
   std::cout << std::endl;
   std::cout << "Found last block by negative index: " << (last_block_by_negative_idx == last_block) << std::endl;
@@ -59,7 +68,7 @@ int main(int const argc, char const **argv) {
   std::cout << std::endl;
 
   // Convert Blockchain to binary data, can be save to file later.
-  auto str_chain_as_binary = str_blockchain.ToBinary();
+  auto str_chain_as_binary = str_blockchain.Binary();
 
   // Visualize binary data.
   std::cout << std::endl;
@@ -76,33 +85,58 @@ int main(int const argc, char const **argv) {
 }
 
 /**************************************************** Sample Output ****************************************************
- * {
- *   index: 0,
- *   time_stamp: 2017-12-11T18:23:52UTC,
- *   nonce: 55363,
- *   pre_hash: 0000000000000000000000000000000000000000000000000000000000000000,
- *   cur_hash: 0000ed47f0747de374922683e83b8e259a80f8e89c31c96025aabde0c69d67ef,
- *   content_size_in_bytes: 42,
- *   content: This is a Genesis Block on SSY Blockchain!
+ * 
+ * Started mining blocks...
+ * Genesis block mined!
+ * Second block mined!
+ * Third block mined!
+ * Block mining finished.
+ * 
+ * [{
+ *   header: {
+ *     version: 0,
+ *     index: 0,
+ *     time_stamp: 2017-12-19T06:43:26UTC,
+ *     nonce: 33345,
+ *     merkel_root: 0414a621607c50202d805f2baef57d2c6344bc1560a783270e0e2db108e34c96,
+ *     previous_hash: 0000000000000000000000000000000000000000000000000000000000000000,
+ *     hash:          000065d2ce1b0ec1a45f61e49fba4fbe6d77d20a13851ccbd2be534154c0f6dc
+ *   },
+ *   content: {
+ *     size: 42,
+ *     data: This is a Genesis Block on SSY Blockchain!
+ *   }
  * },
  * {
- *   index: 1,
- *   time_stamp: 2017-12-11T18:23:53UTC,
- *   nonce: 31830,
- *   pre_hash: 0000ed47f0747de374922683e83b8e259a80f8e89c31c96025aabde0c69d67ef,
- *   cur_hash: 0000b32832a0e14debac17037abf5103e49c1f7cfd330e74a14518b438e8508e,
- *   content_size_in_bytes: 49,
- *   content: The second block needs a little bit time to mine.
+ *   header: {
+ *     version: 0,
+ *     index: 1,
+ *     time_stamp: 2017-12-19T06:43:27UTC,
+ *     nonce: 202554,
+ *     merkel_root: 961530065a089857eb23a18837a5881e89356e7fd61695502126ffc041ac55ce,
+ *     previous_hash: 000065d2ce1b0ec1a45f61e49fba4fbe6d77d20a13851ccbd2be534154c0f6dc,
+ *     hash:          00004851e5139dac3438e81c0176031394e6e0dacf4c21963e2429455bb9f3ca
+ *   },
+ *   content: {
+ *     size: 49,
+ *     data: The second block needs a little bit time to mine.
+ *   }
  * },
  * {
- *   index: 2,
- *   time_stamp: 2017-12-11T18:23:54UTC,
- *   nonce: 115547,
- *   pre_hash: 0000b32832a0e14debac17037abf5103e49c1f7cfd330e74a14518b438e8508e,
- *   cur_hash: 000044d101e5b6de8e819980fb4bd5e86755a263a65e4515c073be7e76977400,
- *   content_size_in_bytes: 22,
- *   content: Third block is slower.
- * }
+ *   header: {
+ *     version: 0,
+ *     index: 2,
+ *     time_stamp: 2017-12-19T06:43:36UTC,
+ *     nonce: 14197,
+ *     merkel_root: 18a0309f564a3e67805e839f48f84af392cbb7947aa831676b6d7b4df5e7a273,
+ *     previous_hash: 00004851e5139dac3438e81c0176031394e6e0dacf4c21963e2429455bb9f3ca,
+ *     hash:          0000219e0bea7ed6a0a22352155cd1249172f69dc8e409a775acef6bdbd38cb8
+ *   },
+ *   content: {
+ *     size: 22,
+ *     data: Third block is slower.
+ *   }
+ * }]
  * 
  * Block indices: 0 1 2
  * 
@@ -111,19 +145,19 @@ int main(int const argc, char const **argv) {
  * 
  * 
  * Binary blockchain as hex:
- * 8a 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 38 cd 2e 5a 00 00 00 00 43 d8 00 00 00 00 00 00 00 00 00 00 00 00 00
- * 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ed 47 f0 74 7d e3 74 92 26 83 e8 3b
- * 8e 25 9a 80 f8 e8 9c 31 c9 60 25 aa bd e0 c6 9d 67 ef 54 68 69 73 20 69 73 20 61 20 47 65 6e 65 73 69 73 20 42 6c 6f
- * 63 6b 20 6f 6e 20 53 53 59 20 42 6c 6f 63 6b 63 68 61 69 6e 21 91 00 00 00 00 00 00 00 01 00 00 00 00 00 00 00 39 cd
- * 2e 5a 00 00 00 00 56 7c 00 00 00 00 00 00 00 00 ed 47 f0 74 7d e3 74 92 26 83 e8 3b 8e 25 9a 80 f8 e8 9c 31 c9 60 25
- * aa bd e0 c6 9d 67 ef 00 00 b3 28 32 a0 e1 4d eb ac 17 03 7a bf 51 03 e4 9c 1f 7c fd 33 0e 74 a1 45 18 b4 38 e8 50 8e
- * 54 68 65 20 73 65 63 6f 6e 64 20 62 6c 6f 63 6b 20 6e 65 65 64 73 20 61 20 6c 69 74 74 6c 65 20 62 69 74 20 74 69 6d
- * 65 20 74 6f 20 6d 69 6e 65 2e 76 00 00 00 00 00 00 00 02 00 00 00 00 00 00 00 3a cd 2e 5a 00 00 00 00 5b c3 01 00 00
- * 00 00 00 00 00 b3 28 32 a0 e1 4d eb ac 17 03 7a bf 51 03 e4 9c 1f 7c fd 33 0e 74 a1 45 18 b4 38 e8 50 8e 00 00 44 d1
- * 01 e5 b6 de 8e 81 99 80 fb 4b d5 e8 67 55 a2 63 a6 5e 45 15 c0 73 be 7e 76 97 74 00 54 68 69 72 64 20 62 6c 6f 63 6b
- * 20 69 73 20 73 6c 6f 77 65 72 2e
+ * 00 00 00 00 00 00 00 00 00 00 00 00 04 14 a6 21 60 7c 50 20 2d 80 5f 2b ae f5 7d 2c 63 44 bc 15 60 a7 83 27 0e 0e 2d
+ * b1 08 e3 4c 96 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 0e b5
+ * 38 5a 00 00 00 00 41 82 00 00 00 00 00 00 2a 00 00 00 00 00 00 00 54 68 69 73 20 69 73 20 61 20 47 65 6e 65 73 69 73
+ * 20 42 6c 6f 63 6b 20 6f 6e 20 53 53 59 20 42 6c 6f 63 6b 63 68 61 69 6e 21 00 00 00 00 01 00 00 00 00 00 00 00 96 15
+ * 30 06 5a 08 98 57 eb 23 a1 88 37 a5 88 1e 89 35 6e 7f d6 16 95 50 21 26 ff c0 41 ac 55 ce 00 00 65 d2 ce 1b 0e c1 a4
+ * 5f 61 e4 9f ba 4f be 6d 77 d2 0a 13 85 1c cb d2 be 53 41 54 c0 f6 dc 0f b5 38 5a 00 00 00 00 3a 17 03 00 00 00 00 00
+ * 31 00 00 00 00 00 00 00 54 68 65 20 73 65 63 6f 6e 64 20 62 6c 6f 63 6b 20 6e 65 65 64 73 20 61 20 6c 69 74 74 6c 65
+ * 20 62 69 74 20 74 69 6d 65 20 74 6f 20 6d 69 6e 65 2e 00 00 00 00 02 00 00 00 00 00 00 00 18 a0 30 9f 56 4a 3e 67 80
+ * 5e 83 9f 48 f8 4a f3 92 cb b7 94 7a a8 31 67 6b 6d 7b 4d f5 e7 a2 73 00 00 48 51 e5 13 9d ac 34 38 e8 1c 01 76 03 13
+ * 94 e6 e0 da cf 4c 21 96 3e 24 29 45 5b b9 f3 ca 18 b5 38 5a 00 00 00 00 75 37 00 00 00 00 00 00 16 00 00 00 00 00 00
+ * 00 54 68 69 72 64 20 62 6c 6f 63 6b 20 69 73 20 73 6c 6f 77 65 72 2e
  * 
  * Reconstructed blockchain from binary data is identical with original: 1
- * 
+ *
  **********************************************************************************************************************/
 

@@ -38,10 +38,10 @@ namespace ssybc {
 // --------------------------------------------------- Public Method --------------------------------------------------
 
     using BlockType = typename Validator::BlockType;
-    using HashCalculatorType = typename BlockType::HashCalculatorType;
+    using HashCalculatorType = typename BlockType::HeaderHashCalculatorType;
 
-    virtual MinedResult MineGenesisNonce(BinaryData const &hashable_binary) const = 0;
-    virtual MinedResult MineNonce(BlockHash const &previous_hash, BinaryData const &hashable_binary) const = 0;
+    virtual MinedResult MineGenesisInfo(BinaryData const &hashable_binary) const = 0;
+    virtual MinedResult MineInfo(BlockHash const &previous_hash, BinaryData const &hashable_binary) const = 0;
 
     BlockType MineGenesis(BlockType const &block) const;
     BlockType Mine(BlockType const &previous_block, BlockType const &block) const;

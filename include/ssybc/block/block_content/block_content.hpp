@@ -36,7 +36,11 @@ namespace ssybc {
 
   public:
 
-    using BinaryConverterT = typename BinaryConverterTemplateT<DataT>;
+
+// -------------------------------------------------- Type Definition -------------------------------------------------
+
+    using DataType = DataT;
+    using BinaryConverterType = typename BinaryConverterTemplateT<DataT>;
 
 // --------------------------------------------- Constructor & Destructor ---------------------------------------------
 

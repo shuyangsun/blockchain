@@ -125,8 +125,8 @@ namespace ssybc {
 
 // -------------------------------------------------- Private Field ---------------------------------------------------
 
-    BlockHeaderType header_;
-    std::unique_ptr<BlockContentType const> content_ptr_;
+    BlockHeaderType const header_;
+    std::unique_ptr<BlockContentType const> const content_ptr_;
 
 // -------------------------------------------------- Private Method --------------------------------------------------
 
