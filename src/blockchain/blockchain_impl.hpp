@@ -35,8 +35,8 @@
 // --------------------------------------------- Constructor & Destructor ---------------------------------------------
 
 
-template<typename BlockType, template<typename> class Validator>
-ssybc::Blockchain<BlockType, Validator>::Blockchain(BlockType const & genesis_block)
+template<typename BlockT, template<typename> class ValidatorTemplate>
+ssybc::Blockchain<BlockT, ValidatorTemplate>::Blockchain(BlockType const & genesis_block)
 {
   if (!ValidatorType().IsValidGenesisBlock(genesis_block)) {
     throw std::logic_error("Cannot construct Blockchain with invalid Genesis Block.");
@@ -45,26 +45,26 @@ ssybc::Blockchain<BlockType, Validator>::Blockchain(BlockType const & genesis_bl
 }
 
 
-template<typename BlockType, template<typename> class Validator>
-ssybc::Blockchain<BlockType, Validator>::Blockchain(BlockDataType const & data):
+template<typename BlockT, template<typename> class ValidatorTemplate>
+ssybc::Blockchain<BlockT, ValidatorTemplate>::Blockchain(BlockDataType const & data):
   Blockchain(data, DefaultMiner_())
 { EMPTY_BLOCK }
 
 
-template<typename BlockType, template<typename> class Validator>
-ssybc::Blockchain<BlockType, Validator>::Blockchain(BlockDataType const & data, MinerType const & miner):
+template<typename BlockT, template<typename> class ValidatorTemplate>
+ssybc::Blockchain<BlockT, ValidatorTemplate>::Blockchain(BlockDataType const & data, MinerType const & miner):
   Blockchain(MinedGenesisWithData_(data, miner))
 { EMPTY_BLOCK }
 
 
-template<typename BlockType, template<typename> class Validator>
-ssybc::Blockchain<BlockType, Validator>::Blockchain(BinaryData const &binary_data):
+template<typename BlockT, template<typename> class ValidatorTemplate>
+ssybc::Blockchain<BlockT, ValidatorTemplate>::Blockchain(BinaryData const &binary_data):
   Blockchain(BinaryData(binary_data.begin(), binary_data.end()))
 { EMPTY_BLOCK }
 
 
-template<typename BlockType, template<typename> class Validator>
-ssybc::Blockchain<BlockType, Validator>::Blockchain(BinaryData &&binary_data)
+template<typename BlockT, template<typename> class ValidatorTemplate>
+ssybc::Blockchain<BlockT, ValidatorTemplate>::Blockchain(BinaryData &&binary_data)
 {
   auto converter = BinaryDataConverterDefault<SizeT>();
   std::vector<BlockType> blocks{};
@@ -137,15 +137,15 @@ inline auto ssybc::Blockchain<BlockT, ValidatorTemplate>::BlockchainHeadersOnly(
 }
 
 
-template<typename BlockType, template<typename> class Validator>
-inline bool ssybc::Blockchain<BlockType, Validator>::Append(BlockDataType const & data)
+template<typename BlockT, template<typename> class ValidatorTemplate>
+inline bool ssybc::Blockchain<BlockT, ValidatorTemplate>::Append(BlockDataType const & data)
 {
   return Append(data, DefaultMiner_());
 }
 
 
-template<typename BlockType, template<typename> class Validator>
-inline bool ssybc::Blockchain<BlockType, Validator>::Append(
+template<typename BlockT, template<typename> class ValidatorTemplate>
+inline bool ssybc::Blockchain<BlockT, ValidatorTemplate>::Append(
   BlockDataType const & data,
   MinerType const &miner)
 {
@@ -160,22 +160,22 @@ inline bool ssybc::Blockchain<BlockType, Validator>::Append(
 }
 
 
-template<typename BlockType, template<typename> class Validator>
-inline BlockType ssybc::Blockchain<BlockType, Validator>::GenesisBlock() const
+template<typename BlockT, template<typename> class ValidatorTemplate>
+inline BlockT ssybc::Blockchain<BlockT, ValidatorTemplate>::GenesisBlock() const
 {
   return BlockType(blocks_.front());
 }
 
 
-template<typename BlockType, template<typename> class Validator>
-inline BlockType ssybc::Blockchain<BlockType, Validator>::TailBlock() const
+template<typename BlockT, template<typename> class ValidatorTemplate>
+inline BlockT ssybc::Blockchain<BlockT, ValidatorTemplate>::TailBlock() const
 {
   return BlockType(blocks_.back());
 }
 
 
-template<typename BlockType, template<typename> class Validator>
-inline BlockType ssybc::Blockchain<BlockType, Validator>::operator[](long long const index) const
+template<typename BlockT, template<typename> class ValidatorTemplate>
+inline BlockT ssybc::Blockchain<BlockT, ValidatorTemplate>::operator[](long long const index) const
 {
   long long real_index = index;
   if (index < 0) {
@@ -185,16 +185,16 @@ inline BlockType ssybc::Blockchain<BlockType, Validator>::operator[](long long c
 }
 
 
-template<typename BlockType, template<typename> class Validator>
-inline BlockType ssybc::Blockchain<BlockType, Validator>::operator[](std::string const hash_string)
+template<typename BlockT, template<typename> class ValidatorTemplate>
+inline BlockT ssybc::Blockchain<BlockT, ValidatorTemplate>::operator[](std::string const hash_string)
 {
   std::size_t index = hash_to_index_dict_[hash_string];
   return (*this)[index];
 }
 
 
-template<typename BlockType, template<typename> class Validator>
-inline bool ssybc::Blockchain<BlockType, Validator>::operator==(Blockchain const & blockchain) const
+template<typename BlockT, template<typename> class ValidatorTemplate>
+inline bool ssybc::Blockchain<BlockT, ValidatorTemplate>::operator==(Blockchain const & blockchain) const
 {
   if (Size() != blockchain.Size()) { return false; }
   for (std::size_t i{ 0 }; i < Size(); ++i) {
@@ -206,30 +206,30 @@ inline bool ssybc::Blockchain<BlockType, Validator>::operator==(Blockchain const
 }
 
 
-template<typename BlockType, template<typename> class Validator>
-inline bool ssybc::Blockchain<BlockType, Validator>::operator!=(Blockchain const & blockchain) const
+template<typename BlockT, template<typename> class ValidatorTemplate>
+inline bool ssybc::Blockchain<BlockT, ValidatorTemplate>::operator!=(Blockchain const & blockchain) const
 {
   return !((*this) == blockchain);
 }
 
 
-template<typename BlockType, template<typename> class Validator>
-inline std::string ssybc::Blockchain<BlockType, Validator>::Description() const
+template<typename BlockT, template<typename> class ValidatorTemplate>
+inline std::string ssybc::Blockchain<BlockT, ValidatorTemplate>::Description() const
 {
   auto result = util::Join<BlockType>(blocks_, ",\n", [&](BlockType block) { return block.Description();  });
   return "[" + result + "]";
 }
 
 
-template<typename BlockType, template<typename> class Validator>
-ssybc::Blockchain<BlockType, Validator>::operator std::string() const
+template<typename BlockT, template<typename> class ValidatorTemplate>
+ssybc::Blockchain<BlockT, ValidatorTemplate>::operator std::string() const
 {
   return Description();
 }
 
 
-template<typename BlockType, template<typename> class Validator>
-inline auto ssybc::Blockchain<BlockType, Validator>::Binary() const -> BinaryData
+template<typename BlockT, template<typename> class ValidatorTemplate>
+inline auto ssybc::Blockchain<BlockT, ValidatorTemplate>::Binary() const -> BinaryData
 {
   std::vector<BinaryData> result{};
   for (auto const &block : blocks_) {
@@ -239,45 +239,70 @@ inline auto ssybc::Blockchain<BlockType, Validator>::Binary() const -> BinaryDat
 }
 
 
-template<typename BlockType, template<typename> class Validator>
-inline auto ssybc::Blockchain<BlockType, Validator>::BinaryHeadersOnly() const -> BinaryData
+template<typename BlockT, template<typename> class ValidatorTemplate>
+inline auto ssybc::Blockchain<BlockT, ValidatorTemplate>::BinaryHeadersOnly() const -> BinaryData
 {
   return BlockchainHeadersOnly().Binary();
+}
+
+
+template<typename BlockT, template<typename> class ValidatorTemplate>
+inline bool ssybc::Blockchain<BlockT, ValidatorTemplate>::SaveBinaryToFileAtPath(std::string const & file_path)
+{
+  return util::WriteBinaryDataToFileAtPath(Binary(), file_path);
+}
+
+
+template<typename BlockT, template<typename> class ValidatorTemplate>
+inline bool ssybc::Blockchain<
+  BlockT,
+  ValidatorTemplate>::SaveHeadersOnlyBinaryToFileAtPath(std::string const & file_path)
+{
+  return util::WriteBinaryDataToFileAtPath(BinaryHeadersOnly(), file_path);
+}
+
+
+template<typename BlockT, template<typename> class ValidatorTemplate>
+inline auto ssybc::Blockchain<
+  BlockT,
+  ValidatorTemplate>::LoadFromBinaryFileAtPath(std::string const & file_path) -> Blockchain
+{
+  return Blockchain{ util::ReadBinaryDataFromFileAtPath(file_path) };
 }
 
 
 // -------------------------------------------------- Private Member --------------------------------------------------
 
 
-template<typename BlockType, template<typename> class Validator>
-inline void ssybc::Blockchain<BlockType, Validator>::PushBackBlock_(BlockType const & block)
+template<typename BlockT, template<typename> class ValidatorTemplate>
+inline void ssybc::Blockchain<BlockT, ValidatorTemplate>::PushBackBlock_(BlockType const & block)
 {
   blocks_.push_back(block);
   hash_to_index_dict_[block.Header().HashAsString()] = static_cast<std::size_t>(block.Header().Index());
 }
 
 
-template<typename BlockType, template<typename> class Validator>
-BlockType ssybc::Blockchain<
-  BlockType,
-  Validator>::MinedGenesisWithData_(BlockDataType const & data, MinerType const &miner) const
+template<typename BlockT, template<typename> class ValidatorTemplate>
+BlockT ssybc::Blockchain<
+  BlockT,
+  ValidatorTemplate>::MinedGenesisWithData_(BlockDataType const & data, MinerType const &miner) const
 {
   auto genesis_init = BlockInitializedWithData_(data, 0, 0, HeaderHashCalculatorType().GenesisBlockPreviousHash());
   return miner.MineGenesis(genesis_init);
 }
 
 
-template<typename BlockType, template<typename> class Validator>
-inline auto ssybc::Blockchain<BlockType, Validator>::DefaultMiner_() const -> BlockMinerCPUBruteForce<ValidatorType>
+template<typename BlockT, template<typename> class ValidatorTemplate>
+inline auto ssybc::Blockchain<BlockT, ValidatorTemplate>::DefaultMiner_() const -> BlockMinerCPUBruteForce<ValidatorType>
 {
   return BlockMinerCPUBruteForce<ValidatorType>();
 }
 
 
-template<typename BlockType, template<typename> class Validator>
-inline BlockType ssybc::Blockchain<
-  BlockType,
-  Validator>::BlockInitializedWithData_(
+template<typename BlockT, template<typename> class ValidatorTemplate>
+inline BlockT ssybc::Blockchain<
+  BlockT,
+  ValidatorTemplate>::BlockInitializedWithData_(
     BlockDataType const & data,
     BlockVersion const version,
     BlockIndex const index,

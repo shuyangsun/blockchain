@@ -29,6 +29,7 @@
 #include <algorithm>
 #include <iterator>
 #include <string>
+#include <fstream>
 
 
  // ----------------------------------------------------- Helper ------------------------------------------------------
@@ -221,6 +222,32 @@ inline void ssybc::util::UpdateBinaryDataWithTrailingNonce(BinaryData & binary_d
   for (size_t i{ 0 }; i < nonce_binary_size; ++i) {
     binary_data[binary_start_idx + i] = nonce_as_binary[i];
   }
+}
+
+
+inline bool ssybc::util::WriteBinaryDataToFileAtPath(BinaryData const & binary_data, std::string const & file_path)
+{
+  std::fstream file;
+  file.open(file_path, std::ios::out | std::ios::binary);
+  file.write((char *)(&binary_data.front()), binary_data.size());
+  file.close();
+  return true;
+}
+
+
+inline ssybc::BinaryData ssybc::util::ReadBinaryDataFromFileAtPath(std::string const & file_path)
+{
+  std::fstream file;
+  file.open(file_path, std::ios::in | std::ios::binary);
+  file.seekg(0, std::ios::end);
+  auto const file_size = file.tellg();
+  file.seekg(0, std::ios::beg);
+  char * buffer = new char[file_size];
+  file.read(buffer, file_size);
+  file.close();
+  BinaryData result{ buffer, buffer + file_size };
+  delete buffer;
+  return result;
 }
 
 

@@ -69,6 +69,9 @@ namespace util {
   template<typename T>
   std::string Join(std::vector<T> const &vec, std::string delimiter, const std::function<std::string(T)>& map_func);
 
+  bool WriteBinaryDataToFileAtPath(BinaryData const &binary_data, std::string const &file_path);
+  BinaryData ReadBinaryDataFromFileAtPath(std::string const &file_path);
+
 
 // -------------------------------------------- Specialization Declaration --------------------------------------------
 
