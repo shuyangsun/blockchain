@@ -35,7 +35,7 @@
 
 
 template<typename Validator>
-inline auto ssybc::BlockMinerCPUBruteForce<Validator>::MineGenesisNonce(
+inline auto ssybc::BlockMinerCPUBruteForce<Validator>::MineGenesisInfo(
   BinaryData const & hashable_binary) const -> MinedResult
 {
   auto const validator = Validator();
@@ -61,7 +61,7 @@ inline auto ssybc::BlockMinerCPUBruteForce<Validator>::MineGenesisNonce(
 
 
 template<typename Validator>
-inline auto ssybc::BlockMinerCPUBruteForce<Validator>::MineNonce(
+inline auto ssybc::BlockMinerCPUBruteForce<Validator>::MineInfo(
   BlockHash const & previous_hash,
   BinaryData const & hashable_binary) const -> MinedResult
 {

@@ -56,7 +56,7 @@ inline ssybc::BlockContent<
   DataT,
   BinaryConverterTemplateT,
   HashCalculatorT>::BlockContent(BinaryData const &binary_data):
-  BlockContent(BinaryConverterT().DataFromBinaryData(binary_data))
+  BlockContent(BinaryConverterType().DataFromBinaryData(binary_data))
 { EMPTY_BLOCK }
 
 
@@ -65,7 +65,7 @@ inline ssybc::BlockContent<
   DataT,
   BinaryConverterTemplateT,
   HashCalculatorT>::BlockContent(BinaryData &&binary_data) :
-  BlockContent(BinaryConverterT().DataFromBinaryData(binary_data))
+  BlockContent(BinaryConverterType().DataFromBinaryData(binary_data))
 { EMPTY_BLOCK }
 
 
@@ -100,7 +100,7 @@ inline DataT ssybc::BlockContent<DataT, BinaryConverterTemplateT, HashCalculator
 template<typename DataT, template<typename> class BinaryConverterTemplateT, typename HashCalculatorT>
 inline ssybc::BinaryData ssybc::BlockContent<DataT, BinaryConverterTemplateT, HashCalculatorT>::Binary() const
 {
-  auto result = BinaryConverterT().BinaryDataFromData(*data_ptr_);
+  auto result = BinaryConverterType().BinaryDataFromData(*data_ptr_);
   CacheSizeOfBinary_(result.size());
   return result;
 }

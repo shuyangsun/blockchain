@@ -31,9 +31,9 @@
 template<typename BlockT>
 inline bool ssybc::BlockValidator<BlockT>::IsBlockPreAdjacentTo(BlockT const & lhs, BlockT const & rhs) const
 {
-  if (lhs.Index() != (rhs.Index() - 1)) { return false;  }
-  if (lhs.TimeStamp() > rhs.TimeStamp()) { return false; }
-  if (lhs.Hash() != rhs.PreviousBlockHash()) { return false; }
+  if (lhs.Header().Index() != (rhs.Header().Index() - 1)) { return false;  }
+  if (lhs.Header().TimeStamp() > rhs.Header().TimeStamp()) { return false; }
+  if (lhs.Header().Hash() != rhs.Header().PreviousHash()) { return false; }
   return true;
 }
 
@@ -41,8 +41,10 @@ inline bool ssybc::BlockValidator<BlockT>::IsBlockPreAdjacentTo(BlockT const & l
 template<typename BlockT>
 inline bool ssybc::BlockValidator<BlockT>::IsValidGenesisBlock(BlockT const & block) const
 {
-  bool const is_hash_valid{ block.PreviousBlockHash() == BlockT::HashCalculatorType().GenesisBlockPreviousHash()  };
-  return block.Index() == 0 && is_hash_valid && IsValidGenesisBlockHash(block.Hash());
+  bool const is_hash_valid{
+    block.Header().PreviousHash() == BlockT::HeaderHashCalculatorType().GenesisBlockPreviousHash()
+  };
+  return block.Header().Index() == 0 && is_hash_valid && IsValidGenesisBlockHash(block.Header().Hash());
 }
 
 
@@ -51,7 +53,9 @@ inline bool ssybc::BlockValidator<BlockT>::IsValidToAppend(
   BlockT const & previous_block,
   BlockT const & block) const
 {
-  return IsBlockPreAdjacentTo(previous_block, block) && IsValidHashToAppend(previous_block.Hash(), block.Hash());
+  return
+    IsBlockPreAdjacentTo(previous_block, block)
+    && IsValidHashToAppend(previous_block.Header().Hash(), block.Header().Hash());
 }
 
 

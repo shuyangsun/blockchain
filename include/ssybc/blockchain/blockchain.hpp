@@ -31,25 +31,27 @@
 
 namespace ssybc {
 
-  template<typename BlockType, template<typename> class Validator = BlockValidatorLessHash>
+  template<typename BlockT, template<typename> class ValidatorTemplate = BlockValidatorLessHash>
   class Blockchain {
   public:
 
 
 // -------------------------------------------------- Type Definition -------------------------------------------------
 
-    using BlockContentType = typename BlockType::BlockContentType;
+    using BlockType = BlockT;
+    using BlockDataType = typename BlockT::BlockContentType::DataType;
     using ContentBinaryConverterType = typename BlockType::ContentBinaryConverterType;
-    using HashCalculatorType = typename BlockType::HashCalculatorType;
-    using ValidatorType = Validator<BlockType>;
+    using HeaderHashCalculatorType = typename BlockType::HeaderHashCalculatorType;
+    using ContentHashCalculatorType = typename BlockType::ContentHashCalculatorType;
+    using ValidatorType = ValidatorTemplate<BlockType>;
     using MinerType = BlockMiner<ValidatorType>;
 
 // --------------------------------------------- Constructor & Destructor ---------------------------------------------
 
     Blockchain() = delete;
     Blockchain(BlockType const &genesis_block);
-    Blockchain(BlockContentType const &content);
-    Blockchain(BlockContentType const &content, MinerType const &miner);
+    Blockchain(BlockDataType const &data);
+    Blockchain(BlockDataType const &data, MinerType const &miner);
     Blockchain(BinaryData const &binary_data);
     Blockchain(BinaryData &&binary_data);
     ~Blockchain();
@@ -59,8 +61,8 @@ namespace ssybc {
     SizeT Size() const;
 
     bool Append(BlockType const &block);
-    bool Append(BlockContentType const &content);
-    bool Append(BlockContentType const &content, MinerType const &miner);
+    bool Append(BlockDataType const &data);
+    bool Append(BlockDataType const &data, MinerType const &miner);
 
     operator std::string() const;
     virtual std::string Description() const;
@@ -73,7 +75,7 @@ namespace ssybc {
     BlockType GenesisBlock() const;
     BlockType TailBlock() const;
 
-    BinaryData ToBinary() const;
+    BinaryData Binary() const;
 
 // -------------------------------------------------- Private Member --------------------------------------------------
 
@@ -83,10 +85,11 @@ namespace ssybc {
     std::unordered_map<std::string, std::size_t> hash_to_index_dict_{};
 
     void PushBackBlock_(BlockType const &block);
-    BlockType MinedGenesisWithContent_(BlockContentType const &content, MinerType const &miner) const;
+    BlockType MinedGenesisWithData_(BlockDataType const &data, MinerType const &miner) const;
     BlockMinerCPUBruteForce<ValidatorType> DefaultMiner_() const;
-    BlockType BlockInitializedWithContent_(
-      BlockContentType const &content,
+    BlockType BlockInitializedWithData_(
+      BlockDataType const &data,
+      BlockVersion const version,
       BlockIndex const index,
       BlockHash const &previous_hash) const;
   };
