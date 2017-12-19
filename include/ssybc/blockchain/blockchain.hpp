@@ -75,7 +75,10 @@ namespace ssybc {
     BlockType GenesisBlock() const;
     BlockType TailBlock() const;
 
+    Blockchain BlockchainHeadersOnly() const;
+
     BinaryData Binary() const;
+    BinaryData BinaryHeadersOnly() const;
 
 // -------------------------------------------------- Private Member --------------------------------------------------
 
