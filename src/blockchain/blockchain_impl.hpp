@@ -100,29 +100,40 @@ ssybc::Blockchain<BlockType, Validator>::Blockchain(BinaryData &&binary_data)
 }
 
 
-template<typename BlockType, template<typename> class Validator>
-ssybc::Blockchain<BlockType, Validator>::~Blockchain()
+template<typename BlockT, template<typename> class ValidatorTemplate>
+ssybc::Blockchain<BlockT, ValidatorTemplate>::~Blockchain()
 { EMPTY_BLOCK }
 
 
 // --------------------------------------------------- Public Method --------------------------------------------------
 
 
-template<typename BlockType, template<typename> class Validator>
-inline auto ssybc::Blockchain<BlockType, Validator>::Size() const -> SizeT
+template<typename BlockT, template<typename> class ValidatorTemplate>
+inline auto ssybc::Blockchain<BlockT, ValidatorTemplate>::Size() const -> SizeT
 {
   return static_cast<SizeT>(blocks_.size());
 }
 
 
-template<typename BlockType, template<typename> class Validator>
-inline bool ssybc::Blockchain<BlockType, Validator>::Append(BlockType const & block)
+template<typename BlockT, template<typename> class ValidatorTemplate>
+inline bool ssybc::Blockchain<BlockT, ValidatorTemplate>::Append(BlockType const & block)
 {
   if (ValidatorType().IsValidToAppend(TailBlock(), block)) {
     PushBackBlock_(block);
     return true;
   }
   return false;
+}
+
+
+template<typename BlockT, template<typename> class ValidatorTemplate>
+inline auto ssybc::Blockchain<BlockT, ValidatorTemplate>::BlockchainHeadersOnly() const -> Blockchain
+{
+  Blockchain result{ BlockT{ GenesisBlock().Header() } };
+  for (size_t i{ 1 }; i < blocks_.size(); ++i) {
+    result.Append(BlockT(blocks_[i].Header()));
+  }
+  return result;
 }
 
 
@@ -225,6 +236,13 @@ inline auto ssybc::Blockchain<BlockType, Validator>::Binary() const -> BinaryDat
     result.push_back(block.Binary());
   }
   return util::ConcatenateMoveDestructive(result);
+}
+
+
+template<typename BlockType, template<typename> class Validator>
+inline auto ssybc::Blockchain<BlockType, Validator>::BinaryHeadersOnly() const -> BinaryData
+{
+  return BlockchainHeadersOnly().Binary();
 }
 
 
