@@ -161,14 +161,15 @@ inline ssybc::BlockNonce ssybc::BlockHeader<HashCalculatorT>::Nonce() const
 template<typename HashCalculatorT>
 inline ssybc::BinaryData ssybc::BlockHeader<HashCalculatorT>::Binary() const
 {
-  return util::ConcatenateMoveDestructive(std::vector<BinaryData>{
+  auto binaries = std::vector<BinaryData>{
     VersionAsBinary_(),
     IndexAsBinary_(),
     MerkleRootAsBinary_(),
     PreviousHashAsBinary_(),
     TimeStampAsBinary_(),
     NonceAsBinary_()
-  });
+  };
+  return util::ConcatenateMoveDestructive(binaries);
 }
 
 template<typename HashCalculatorT>

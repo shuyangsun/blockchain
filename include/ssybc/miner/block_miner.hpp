@@ -35,10 +35,12 @@ namespace ssybc {
   class BlockMiner {
   public:
 
-// --------------------------------------------------- Public Method --------------------------------------------------
+// -------------------------------------------------- Type Definition -------------------------------------------------
 
     using BlockType = typename Validator::BlockType;
     using HashCalculatorType = typename BlockType::HeaderHashCalculatorType;
+
+// --------------------------------------------------- Public Method --------------------------------------------------
 
     virtual MinedResult MineGenesisInfo(BinaryData const &hashable_binary) const = 0;
     virtual MinedResult MineInfo(BlockHash const &previous_hash, BinaryData const &hashable_binary) const = 0;

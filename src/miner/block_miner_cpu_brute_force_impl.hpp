@@ -39,14 +39,15 @@ inline auto ssybc::BlockMinerCPUBruteForce<Validator>::MineGenesisInfo(
   BinaryData const & hashable_binary) const -> MinedResult
 {
   auto const validator = Validator();
+  auto const hash_calculator = BlockMinerCPUBruteForce::HashCalculatorType();
   BlockTimeInterval result_ts{ util::TrailingTimeStampBeforeNonceFromBinaryData(hashable_binary) };
-  if (validator.IsValidGenesisBlockHash(HashCalculatorType().Hash(hashable_binary))) {
+  if (validator.IsValidGenesisBlockHash(hash_calculator.Hash(hashable_binary))) {
     return { result_ts, util::TrailingNonceFromBinaryData(hashable_binary) };
   }
   BlockNonce result_nonce{};
   BlockNonce const nonce_max_limit{ std::numeric_limits<BlockNonce>::max() };
   auto binary_mutable_copy = BinaryData(hashable_binary.begin(), hashable_binary.end());
-  while (!validator.IsValidGenesisBlockHash(HashCalculatorType().Hash(binary_mutable_copy))) {
+  while (!validator.IsValidGenesisBlockHash(hash_calculator.Hash(binary_mutable_copy))) {
     if (result_nonce >= nonce_max_limit) {
       result_nonce = 0;
       ++result_ts;
@@ -66,14 +67,15 @@ inline auto ssybc::BlockMinerCPUBruteForce<Validator>::MineInfo(
   BinaryData const & hashable_binary) const -> MinedResult
 {
   auto const validator = Validator();
+  auto const hash_calculator = BlockMinerCPUBruteForce::HashCalculatorType();
   BlockTimeInterval result_ts{ util::TrailingTimeStampBeforeNonceFromBinaryData(hashable_binary) };
-  if (validator.IsValidHashToAppend(previous_hash, HashCalculatorType().Hash(hashable_binary))) {
+  if (validator.IsValidHashToAppend(previous_hash, hash_calculator.Hash(hashable_binary))) {
     return { result_ts, util::TrailingNonceFromBinaryData(hashable_binary) };
   }
   BlockNonce result_nonce{};
   BlockNonce const nonce_max_limit{ std::numeric_limits<BlockNonce>::max() };
   auto binary_mutable_copy = BinaryData(hashable_binary.begin(), hashable_binary.end());
-  while (!validator.IsValidHashToAppend(previous_hash, HashCalculatorType().Hash(binary_mutable_copy))) {
+  while (!validator.IsValidHashToAppend(previous_hash, hash_calculator.Hash(binary_mutable_copy))) {
     if (result_nonce >= nonce_max_limit) {
       result_nonce = 0;
       ++result_ts;
