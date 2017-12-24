@@ -71,7 +71,9 @@ namespace ssybc {
     virtual std::string Description() const;
 
     BlockType operator[](long long const index) const;
-    BlockType operator[](std::string const hash_string);
+    BlockType operator[](std::string const &hash_string);
+    BlockType operator[](BinaryData const &hash);
+
     bool operator==(Blockchain const &blockchain) const;
     bool operator!=(Blockchain const &blockchain) const;
 

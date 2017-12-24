@@ -66,11 +66,13 @@ int main(int const argc, char const **argv) {
     << last_block.Header().Index() << std::endl;
   
   auto last_block_by_negative_idx = str_blockchain[-1];
-  auto last_block_by_hash = str_blockchain[last_block.Header().HashAsString()];
+  auto last_block_by_hash = str_blockchain[last_block.Header().Hash()];
+  auto last_block_by_hash_str = str_blockchain[last_block.Header().HashAsString()];
 
   std::cout << std::endl;
   std::cout << "Found last block by negative index: " << (last_block_by_negative_idx == last_block) << std::endl;
   std::cout << "Found last block by hash lookup: " << (last_block_by_hash == last_block) << std::endl;
+  std::cout << "Found last block by hash string lookup: " << (last_block_by_hash_str == last_block) << std::endl;
   std::cout << std::endl;
 
   // Export Blockchain to binary data, can be save to file later.
@@ -177,6 +179,7 @@ int main(int const argc, char const **argv) {
  * 
  * Found last block by negative index: 1
  * Found last block by hash lookup: 1
+ * Found last block by hash string lookup: 1
  * 
  * 
  * Binary blockchain as hex:

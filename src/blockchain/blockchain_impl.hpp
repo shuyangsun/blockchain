@@ -186,10 +186,18 @@ inline BlockT ssybc::Blockchain<BlockT, ValidatorTemplate>::operator[](long long
 
 
 template<typename BlockT, template<typename> class ValidatorTemplate>
-inline BlockT ssybc::Blockchain<BlockT, ValidatorTemplate>::operator[](std::string const hash_string)
+inline BlockT ssybc::Blockchain<BlockT, ValidatorTemplate>::operator[](std::string const &hash_string)
 {
   std::size_t index = hash_to_index_dict_[hash_string];
   return (*this)[index];
+}
+
+
+template<typename BlockT, template<typename> class ValidatorTemplate>
+inline BlockT ssybc::Blockchain<BlockT, ValidatorTemplate>::operator[](BinaryData const &hash)
+{
+  auto hash_string = util::HexStringFromBytes(hash);
+  return (*this)[hash_string];
 }
 
 
