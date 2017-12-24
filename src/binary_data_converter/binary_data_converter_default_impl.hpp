@@ -184,14 +184,6 @@ inline auto ssybc::BinaryDataConverterDefault<ssybc::BinaryData>::BinaryDataFrom
 }
 
 
-template<>
-inline auto ssybc::BinaryDataConverterDefault<ssybc::BinaryContentData>::BinaryDataFromData(
-  BinaryContentData const &data) const -> BinaryData
-{
-  return data.Data();
-}
-
-
 // -------------------------------------- From Binary Specialization Definition ---------------------------------------
 
 
@@ -313,14 +305,6 @@ inline auto ssybc::BinaryDataConverterDefault<ssybc::BinaryData>::DataFromBinary
   BinaryData const &binary_data) const -> BinaryData
 {
   return binary_data;
-}
-
-
-template<>
-inline auto ssybc::BinaryDataConverterDefault<ssybc::BinaryContentData>::DataFromBinaryData(
-  BinaryData const &binary_data) const -> BinaryContentData
-{
-  return BinaryContentData(binary_data);
 }
 
 

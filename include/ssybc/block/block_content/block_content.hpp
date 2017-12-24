@@ -30,10 +30,10 @@
 
 namespace ssybc {
 
-  template<typename DataT,
+  template<
+    typename DataT,
     template<typename> class BinaryConverterTemplateT,
-    typename HashCalculatorT,
-    typename DummyT = typename std::enable_if<!std::is_same_v<DataT, BinaryData>, DataT>::type>
+    typename HashCalculatorT>
   class BlockContent {
 
   public:
@@ -42,17 +42,14 @@ namespace ssybc {
 // -------------------------------------------------- Type Definition -------------------------------------------------
 
     using DataType = DataT;
-    using BinaryConverterType = typename BinaryConverterTemplateT<DataT>;
+    using BinaryConverterType = typename BinaryConverterTemplateT<DataType>;
 
 // --------------------------------------------- Constructor & Destructor ---------------------------------------------
 
     BlockContent() = delete;
 
-    BlockContent(DataT const &data);
-    BlockContent(DataT &&data);
-
-    BlockContent(BinaryData const &binary_data);
-    BlockContent(BinaryData &&binary_data);
+    BlockContent(DataType const &data);
+    BlockContent(DataType &&data);
 
     BlockContent(BlockContent const &content);
     BlockContent(BlockContent &&content);
@@ -61,7 +58,7 @@ namespace ssybc {
 
 // --------------------------------------------------- Public Method --------------------------------------------------
     
-    DataT Data() const;
+    DataType Data() const;
     BinaryData Binary() const;
     SizeT SizeOfBinary() const;
 
@@ -78,11 +75,14 @@ namespace ssybc {
     bool operator==(BlockContent const & block) const;
     bool operator!=(BlockContent const & block) const;
 
+    static BlockContent ContentFromBinary(BinaryData const &binary_data);
+    static BlockContent ContentFromBinary(BinaryData &&binary_data);
+
   private:
 
 // -------------------------------------------------- Private Field ---------------------------------------------------
 
-    std::unique_ptr<DataT const> const data_ptr_;
+    std::unique_ptr<DataType const> const data_ptr_;
     mutable bool did_cache_size_of_binary_{false};
     mutable SizeT size_of_binary_{};
 
@@ -90,6 +90,7 @@ namespace ssybc {
    
     void CacheSizeOfBinary_(SizeT const size) const;
   };
+
 
 }  // namespace ssybc
 
