@@ -85,8 +85,8 @@ namespace ssybc {
     bool SaveBinaryToFileAtPath(std::string const &file_path);
     bool SaveHeadersOnlyBinaryToFileAtPath(std::string const &file_path);
 
-    static BlockType MinedGenesisBlockWithData(BlockDataType const &data);
-    static BlockType MinedGenesisBlockWithData(BlockDataType const &data, MinerType const &miner);
+    static BlockType GenesisBlockMinedWithData(BlockDataType const &data);
+    static BlockType GenesisBlockMinedWithData(BlockDataType const &data, MinerType const &miner);
 
     static Blockchain LoadFromBinaryFileAtPath(std::string const &file_path);
 

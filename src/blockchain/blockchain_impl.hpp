@@ -281,7 +281,7 @@ inline void ssybc::Blockchain<BlockT, ValidatorTemplate>::PushBackBlock_(BlockTy
 template<typename BlockT, template<typename> class ValidatorTemplate>
 BlockT ssybc::Blockchain<
   BlockT,
-  ValidatorTemplate>::MinedGenesisBlockWithData(BlockDataType const & data)
+  ValidatorTemplate>::GenesisBlockMinedWithData(BlockDataType const & data)
 {
   auto genesis_init = BlockInitializedWithData_(data, 0, 0, HeaderHashCalculatorType().GenesisBlockPreviousHash());
   return Blockchain::DefaultMiner_().MineGenesis(genesis_init);
@@ -291,7 +291,7 @@ BlockT ssybc::Blockchain<
 template<typename BlockT, template<typename> class ValidatorTemplate>
 BlockT ssybc::Blockchain<
   BlockT,
-  ValidatorTemplate>::MinedGenesisBlockWithData(BlockDataType const & data, MinerType const &miner)
+  ValidatorTemplate>::GenesisBlockMinedWithData(BlockDataType const & data, MinerType const &miner)
 {
   auto genesis_init = BlockInitializedWithData_(data, 0, 0, HeaderHashCalculatorType().GenesisBlockPreviousHash());
   return miner.MineGenesis(genesis_init);
