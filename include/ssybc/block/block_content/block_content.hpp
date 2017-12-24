@@ -42,17 +42,14 @@ namespace ssybc {
 // -------------------------------------------------- Type Definition -------------------------------------------------
 
     using DataType = DataT;
-    using BinaryConverterType = typename BinaryConverterTemplateT<DataT>;
+    using BinaryConverterType = typename BinaryConverterTemplateT<DataType>;
 
 // --------------------------------------------- Constructor & Destructor ---------------------------------------------
 
     BlockContent() = delete;
 
-    BlockContent(DataT const &data);
-    BlockContent(DataT &&data);
-
-    BlockContent(BinaryData const &binary_data);
-    BlockContent(BinaryData &&binary_data);
+    BlockContent(DataType const &data);
+    BlockContent(DataType &&data);
 
     BlockContent(BlockContent const &content);
     BlockContent(BlockContent &&content);
@@ -61,7 +58,7 @@ namespace ssybc {
 
 // --------------------------------------------------- Public Method --------------------------------------------------
     
-    DataT Data() const;
+    DataType Data() const;
     BinaryData Binary() const;
     SizeT SizeOfBinary() const;
 
@@ -78,11 +75,14 @@ namespace ssybc {
     bool operator==(BlockContent const & block) const;
     bool operator!=(BlockContent const & block) const;
 
+    static BlockContent ContentFromBinary(BinaryData const &binary_data);
+    static BlockContent ContentFromBinary(BinaryData &&binary_data);
+
   private:
 
 // -------------------------------------------------- Private Field ---------------------------------------------------
 
-    std::unique_ptr<DataT const> const data_ptr_;
+    std::unique_ptr<DataType const> const data_ptr_;
     mutable bool did_cache_size_of_binary_{false};
     mutable SizeT size_of_binary_{};
 
@@ -91,63 +91,6 @@ namespace ssybc {
     void CacheSizeOfBinary_(SizeT const size) const;
   };
 
-
-  template<
-    template<typename> class BinaryConverterTemplateT,
-    typename HashCalculatorT>
-    class BlockContent<BinaryData, BinaryConverterTemplateT, HashCalculatorT> {
-
-    public:
-
-
-      // -------------------------------------------------- Type Definition -------------------------------------------------
-
-      using DataType = BinaryData;
-      using BinaryConverterType = typename BinaryConverterTemplateT<BinaryData>;
-
-      // --------------------------------------------- Constructor & Destructor ---------------------------------------------
-
-      BlockContent() = delete;
-
-      BlockContent(BinaryData const &binary_data);
-      BlockContent(BinaryData &&binary_data);
-
-      BlockContent(BlockContent const &content);
-      BlockContent(BlockContent &&content);
-
-      ~BlockContent() = default;
-
-      // --------------------------------------------------- Public Method --------------------------------------------------
-
-      BinaryData Data() const;
-      BinaryData Binary() const;
-      SizeT SizeOfBinary() const;
-
-      BlockHash Hash() const;
-      std::string HashAsString() const;
-
-      operator std::string() const;
-      std::string Description() const;
-      virtual std::string Description(std::string const &lead_padding) const;
-
-      BlockContent& operator=(BlockContent &&) = delete;
-      BlockContent& operator=(BlockContent const &) = delete;
-
-      bool operator==(BlockContent const & block) const;
-      bool operator!=(BlockContent const & block) const;
-
-    private:
-
-      // -------------------------------------------------- Private Field ---------------------------------------------------
-
-      std::unique_ptr<BinaryData const> const data_ptr_;
-      mutable bool did_cache_size_of_binary_{ false };
-      mutable SizeT size_of_binary_{};
-
-      // -------------------------------------------------- Private Method --------------------------------------------------
-
-      void CacheSizeOfBinary_(SizeT const size) const;
-  };
 
 }  // namespace ssybc
 

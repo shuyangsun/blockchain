@@ -469,7 +469,7 @@ inline auto ssybc::Block<
   begin_iter = binary_data.begin();
   end_iter = begin_iter;
   std::advance(end_iter, static_cast<std::size_t>(size_of_content_data));
-  auto content_ptr = std::make_unique<BlockContentType const>(BlockContentType{ binary_data });
+  auto content_ptr = std::make_unique<BlockContentType const>(BlockContentType::ContentFromBinary(binary_data));
   binary_data.erase(begin_iter, end_iter);
   return content_ptr;
 }

@@ -32,8 +32,8 @@
 
 
 template<typename DataT, template<typename> class BinaryConverterTemplateT, typename HashCalculatorT>
-inline ssybc::BlockContent<DataT, BinaryConverterTemplateT, HashCalculatorT>::BlockContent(DataT const & data):
-  data_ptr_{ std::make_unique<DataT const>(data) }
+inline ssybc::BlockContent<DataT, BinaryConverterTemplateT, HashCalculatorT>::BlockContent(DataType const & data):
+  data_ptr_{ std::make_unique<DataType const>(data) }
 {
   if (SizeOfBinary() <= 0) {
     throw std::logic_error("Cannot construct BlockContent from data with size 0 as binary.");
@@ -42,31 +42,13 @@ inline ssybc::BlockContent<DataT, BinaryConverterTemplateT, HashCalculatorT>::Bl
 
 
 template<typename DataT, template<typename> class BinaryConverterTemplateT, typename HashCalculatorT>
-inline ssybc::BlockContent<DataT, BinaryConverterTemplateT, HashCalculatorT>::BlockContent(DataT &&data):
-  data_ptr_{ std::make_unique<DataT const>(data) }
+inline ssybc::BlockContent<DataT, BinaryConverterTemplateT, HashCalculatorT>::BlockContent(DataType &&data):
+  data_ptr_{ std::make_unique<DataType const>(data) }
 {
   if (SizeOfBinary() <= 0) {
     throw std::logic_error("Cannot construct BlockContent from data with size 0 as binary.");
   }
 }
-
-
-template<typename DataT, template<typename> class BinaryConverterTemplateT, typename HashCalculatorT>
-inline ssybc::BlockContent<
-  DataT,
-  BinaryConverterTemplateT,
-  HashCalculatorT>::BlockContent(BinaryData const &binary_data):
-  BlockContent(BinaryConverterType().DataFromBinaryData(binary_data))
-{ EMPTY_BLOCK }
-
-
-template<typename DataT, template<typename> class BinaryConverterTemplateT, typename HashCalculatorT>
-inline ssybc::BlockContent<
-  DataT,
-  BinaryConverterTemplateT,
-  HashCalculatorT>::BlockContent(BinaryData &&binary_data) :
-  BlockContent(BinaryConverterType().DataFromBinaryData(binary_data))
-{ EMPTY_BLOCK }
 
 
 template<typename DataT, template<typename> class BinaryConverterTemplateT, typename HashCalculatorT>
@@ -183,6 +165,26 @@ inline bool ssybc::BlockContent<
   HashCalculatorT>::operator!=(BlockContent const & block) const
 {
   return *data_ptr_ != *block.Data();
+}
+
+
+template<typename DataT, template<typename> class BinaryConverterTemplateT, typename HashCalculatorT>
+inline auto ssybc::BlockContent<
+  DataT,
+  BinaryConverterTemplateT,
+  HashCalculatorT>::ContentFromBinary(BinaryData const &binary_data) -> BlockContent
+{
+  return BlockContent(BinaryConverterType().DataFromBinaryData(binary_data));
+}
+
+
+template<typename DataT, template<typename> class BinaryConverterTemplateT, typename HashCalculatorT>
+inline auto ssybc::BlockContent<
+  DataT,
+  BinaryConverterTemplateT,
+  HashCalculatorT>::ContentFromBinary(BinaryData &&binary_data) -> BlockContent
+{
+  return BlockContent(BinaryConverterType().DataFromBinaryData(binary_data));
 }
 
 
