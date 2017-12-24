@@ -51,9 +51,6 @@ namespace ssybc {
     Blockchain() = delete;
     Blockchain(BlockType const &genesis_block);
 
-    Blockchain(BlockDataType const &data);
-    Blockchain(BlockDataType const &data, MinerType const &miner);
-
     Blockchain(BinaryData const &binary_data);
     Blockchain(BinaryData &&binary_data);
 
@@ -88,6 +85,9 @@ namespace ssybc {
     bool SaveBinaryToFileAtPath(std::string const &file_path);
     bool SaveHeadersOnlyBinaryToFileAtPath(std::string const &file_path);
 
+    static BlockType MinedGenesisBlockWithData(BlockDataType const &data);
+    static BlockType MinedGenesisBlockWithData(BlockDataType const &data, MinerType const &miner);
+
     static Blockchain LoadFromBinaryFileAtPath(std::string const &file_path);
 
 // -------------------------------------------------- Private Member --------------------------------------------------
@@ -98,13 +98,12 @@ namespace ssybc {
     std::unordered_map<std::string, std::size_t> hash_to_index_dict_{};
 
     void PushBackBlock_(BlockType const &block);
-    BlockType MinedGenesisWithData_(BlockDataType const &data, MinerType const &miner) const;
-    BlockMinerCPUBruteForce<ValidatorType> DefaultMiner_() const;
-    BlockType BlockInitializedWithData_(
+    static BlockMinerCPUBruteForce<ValidatorType> DefaultMiner_();
+    static BlockType BlockInitializedWithData_(
       BlockDataType const &data,
       BlockVersion const version,
       BlockIndex const index,
-      BlockHash const &previous_hash) const;
+      BlockHash const &previous_hash);
   };
 
 

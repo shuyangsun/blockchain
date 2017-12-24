@@ -99,8 +99,10 @@ namespace ssybc {
     Block(Block const &block);
     Block(Block &&block);
 
-    Block(BinaryData const &binary_data);
-    Block(BinaryData &&binary_data);
+    // Declare binary constructors as explicit to prevent Block being accidentally constructed when DataT in Blockchain
+    // is BinaryData.
+    explicit Block(BinaryData const &binary_data);
+    explicit Block(BinaryData &&binary_data);
     
     ~Block() = default;
 

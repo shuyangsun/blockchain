@@ -37,7 +37,9 @@ int main(int const argc, char const **argv) {
   std::cout << "Started mining blocks..." << std::endl;
 
   // Initializing the Genesis Block with a string.
-  StringBlockChain str_blockchain{ "This is a Genesis Block on SSY Blockchain!" };
+  StringBlockChain str_blockchain{
+    StringBlockChain::MinedGenesisBlockWithData("This is a Genesis Block on SSY Blockchain!")
+  };
   std::cout << "Genesis block mined!" << std::endl;
 
   // Appending content onto the chain.

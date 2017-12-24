@@ -46,18 +46,6 @@ ssybc::Blockchain<BlockT, ValidatorTemplate>::Blockchain(BlockType const & genes
 
 
 template<typename BlockT, template<typename> class ValidatorTemplate>
-ssybc::Blockchain<BlockT, ValidatorTemplate>::Blockchain(BlockDataType const & data):
-  Blockchain(data, DefaultMiner_())
-{ EMPTY_BLOCK }
-
-
-template<typename BlockT, template<typename> class ValidatorTemplate>
-ssybc::Blockchain<BlockT, ValidatorTemplate>::Blockchain(BlockDataType const & data, MinerType const & miner):
-  Blockchain(MinedGenesisWithData_(data, miner))
-{ EMPTY_BLOCK }
-
-
-template<typename BlockT, template<typename> class ValidatorTemplate>
 ssybc::Blockchain<BlockT, ValidatorTemplate>::Blockchain(BinaryData const &binary_data):
   Blockchain(BinaryData(binary_data.begin(), binary_data.end()))
 { EMPTY_BLOCK }
@@ -293,7 +281,17 @@ inline void ssybc::Blockchain<BlockT, ValidatorTemplate>::PushBackBlock_(BlockTy
 template<typename BlockT, template<typename> class ValidatorTemplate>
 BlockT ssybc::Blockchain<
   BlockT,
-  ValidatorTemplate>::MinedGenesisWithData_(BlockDataType const & data, MinerType const &miner) const
+  ValidatorTemplate>::MinedGenesisBlockWithData(BlockDataType const & data)
+{
+  auto genesis_init = BlockInitializedWithData_(data, 0, 0, HeaderHashCalculatorType().GenesisBlockPreviousHash());
+  return Blockchain::DefaultMiner_().MineGenesis(genesis_init);
+}
+
+
+template<typename BlockT, template<typename> class ValidatorTemplate>
+BlockT ssybc::Blockchain<
+  BlockT,
+  ValidatorTemplate>::MinedGenesisBlockWithData(BlockDataType const & data, MinerType const &miner)
 {
   auto genesis_init = BlockInitializedWithData_(data, 0, 0, HeaderHashCalculatorType().GenesisBlockPreviousHash());
   return miner.MineGenesis(genesis_init);
@@ -301,7 +299,7 @@ BlockT ssybc::Blockchain<
 
 
 template<typename BlockT, template<typename> class ValidatorTemplate>
-inline auto ssybc::Blockchain<BlockT, ValidatorTemplate>::DefaultMiner_() const -> BlockMinerCPUBruteForce<ValidatorType>
+inline auto ssybc::Blockchain<BlockT, ValidatorTemplate>::DefaultMiner_() -> BlockMinerCPUBruteForce<ValidatorType>
 {
   return BlockMinerCPUBruteForce<ValidatorType>();
 }
@@ -314,7 +312,7 @@ inline BlockT ssybc::Blockchain<
     BlockDataType const & data,
     BlockVersion const version,
     BlockIndex const index,
-    BlockHash const &previous_hash) const
+    BlockHash const &previous_hash)
 {
   BlockType result {
     version,
