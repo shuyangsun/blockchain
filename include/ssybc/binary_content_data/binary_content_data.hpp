@@ -54,8 +54,5 @@ namespace ssybc {
 }  // namespace ssybc
 
 
-#include "src/binary_content_data/binary_content_data_impl.hpp"
-
-
 #endif  // SSYBC_INCLUDE_SSYBC_BINARY_CONTENT_DATA_BINARY_CONTENT_DATA_HPP_
 

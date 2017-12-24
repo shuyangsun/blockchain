@@ -18,9 +18,6 @@
  *
  *********************************************************************************************************************/
 
-#ifndef SSYBC_SRC_BINARY_CONTENT_DATA_BINARY_CONTENT_DATA_IMPL_HPP_
-#define SSYBC_SRC_BINARY_CONTENT_DATA_BINARY_CONTENT_DATA_IMPL_HPP_
-
 #include "include/ssybc/binary_content_data/binary_content_data.hpp"
 #include "include/ssybc/utility/utility.hpp"
 
@@ -43,16 +40,14 @@ ssybc::BinaryContentData::BinaryContentData(ssybc::BinaryData &&data):
 // --------------------------------------------------- Public Method --------------------------------------------------
 
 
-inline ssybc::BinaryData ssybc::BinaryContentData::Data() const
+ssybc::BinaryData ssybc::BinaryContentData::Data() const
 {
   return data_;
 }
 
 
-inline ssybc::BinaryContentData::operator std::string() const
+ssybc::BinaryContentData::operator std::string() const
 {
   return util::HexStringFromBytes(data_, " ");
 }
 
-
-#endif  // SSYBC_SRC_BINARY_CONTENT_DATA_BINARY_CONTENT_DATA_IMPL_HPP_
