@@ -26,12 +26,14 @@
 
 #include <string>
 #include <memory>
+#include <type_traits>
 
 namespace ssybc {
 
   template<typename DataT,
     template<typename> class BinaryConverterTemplateT,
-    typename HashCalculatorT>
+    typename HashCalculatorT,
+    typename DummyT = typename std::enable_if<!std::is_same_v<DataT, BinaryData>, DataT>::type>
   class BlockContent {
 
   public:

@@ -50,10 +50,13 @@ namespace ssybc {
 
     Blockchain() = delete;
     Blockchain(BlockType const &genesis_block);
+
     Blockchain(BlockDataType const &data);
     Blockchain(BlockDataType const &data, MinerType const &miner);
+
     Blockchain(BinaryData const &binary_data);
     Blockchain(BinaryData &&binary_data);
+
     ~Blockchain();
 
 // --------------------------------------------------- Public Method --------------------------------------------------

@@ -22,6 +22,7 @@
 #define SSYBC_INCLUDE_SSYBC_BINARY_DATA_CONVERTER_BINARY_DATA_CONVERTER_DEFAULT_HPP_
 
 #include "include/ssybc/binary_data_converter/binary_data_converter_interface.hpp"
+#include "include/ssybc/binary_content_data/binary_content_data.hpp"
 
 #include <string>
 #include <exception>
@@ -73,6 +74,8 @@ namespace ssybc {
   BinaryData BinaryDataConverterDefault<std::string>::BinaryDataFromData(std::string const &data) const;
   template<>
   BinaryData BinaryDataConverterDefault<BinaryData>::BinaryDataFromData(BinaryData const &data) const;
+  template<>
+  BinaryData BinaryDataConverterDefault<BinaryContentData>::BinaryDataFromData(BinaryContentData const &data) const;
 
 
 // -------------------------------------- From Binary Specialization Declaration --------------------------------------
@@ -108,6 +111,8 @@ namespace ssybc {
   std::string BinaryDataConverterDefault<std::string>::DataFromBinaryData(BinaryData const &data) const;
   template<>
   BinaryData BinaryDataConverterDefault<BinaryData>::DataFromBinaryData(BinaryData const &data) const;
+  template<>
+  BinaryContentData BinaryDataConverterDefault<BinaryContentData>::DataFromBinaryData(BinaryData const &data) const;
 
 
 }  // namespace ssybc

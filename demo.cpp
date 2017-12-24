@@ -25,6 +25,10 @@
 
 int main(int const argc, char const **argv) {
 
+  using BinBlockChain = typename ssybc::Blockchain<ssybc::Block<ssybc::BinaryContentData>>;
+  //BinBlockChain bin{ ssybc::BinaryContentData( ssybc::BinaryData( 'a' ) ) };
+  ssybc::BinaryContentData sdfas(ssybc::BinaryData{ 'a' });
+
   // Define a type alias for a blockchain with content type on each block as string.
   using StringBlockChain = typename ssybc::Blockchain<ssybc::Block<std::string>>;
   
