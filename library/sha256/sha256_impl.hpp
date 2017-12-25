@@ -12,9 +12,12 @@
               This implementation uses little endian byte order.
 *********************************************************************/
 
+#ifndef SSYBC_LIBRARY_SHA256_SHA256_IMPL_HPP_
+#define SSYBC_LIBRARY_SHA256_SHA256_IMPL_HPP_
+
 /*************************** HEADER FILES ***************************/
 #include <memory.h>
-#include "library/sha256/sha256.h"
+#include "library/sha256/sha256.hpp"
 
 /****************************** MACROS ******************************/
 #define ROTLEFT(a,b) (((a) << (b)) | ((a) >> (32-(b))))
@@ -155,3 +158,6 @@ void sha256_final(SHA256_CTX *ctx, BYTE hash[])
 		hash[i + 28] = (ctx->state[7] >> (24 - i * 8)) & 0x000000ff;
 	}
 }
+
+
+#endif  // SSYBC_LIBRARY_SHA256_SHA256_IMPL_HPP_

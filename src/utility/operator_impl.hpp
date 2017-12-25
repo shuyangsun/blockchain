@@ -18,6 +18,9 @@
  *
  *********************************************************************************************************************/
 
+#ifndef SSYBC_SRC_UTILITY_OPERATOR_IMPL_HPP_
+#define SSYBC_SRC_UTILITY_OPERATOR_IMPL_HPP_
+
 
 #include "include/ssybc/utility/operator.hpp"
 
@@ -167,3 +170,6 @@ inline auto ssybc::PairHashIterator_(
 {
   return std::make_pair(lhs.begin(), rhs.begin());
 }
+
+
+#endif  // SSYBC_SRC_UTILITY_OPERATOR_IMPL_HPP_
