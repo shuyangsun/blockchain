@@ -30,7 +30,7 @@ int main(int const argc, char const **argv) {
   
   // StringBlockChain by default uses the default binary data converter; double-sha256 hash calculator for both header
   // and data; validator starts with diffculty level 2 for genesis block and appending hash must be less than previous
-  // hash; miner uses brute force algorithm on CPU.
+  // hash; miner uses multi-thread brute force algorithm on CPU.
   // All of above are customizable, even data type can be swapped to user-defined types (as long as customized binary
   // data converter provides a valid binary conversion).
   
