@@ -51,7 +51,7 @@ int main(int const argc, char const **argv) {
 
   std::cout << "Block mining finished." << std::endl;
   std::cout << std::endl;
-
+ 
   // Print Blockchain to human readable text.
   std::cout << str_blockchain.Description() << std::endl;
 
@@ -117,8 +117,8 @@ int main(int const argc, char const **argv) {
   std::cout << "Save binary header to file succeeded: " << save_succeeded << std::endl;
 
   // Load from binary file.
-  auto loaded_blockchain = StringBlockChain::LoadFromBinaryFileAtPath(file_path);
-  std::cout << "Loaded Blockchain is identical with original: " << (loaded_blockchain == str_blockchain) << std::endl;
+  //auto loaded_blockchain = StringBlockChain::LoadFromBinaryFileAtPath(file_path);
+  //std::cout << "Loaded Blockchain is identical with original: " << (loaded_blockchain == str_blockchain) << std::endl;
 
   return 0;
 }

@@ -104,6 +104,21 @@ inline auto ssybc::Blockchain<BlockT, ValidatorTemplate>::Size() const -> SizeT
 
 
 template<typename BlockT, template<typename> class ValidatorTemplate>
+inline auto ssybc::Blockchain<BlockT, ValidatorTemplate>::MinerPtr() const -> std::shared_ptr<MinerType>
+{
+  return miner_ptr_;
+}
+
+
+template<typename BlockT, template<typename> class ValidatorTemplate>
+template<typename ConcreteMinerType>
+inline void ssybc::Blockchain<BlockT, ValidatorTemplate>::SetMiner(ConcreteMinerType const & miner)
+{
+  miner_ptr_.reset(new ConcreteMinerType(miner));
+}
+
+
+template<typename BlockT, template<typename> class ValidatorTemplate>
 inline bool ssybc::Blockchain<BlockT, ValidatorTemplate>::Append(BlockType const & block)
 {
   if (ValidatorType().IsValidToAppend(TailBlock(), block)) {
@@ -128,22 +143,13 @@ inline auto ssybc::Blockchain<BlockT, ValidatorTemplate>::BlockchainHeadersOnly(
 template<typename BlockT, template<typename> class ValidatorTemplate>
 inline bool ssybc::Blockchain<BlockT, ValidatorTemplate>::Append(BlockDataType const & data)
 {
-  return Append(data, DefaultMiner_());
-}
-
-
-template<typename BlockT, template<typename> class ValidatorTemplate>
-inline bool ssybc::Blockchain<BlockT, ValidatorTemplate>::Append(
-  BlockDataType const & data,
-  MinerType const &miner)
-{
   auto const tail_block = TailBlock();
   auto const next_block_init = BlockInitializedWithData_(
     data,
     tail_block.Header().Version(),
     blocks_.size(),
     tail_block.Header().Hash());
-  auto block = miner.Mine(tail_block, next_block_init);
+  auto block = MinerPtr()->Mine(tail_block, next_block_init);
   return Append(block);
 }
 
@@ -283,8 +289,7 @@ BlockT ssybc::Blockchain<
   BlockT,
   ValidatorTemplate>::GenesisBlockMinedWithData(BlockDataType const & data)
 {
-  auto genesis_init = BlockInitializedWithData_(data, 0, 0, HeaderHashCalculatorType().GenesisBlockPreviousHash());
-  return Blockchain::DefaultMiner_().MineGenesis(genesis_init);
+  return GenesisBlockMinedWithData(data, DefaultMiner_());
 }
 
 
