@@ -30,6 +30,7 @@
 #include <iterator>
 #include <string>
 #include <fstream>
+#include <type_traits>
 
 
  // ----------------------------------------------------- Helper ------------------------------------------------------
@@ -56,19 +57,22 @@ namespace ssybc{
   };
 
    template<class T>
-   typename std::enable_if<std::is_fundamental_v<T>, std::string>::type Stringify_(const T& t)
+    typename std::enable_if<std::is_fundamental<T>::value, std::string>::type Stringify_(const T& t)
    {
      return std::to_string(t);
    }
 
    template<class T>
-   typename std::enable_if<!std::is_fundamental_v<T> && !std::is_same_v<T, ssybc::BinaryData>, std::string>::type  Stringify_(const T& t)
+    typename std::enable_if<
+      !std::is_fundamental<T>::value
+      && !std::is_same<T, ssybc::BinaryData>::value,
+      std::string>::type  Stringify_(const T& t)
    {
      return std::string(t);
    }
 
    template<class T>
-   typename std::enable_if<std::is_same_v<T, ssybc::BinaryData>, std::string>::type  Stringify_(const T& t)
+    typename std::enable_if<std::is_same<T, ssybc::BinaryData>::value, std::string>::type  Stringify_(const T& t)
    {
      return util::HexStringFromBytes(t, " ");
    }
