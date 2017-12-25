@@ -28,6 +28,7 @@
 
 #include <unordered_map>
 #include <string>
+#include <memory>
 
 namespace ssybc {
 
@@ -60,9 +61,12 @@ namespace ssybc {
 
     SizeT Size() const;
 
+    std::shared_ptr<MinerType> MinerPtr() const;
+    template<typename ConcreteMinerType>
+    void SetMiner(ConcreteMinerType const &miner);
+
     bool Append(BlockType const &block);
     bool Append(BlockDataType const &data);
-    bool Append(BlockDataType const &data, MinerType const &miner);
 
     operator std::string() const;
     virtual std::string Description() const;
@@ -96,6 +100,7 @@ namespace ssybc {
 
     std::vector<BlockType> blocks_{};
     std::unordered_map<std::string, std::size_t> hash_to_index_dict_{};
+    std::shared_ptr<MinerType> miner_ptr_{ std::make_shared<decltype(DefaultMiner_())>(DefaultMiner_()) };
 
     void PushBackBlock_(BlockType const &block);
     static BlockMinerCPUBruteForce<ValidatorType> DefaultMiner_();

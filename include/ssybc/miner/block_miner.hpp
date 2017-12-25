@@ -41,6 +41,10 @@ namespace ssybc {
     using HashCalculatorType = typename BlockType::HeaderHashCalculatorType;
 
 // --------------------------------------------------- Public Method --------------------------------------------------
+    
+    BlockMiner() = default;
+    BlockMiner(BlockMiner const &miner) = default;
+    BlockMiner(BlockMiner &&miner) = default;
 
     virtual MinedResult MineGenesisInfo(BinaryData const &hashable_binary) const = 0;
     virtual MinedResult MineInfo(BlockHash const &previous_hash, BinaryData const &hashable_binary) const = 0;
