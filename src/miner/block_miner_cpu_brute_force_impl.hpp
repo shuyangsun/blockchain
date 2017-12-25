@@ -34,6 +34,8 @@
 #include <condition_variable>
 
 
+// ----------------------------------------------------- Helper -------------------------------------------------------
+
 namespace ssybc {
 
   template<typename ValidatorT, typename HashCalculatorT>
@@ -153,6 +155,10 @@ inline auto ssybc::BlockMinerCPUBruteForce<Validator>::MineInfo(
   is_block_mined_ = false;
   return result;
 }
+
+
+// ----------------------------------------------------- Helper -------------------------------------------------------
+
 
 template<typename ValidatorT, typename HashCalculatorT>
 void ssybc::MineGenesisInfoOnCPUThreadBruteForce_(
