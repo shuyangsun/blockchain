@@ -43,10 +43,10 @@ int main(int const argc, char const **argv) {
   std::cout << "Genesis block mined!" << std::endl;
 
   // Appending content onto the chain.
-  str_blockchain.Append("The second block needs a little bit time to mine.");
+  str_blockchain.Append("Mining the second block on multi-thread CPU code is not that slow.");
   std::cout << "Second block mined!" << std::endl;
 
-  str_blockchain.Append("Third block is slower.");
+  str_blockchain.Append("Third block may take a little longer.");
   std::cout << "Third block mined!" << std::endl;
 
   std::cout << "Block mining finished." << std::endl;
@@ -123,7 +123,7 @@ int main(int const argc, char const **argv) {
   return 0;
 }
 
-/*************************************************** Sample Output ****************************************************
+/**************************************************** Sample Output ***************************************************
  *
  * Started mining blocks...
  * Genesis block mined!
@@ -135,11 +135,11 @@ int main(int const argc, char const **argv) {
  *   header: {
  *     version: 0,
  *     index: 0,
- *     time_stamp: 2017-12-19T07:03:12UTC,
- *     nonce: 249433,
+ *     time_stamp: 2017-12-26T00:58:50UTC,
+ *     nonce: 13835058055282166369,
  *     merkel_root:   0414a621607c50202d805f2baef57d2c6344bc1560a783270e0e2db108e34c96,
  *     previous_hash: 0000000000000000000000000000000000000000000000000000000000000000,
- *     hash:          000051d4822d71d6cfe1e9a640eaaa600a3ba41f15072d014c435848e51b5197
+ *     hash:          0000cc356c65e09d5798252924ea037bf4e3f424cd1b5a177ba79c65c296dc98
  *   },
  *   content: {
  *     size: 42,
@@ -150,30 +150,30 @@ int main(int const argc, char const **argv) {
  *   header: {
  *     version: 0,
  *     index: 1,
- *     time_stamp: 2017-12-19T07:03:23UTC,
- *     nonce: 312238,
- *     merkel_root:   961530065a089857eb23a18837a5881e89356e7fd61695502126ffc041ac55ce,
- *     previous_hash: 000051d4822d71d6cfe1e9a640eaaa600a3ba41f15072d014c435848e51b5197,
- *     hash:          000019bcbe6de9da3f0c43b3165c6a72140c906d467c1754f18f9e843095eeae
+ *     time_stamp: 2017-12-26T00:58:50UTC,
+ *     nonce: 16909515400900427020,
+ *     merkel_root:   b75f4e8de66db47260df43bc75a5a9ebd9757a041c065524a9a45546cfe48157,
+ *     previous_hash: 0000cc356c65e09d5798252924ea037bf4e3f424cd1b5a177ba79c65c296dc98,
+ *     hash:          000039f2c9cb2cd297ea77eeaec362b432b7ff70c2571232f06cd3d99267448d
  *   },
  *   content: {
- *     size: 49,
- *     data: The second block needs a little bit time to mine.
+ *     size: 66,
+ *     data: Mining the second block on multi-thread CPU code is not that slow.
  *   }
  * },
  * {
  *   header: {
  *     version: 0,
  *     index: 2,
- *     time_stamp: 2017-12-19T07:03:37UTC,
- *     nonce: 315597,
- *     merkel_root:   18a0309f564a3e67805e839f48f84af392cbb7947aa831676b6d7b4df5e7a273,
- *     previous_hash: 000019bcbe6de9da3f0c43b3165c6a72140c906d467c1754f18f9e843095eeae,
- *     hash:          00000c178f4e7f3e150b400a8d016425d4fa9eb10f72348b6730fece6f9df216
+ *     time_stamp: 2017-12-26T00:58:50UTC,
+ *     nonce: 12297829382473048422,
+ *     merkel_root:   de9ed254453c75049533485c54a076033e0a566e0b43c72227408b9e76ee0a61,
+ *     previous_hash: 000039f2c9cb2cd297ea77eeaec362b432b7ff70c2571232f06cd3d99267448d,
+ *     hash:          000030130c5040240cf567d57db516e8866bb0a6704cc2e905a011219617a975
  *   },
  *   content: {
- *     size: 22,
- *     data: Third block is slower.
+ *     size: 37,
+ *     data: Third block may take a little longer.
  *   }
  * }]
  * 
@@ -186,39 +186,40 @@ int main(int const argc, char const **argv) {
  * 
  * Binary blockchain as hex:
  * 00 00 00 00 00 00 00 00 00 00 00 00 04 14 a6 21 60 7c 50 20 2d 80 5f 2b ae f5 7d 2c 63 44 bc 15 60 a7 83 27 0e 0e 2d
- * b1 08 e3 4c 96 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 b0 b9
- * 38 5a 00 00 00 00 59 ce 03 00 00 00 00 00 2a 00 00 00 00 00 00 00 54 68 69 73 20 69 73 20 61 20 47 65 6e 65 73 69 73
- * 20 42 6c 6f 63 6b 20 6f 6e 20 53 53 59 20 42 6c 6f 63 6b 63 68 61 69 6e 21 00 00 00 00 01 00 00 00 00 00 00 00 96 15
- * 30 06 5a 08 98 57 eb 23 a1 88 37 a5 88 1e 89 35 6e 7f d6 16 95 50 21 26 ff c0 41 ac 55 ce 00 00 51 d4 82 2d 71 d6 cf
- * e1 e9 a6 40 ea aa 60 0a 3b a4 1f 15 07 2d 01 4c 43 58 48 e5 1b 51 97 bb b9 38 5a 00 00 00 00 ae c3 04 00 00 00 00 00
- * 31 00 00 00 00 00 00 00 54 68 65 20 73 65 63 6f 6e 64 20 62 6c 6f 63 6b 20 6e 65 65 64 73 20 61 20 6c 69 74 74 6c 65
- * 20 62 69 74 20 74 69 6d 65 20 74 6f 20 6d 69 6e 65 2e 00 00 00 00 02 00 00 00 00 00 00 00 18 a0 30 9f 56 4a 3e 67 80
- * 5e 83 9f 48 f8 4a f3 92 cb b7 94 7a a8 31 67 6b 6d 7b 4d f5 e7 a2 73 00 00 19 bc be 6d e9 da 3f 0c 43 b3 16 5c 6a 72
- * 14 0c 90 6d 46 7c 17 54 f1 8f 9e 84 30 95 ee ae c9 b9 38 5a 00 00 00 00 cd d0 04 00 00 00 00 00 16 00 00 00 00 00 00
- * 00 54 68 69 72 64 20 62 6c 6f 63 6b 20 69 73 20 73 6c 6f 77 65 72 2e
+ * b1 08 e3 4c 96 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ca 9e
+ * 41 5a 00 00 00 00 61 0a 00 00 00 00 00 c0 2a 00 00 00 00 00 00 00 54 68 69 73 20 69 73 20 61 20 47 65 6e 65 73 69 73
+ * 20 42 6c 6f 63 6b 20 6f 6e 20 53 53 59 20 42 6c 6f 63 6b 63 68 61 69 6e 21 00 00 00 00 01 00 00 00 00 00 00 00 b7 5f
+ * 4e 8d e6 6d b4 72 60 df 43 bc 75 a5 a9 eb d9 75 7a 04 1c 06 55 24 a9 a4 55 46 cf e4 81 57 00 00 cc 35 6c 65 e0 9d 57
+ * 98 25 29 24 ea 03 7b f4 e3 f4 24 cd 1b 5a 17 7b a7 9c 65 c2 96 dc 98 ca 9e 41 5a 00 00 00 00 0c bd aa aa aa aa aa ea
+ * 42 00 00 00 00 00 00 00 4d 69 6e 69 6e 67 20 74 68 65 20 73 65 63 6f 6e 64 20 62 6c 6f 63 6b 20 6f 6e 20 6d 75 6c 74
+ * 69 2d 74 68 72 65 61 64 20 43 50 55 20 63 6f 64 65 20 69 73 20 6e 6f 74 20 74 68 61 74 20 73 6c 6f 77 2e 00 00 00 00
+ * 02 00 00 00 00 00 00 00 de 9e d2 54 45 3c 75 04 95 33 48 5c 54 a0 76 03 3e 0a 56 6e 0b 43 c7 22 27 40 8b 9e 76 ee 0a
+ * 61 00 00 39 f2 c9 cb 2c d2 97 ea 77 ee ae c3 62 b4 32 b7 ff 70 c2 57 12 32 f0 6c d3 d9 92 67 44 8d ca 9e 41 5a 00 00
+ * 00 00 66 e1 aa aa aa aa aa aa 25 00 00 00 00 00 00 00 54 68 69 72 64 20 62 6c 6f 63 6b 20 6d 61 79 20 74 61 6b 65 20
+ * 61 20 6c 69 74 74 6c 65 20 6c 6f 6e 67 65 72 2e
  * 
  * Reconstructed blockchain from binary data is identical with original: 1
  * 
  * Binary blockchain headers as hex:
  * 00 00 00 00 00 00 00 00 00 00 00 00 04 14 a6 21 60 7c 50 20 2d 80 5f 2b ae f5 7d 2c 63 44 bc 15 60 a7 83 27 0e 0e 2d
- * b1 08 e3 4c 96 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 b0 b9
- * 38 5a 00 00 00 00 59 ce 03 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 00 00 00 00 00 00 00 96 15 30 06 5a
- * 08 98 57 eb 23 a1 88 37 a5 88 1e 89 35 6e 7f d6 16 95 50 21 26 ff c0 41 ac 55 ce 00 00 51 d4 82 2d 71 d6 cf e1 e9 a6
- * 40 ea aa 60 0a 3b a4 1f 15 07 2d 01 4c 43 58 48 e5 1b 51 97 bb b9 38 5a 00 00 00 00 ae c3 04 00 00 00 00 00 00 00 00
- * 00 00 00 00 00 00 00 00 00 02 00 00 00 00 00 00 00 18 a0 30 9f 56 4a 3e 67 80 5e 83 9f 48 f8 4a f3 92 cb b7 94 7a a8
- * 31 67 6b 6d 7b 4d f5 e7 a2 73 00 00 19 bc be 6d e9 da 3f 0c 43 b3 16 5c 6a 72 14 0c 90 6d 46 7c 17 54 f1 8f 9e 84 30
- * 95 ee ae c9 b9 38 5a 00 00 00 00 cd d0 04 00 00 00 00 00 00 00 00 00 00 00 00 00
- *
+ * b1 08 e3 4c 96 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ca 9e
+ * 41 5a 00 00 00 00 61 0a 00 00 00 00 00 c0 00 00 00 00 00 00 00 00 00 00 00 00 01 00 00 00 00 00 00 00 b7 5f 4e 8d e6
+ * 6d b4 72 60 df 43 bc 75 a5 a9 eb d9 75 7a 04 1c 06 55 24 a9 a4 55 46 cf e4 81 57 00 00 cc 35 6c 65 e0 9d 57 98 25 29
+ * 24 ea 03 7b f4 e3 f4 24 cd 1b 5a 17 7b a7 9c 65 c2 96 dc 98 ca 9e 41 5a 00 00 00 00 0c bd aa aa aa aa aa ea 00 00 00
+ * 00 00 00 00 00 00 00 00 00 02 00 00 00 00 00 00 00 de 9e d2 54 45 3c 75 04 95 33 48 5c 54 a0 76 03 3e 0a 56 6e 0b 43
+ * c7 22 27 40 8b 9e 76 ee 0a 61 00 00 39 f2 c9 cb 2c d2 97 ea 77 ee ae c3 62 b4 32 b7 ff 70 c2 57 12 32 f0 6c d3 d9 92
+ * 67 44 8d ca 9e 41 5a 00 00 00 00 66 e1 aa aa aa aa aa aa 00 00 00 00 00 00 00 00
+ * 
  * Reconstructed headers from binary data:
  * [{
  *   header: {
  *     version: 0,
  *     index: 0,
- *     time_stamp: 2017-12-19T07:03:12UTC,
- *     nonce: 249433,
+ *     time_stamp: 2017-12-26T00:58:50UTC,
+ *     nonce: 13835058055282166369,
  *     merkel_root:   0414a621607c50202d805f2baef57d2c6344bc1560a783270e0e2db108e34c96,
  *     previous_hash: 0000000000000000000000000000000000000000000000000000000000000000,
- *     hash:          000051d4822d71d6cfe1e9a640eaaa600a3ba41f15072d014c435848e51b5197
+ *     hash:          0000cc356c65e09d5798252924ea037bf4e3f424cd1b5a177ba79c65c296dc98
  *   },
  *   content: __CONTENT_NOT_PROVIDED__
  * },
@@ -226,11 +227,11 @@ int main(int const argc, char const **argv) {
  *   header: {
  *     version: 0,
  *     index: 1,
- *     time_stamp: 2017-12-19T07:03:23UTC,
- *     nonce: 312238,
- *     merkel_root:   961530065a089857eb23a18837a5881e89356e7fd61695502126ffc041ac55ce,
- *     previous_hash: 000051d4822d71d6cfe1e9a640eaaa600a3ba41f15072d014c435848e51b5197,
- *     hash:          000019bcbe6de9da3f0c43b3165c6a72140c906d467c1754f18f9e843095eeae
+ *     time_stamp: 2017-12-26T00:58:50UTC,
+ *     nonce: 16909515400900427020,
+ *     merkel_root:   b75f4e8de66db47260df43bc75a5a9ebd9757a041c065524a9a45546cfe48157,
+ *     previous_hash: 0000cc356c65e09d5798252924ea037bf4e3f424cd1b5a177ba79c65c296dc98,
+ *     hash:          000039f2c9cb2cd297ea77eeaec362b432b7ff70c2571232f06cd3d99267448d
  *   },
  *   content: __CONTENT_NOT_PROVIDED__
  * },
@@ -238,17 +239,17 @@ int main(int const argc, char const **argv) {
  *   header: {
  *     version: 0,
  *     index: 2,
- *     time_stamp: 2017-12-19T07:03:37UTC,
- *     nonce: 315597,
- *     merkel_root:   18a0309f564a3e67805e839f48f84af392cbb7947aa831676b6d7b4df5e7a273,
- *     previous_hash: 000019bcbe6de9da3f0c43b3165c6a72140c906d467c1754f18f9e843095eeae,
- *     hash:          00000c178f4e7f3e150b400a8d016425d4fa9eb10f72348b6730fece6f9df216
+ *     time_stamp: 2017-12-26T00:58:50UTC,
+ *     nonce: 12297829382473048422,
+ *     merkel_root:   de9ed254453c75049533485c54a076033e0a566e0b43c72227408b9e76ee0a61,
+ *     previous_hash: 000039f2c9cb2cd297ea77eeaec362b432b7ff70c2571232f06cd3d99267448d,
+ *     hash:          000030130c5040240cf567d57db516e8866bb0a6704cc2e905a011219617a975
  *   },
  *   content: __CONTENT_NOT_PROVIDED__
  * }]
  * 
  * Reconstructed blockchain headers from binary data is identical with original: 1
- *
+ * 
  * Save binary header to file succeeded: 1
  * Loaded Blockchain is identical with original: 1
  *

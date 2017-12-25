@@ -67,8 +67,6 @@ namespace ssybc {
   static bool is_block_mined_{ false };
   static MinedResult block_result_{};
 
-  static std::size_t constexpr k_thread_count{ 32 };
-
 }
 
 
@@ -87,16 +85,21 @@ inline auto ssybc::BlockMinerCPUBruteForce<Validator>::MineGenesisInfo(
     return { result_ts, util::TrailingNonceFromBinaryData(hashable_binary) };
   }
 
-  size_t const thread_count = k_thread_count;
+  auto const hardware_threads_count = std::thread::hardware_concurrency();
+  auto thread_count = std::max<decltype(hardware_threads_count)>(1, hardware_threads_count);
+  auto const max_nonce = std::numeric_limits<BlockNonce>::max();
+  auto const nonce_threads_gap = static_cast<BlockNonce>(max_nonce / thread_count);
+  if (nonce_threads_gap * thread_count != max_nonce) {
+    ++thread_count;
+  }
   std::vector<std::thread> worker_threads{};
-  auto const nonce_threads_gap = std::numeric_limits<BlockNonce>::max() / thread_count;
-  for (size_t i{ 0 }; i < thread_count; ++i) {
+  for (decltype(thread_count) i{ 0 }; i < thread_count; ++i) {
     worker_threads.push_back(std::thread(
       MineGenesisInfoOnCPUThreadBruteForce_<Validator, HashCalculatorType>,
       hashable_binary,
       result_ts,
       static_cast<BlockNonce>(i * nonce_threads_gap),
-      static_cast<BlockNonce>((i + 1) * nonce_threads_gap),
+      std::min(static_cast<BlockNonce>((i + 1) * nonce_threads_gap), max_nonce),
       validator,
       hash_calculator
     ));
@@ -127,18 +130,23 @@ inline auto ssybc::BlockMinerCPUBruteForce<Validator>::MineInfo(
   if (validator.IsValidHashToAppend(previous_hash, hash_calculator.Hash(hashable_binary))) {
     return { result_ts, util::TrailingNonceFromBinaryData(hashable_binary) };
   }
-  
-  size_t const thread_count = k_thread_count;
+
+  auto const hardware_threads_count = std::thread::hardware_concurrency();
+  auto thread_count = std::max<decltype(hardware_threads_count)>(1, hardware_threads_count);
+  auto const max_nonce = std::numeric_limits<BlockNonce>::max();
+  auto const nonce_threads_gap = static_cast<BlockNonce>(max_nonce / thread_count);
+  if (nonce_threads_gap * thread_count != max_nonce) {
+    ++thread_count;
+  }
   std::vector<std::thread> worker_threads{};
-  auto const nonce_threads_gap = std::numeric_limits<BlockNonce>::max() / thread_count;
-  for (size_t i{ 0 }; i < thread_count; ++i) {
+  for (decltype(thread_count) i{ 0 }; i < thread_count; ++i) {
     worker_threads.push_back(std::thread(
       MineInfoOnCPUThreadBruteForce_<Validator, HashCalculatorType>,
       previous_hash,
       hashable_binary,
       result_ts,
       static_cast<BlockNonce>(i * nonce_threads_gap),
-      static_cast<BlockNonce>((i + 1) * nonce_threads_gap),
+      std::min(static_cast<BlockNonce>((i + 1) * nonce_threads_gap), max_nonce),
       validator,
       hash_calculator
     ));
