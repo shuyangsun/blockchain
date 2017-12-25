@@ -31,6 +31,7 @@
 #include <string>
 #include <fstream>
 #include <type_traits>
+#include <ctime>
 
 
  // ----------------------------------------------------- Helper ------------------------------------------------------
@@ -90,6 +91,7 @@ inline ssybc::BlockTimeInterval ssybc::util::UTCTime()
   time(&rawtime);
   errno_t err{};
   err = gmtime_s(&ptm, &rawtime);
+//  auto const ptm_ptr = gmtime_r(&rawtime, &ptm);
   return static_cast<BlockTimeInterval>(mktime(&ptm));
 }
 
@@ -106,6 +108,8 @@ inline std::string ssybc::util::DateTimeStringFromTimeStamp(BlockTimeInterval co
   struct tm ptm {};
   errno_t err{};
   err = gmtime_s(&ptm, &time_stamp);
+//  time_t const ts = static_cast<time_t>(time_stamp);
+//  auto const ptm_ptr = gmtime_r(&ts, &ptm);
 
   SizeT const buffer_size{30};
   char buffer[buffer_size];
@@ -256,7 +260,7 @@ inline ssybc::BinaryData ssybc::util::ReadBinaryDataFromFileAtPath(std::string c
   file.read(buffer, file_size);
   file.close();
   BinaryData result{ buffer, buffer + file_size };
-  delete buffer;
+  delete[] buffer;
   return result;
 }
 
@@ -269,7 +273,7 @@ inline T ssybc::util::ByteSwap(T const value)
     return value;
   }
   T mask_on_value{ static_cast<T>(0b11111111) };
-  T mask_on_result{ static_cast<T>(0b11111111 << ((num_bytes - 1) * kNumberOfBitsInByte)) };
+  T mask_on_result{ static_cast<T>(static_cast<T>(0b11111111) << ((num_bytes - 1) * kNumberOfBitsInByte)) };
   T result{ static_cast<T>(0) };
   for (SizeT i{ 0 }; i < num_bytes; ++i) {
     int shift_amount{ static_cast<int>((num_bytes - 2 * i - 1) * kNumberOfBitsInByte) };

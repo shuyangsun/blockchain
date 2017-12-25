@@ -50,7 +50,7 @@ inline auto ssybc::BlockMiner<Validator>::MineGenesis(BlockType const & block) c
   auto const hashable_binary = block.Header().Binary();
   auto const mined_result = MineGenesisInfo(hashable_binary);
   auto const old_header = block.Header();
-  BlockType::BlockHeaderType result_header{
+  typename BlockType::BlockHeaderType result_header{
     old_header.Version(),
     old_header.Index(),
     old_header.MerkleRoot(),
@@ -86,7 +86,7 @@ inline auto ssybc::BlockMiner<Validator>::Mine(
   auto const header_hash = block.Header().Binary();
   auto const mined_result = MineInfo(previous_block.Header().Hash(), header_hash);
   auto const old_header = block.Header();
-  BlockType::BlockHeaderType result_header{
+  typename BlockType::BlockHeaderType result_header{
     old_header.Version(),
     old_header.Index(),
     old_header.MerkleRoot(),

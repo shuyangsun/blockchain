@@ -41,8 +41,8 @@ inline bool ssybc::BlockValidator<BlockT>::IsBlockPreAdjacentTo(BlockT const & l
 template<typename BlockT>
 inline bool ssybc::BlockValidator<BlockT>::IsValidGenesisBlock(BlockT const & block) const
 {
-  bool const is_hash_valid{
-    block.Header().PreviousHash() == BlockT::HeaderHashCalculatorType().GenesisBlockPreviousHash()
+  bool const is_hash_valid {
+    block.Header().PreviousHash() == typename BlockT::HeaderHashCalculatorType().GenesisBlockPreviousHash()
   };
   return block.Header().Index() == 0 && is_hash_valid && IsValidGenesisBlockHash(block.Header().Hash());
 }

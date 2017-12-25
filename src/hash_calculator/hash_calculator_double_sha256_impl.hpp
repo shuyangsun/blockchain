@@ -18,6 +18,9 @@
  *
  *********************************************************************************************************************/
 
+#ifndef SSYBC_SRC_HASH_CALCULATOR_HASH_CALCULATOR_DOUBLE_SHA256_IMPL_HPP_
+#define SSYBC_SRC_HASH_CALCULATOR_HASH_CALCULATOR_DOUBLE_SHA256_IMPL_HPP_
+
 
 #include "include/ssybc/hash_calculator/hash_calculator_double_sha256.hpp"
 #include "include/ssybc/hash_calculator/hash_calculator_sha256.hpp"
@@ -44,4 +47,7 @@ ssybc::BlockHash ssybc::DoubleSHA256Calculator::Hash(ssybc::BinaryData const dat
   BlockHash const result{ SHA256Calculator().Hash(binary_hash) };
   return result;
 }
+
+
+#endif  // SSYBC_SRC_HASH_CALCULATOR_HASH_CALCULATOR_DOUBLE_SHA256_IMPL_HPP_
 

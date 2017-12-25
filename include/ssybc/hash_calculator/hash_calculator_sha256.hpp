@@ -27,12 +27,18 @@ namespace ssybc {
 
   class SHA256Calculator: public virtual HashCalculatorInterface {
   public:
+    SHA256Calculator() = default;
+    
     SizeT SizeOfHashInBytes() const override final;
     BlockHash Hash(BinaryData const data) const override final;
     BlockHash GenesisBlockPreviousHash() const override final;
   };
 
 }  // namespace ssybc
+
+
+#include "src/hash_calculator/hash_calculator_sha256_impl.hpp"
+
 
 #endif  // SSYBC_INCLUDE_SSYBC_HASH_CALCULATOR_HASH_CALCULATOR_SHA256_HPP_
 

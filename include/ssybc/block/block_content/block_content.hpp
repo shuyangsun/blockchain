@@ -42,7 +42,7 @@ namespace ssybc {
 // -------------------------------------------------- Type Definition -------------------------------------------------
 
     using DataType = DataT;
-    using BinaryConverterType = typename BinaryConverterTemplateT<DataType>;
+    using BinaryConverterType = BinaryConverterTemplateT<DataType>;
 
 // --------------------------------------------- Constructor & Destructor ---------------------------------------------
 

@@ -19,9 +19,13 @@
  *********************************************************************************************************************/
 
 
+#ifndef SSYBC_SRC_HASH_CALCULATOR_HASH_CALCULATOR_SHA256_IMPL_HPP_
+#define SSYBC_SRC_HASH_CALCULATOR_HASH_CALCULATOR_SHA256_IMPL_HPP_
+
+
 #include "include/ssybc/hash_calculator/hash_calculator_sha256.hpp"
 #include "include/ssybc/utility/utility.hpp"
-#include "library/sha256/sha256.h"
+#include "library/sha256/sha256.hpp"
 
 
 auto ssybc::SHA256Calculator::SizeOfHashInBytes() const -> SizeT
@@ -50,4 +54,7 @@ ssybc::BlockHash ssybc::SHA256Calculator::Hash(ssybc::BinaryData const data) con
 
   return BinaryData(result, result + SHA256_BLOCK_SIZE);
 }
+
+
+#endif  // SSYBC_SRC_HASH_CALCULATOR_HASH_CALCULATOR_SHA256_IMPL_HPP_
 

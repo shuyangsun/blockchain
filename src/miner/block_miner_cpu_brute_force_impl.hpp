@@ -39,7 +39,7 @@ inline auto ssybc::BlockMinerCPUBruteForce<Validator>::MineGenesisInfo(
   BinaryData const & hashable_binary) const -> MinedResult
 {
   auto const validator = Validator();
-  auto const hash_calculator = BlockMinerCPUBruteForce::HashCalculatorType();
+  auto const hash_calculator = typename BlockMinerCPUBruteForce::HashCalculatorType();
   BlockTimeInterval result_ts{ util::TrailingTimeStampBeforeNonceFromBinaryData(hashable_binary) };
   if (validator.IsValidGenesisBlockHash(hash_calculator.Hash(hashable_binary))) {
     return { result_ts, util::TrailingNonceFromBinaryData(hashable_binary) };
@@ -67,7 +67,7 @@ inline auto ssybc::BlockMinerCPUBruteForce<Validator>::MineInfo(
   BinaryData const & hashable_binary) const -> MinedResult
 {
   auto const validator = Validator();
-  auto const hash_calculator = BlockMinerCPUBruteForce::HashCalculatorType();
+  auto const hash_calculator = typename BlockMinerCPUBruteForce::HashCalculatorType();
   BlockTimeInterval result_ts{ util::TrailingTimeStampBeforeNonceFromBinaryData(hashable_binary) };
   if (validator.IsValidHashToAppend(previous_hash, hash_calculator.Hash(hashable_binary))) {
     return { result_ts, util::TrailingNonceFromBinaryData(hashable_binary) };

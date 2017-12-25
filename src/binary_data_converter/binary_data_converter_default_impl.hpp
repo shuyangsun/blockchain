@@ -295,7 +295,6 @@ template<>
 inline auto ssybc::BinaryDataConverterDefault<std::string>::DataFromBinaryData(
   BinaryData const &binary_data) const -> std::string
 {
-  SizeT const string_len{ binary_data.size() };
   return std::string(binary_data.begin(), binary_data.end());
 }
 
