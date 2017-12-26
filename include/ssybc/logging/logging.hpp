@@ -53,6 +53,11 @@ namespace logging {
     LoggerVerbosity const verbosity_;
   };
 
+  Logger const notest{ LoggerVerbosity::kNoTest };
+  Logger const debug{ LoggerVerbosity::kDebug };
+  Logger const info{ LoggerVerbosity::kInfo };
+  Logger const warning{ LoggerVerbosity::kWarning };
+
   
 // -------------------------------------------------- Public Function -------------------------------------------------
 

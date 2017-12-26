@@ -27,7 +27,7 @@ int main(int const argc, char const **argv) {
 
   // Set logging verbosity level and initialize a debug logger.
   ssybc::logging::SetLoggerVerbosityLevel(ssybc::logging::LoggerVerbosity::kInfo);
-  auto const debug_logger = ssybc::logging::Logger(ssybc::logging::LoggerVerbosity::kDebug);
+  auto const debug_logger = ssybc::logging::debug;
 
   // Define a type alias for a blockchain with content type on each block as string.
   using StringBlockChain = typename ssybc::Blockchain<ssybc::Block<std::string>>;

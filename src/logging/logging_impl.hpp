@@ -69,7 +69,7 @@ template<typename T>
 inline std::ostream & ssybc::logging::operator<<(ssybc::logging::Logger const &logger, T const &arg)
 {
   if (logger.Verbosity() <= global_logger_verbosity_) {
-    return std::operator<<(std::cout, std::forward<T const>(arg));
+    return std::operator<<(std::cout, arg);
   }
   return *null_stream_;
 }
