@@ -32,6 +32,7 @@
 #include <limits>
 #include <thread>
 #include <mutex>
+#include <atomic>
 #include <condition_variable>
 
 
@@ -60,13 +61,13 @@ namespace ssybc {
 
   static std::mutex genesis_mining_mtx_;
   static std::condition_variable genesis_mined_cv_;
-  static bool is_genesis_mined_{ false };
-  static MinedResult genesis_result_{};
+  static std::atomic_bool is_genesis_mined_{ false };
+  static std::atomic<MinedResult> genesis_result_{};
 
   static std::mutex block_mining_mtx_;
   static std::condition_variable block_mined_cv_;
-  static bool is_block_mined_{ false };
-  static MinedResult block_result_{};
+  static std::atomic_bool is_block_mined_{ false };
+  static std::atomic<MinedResult> block_result_{};
 
   void LogThreadMiningNonceInRange_(BlockNonce const start, BlockNonce const stop);
   void LogThreadMiningNonceInRangeTerminatedWithoutValidResult_(BlockNonce const start, BlockNonce const stop);
@@ -116,13 +117,13 @@ inline auto ssybc::BlockMinerCPUBruteForce<Validator>::MineGenesisInfo(
   }
 
   std::unique_lock<std::mutex> lock(genesis_mining_mtx_);
-  genesis_mined_cv_.wait(lock, [] { return is_genesis_mined_;  });
+  genesis_mined_cv_.wait(lock, [] { return is_genesis_mined_.load();  });
   for (auto &worker : worker_threads) {
     worker.join();
   }
   logging::info << "Joined " + util::ToString(thread_count) + " threads for genesis block mining." << std::endl;
 
-  auto const result = MinedResult{ genesis_result_ };
+  auto const result = MinedResult{ genesis_result_.load() };
   genesis_result_ = MinedResult();
   is_genesis_mined_ = false;
   logging::info << "Finished mining Genesis block variables." << std::endl;
@@ -168,13 +169,13 @@ inline auto ssybc::BlockMinerCPUBruteForce<Validator>::MineInfo(
   }
 
   std::unique_lock<std::mutex> lock(block_mining_mtx_);
-  block_mined_cv_.wait(lock, [] { return is_block_mined_;  });
+  block_mined_cv_.wait(lock, [] { return is_block_mined_.load();  });
   for (auto &worker : worker_threads) {
     worker.join();
   }
   logging::info << "Joined " + util::ToString(thread_count) + " threads for block mining." << std::endl;
 
-  auto const result = MinedResult{ block_result_ };
+  auto const result = MinedResult{ block_result_.load() };
   block_result_ = MinedResult();
   is_block_mined_ = false;
   logging::info << "Finished mining block variables." << std::endl;
@@ -198,7 +199,7 @@ void ssybc::MineGenesisInfoOnCPUThreadBruteForce_(
   BlockNonce result_nonce{ nonce_start };
   BlockTimeInterval result_ts{ time_stamp };
   auto binary_mutable_copy = BinaryData(hashable_binary.begin(), hashable_binary.end());
-  while (!is_genesis_mined_ && !validator.IsValidGenesisBlockHash(hash_calculator.Hash(binary_mutable_copy))) {
+  while (!is_genesis_mined_.load() && !validator.IsValidGenesisBlockHash(hash_calculator.Hash(binary_mutable_copy))) {
     if (result_nonce >= nonce_end) {
       result_nonce = nonce_start;
       ++result_ts;
@@ -209,7 +210,7 @@ void ssybc::MineGenesisInfoOnCPUThreadBruteForce_(
     util::UpdateBinaryDataWithTrailingNonce(binary_mutable_copy, result_nonce);
   }
 
-  if (is_genesis_mined_) {
+  if (is_genesis_mined_.load()) {
     LogThreadMiningNonceInRangeTerminatedWithoutValidResult_(nonce_start, nonce_end);
     return;
   }
@@ -234,7 +235,7 @@ void ssybc::MineInfoOnCPUThreadBruteForce_(
   BlockNonce result_nonce{ nonce_start };
   BlockTimeInterval result_ts{ time_stamp };
   auto binary_mutable_copy = BinaryData(hashable_binary.begin(), hashable_binary.end());
-  while (!is_block_mined_ && !validator.IsValidHashToAppend(
+  while (!is_block_mined_.load() && !validator.IsValidHashToAppend(
     previous_hash,
     hash_calculator.Hash(binary_mutable_copy)
   )) {
@@ -248,7 +249,7 @@ void ssybc::MineInfoOnCPUThreadBruteForce_(
     util::UpdateBinaryDataWithTrailingNonce(binary_mutable_copy, result_nonce);
   }
 
-  if (is_block_mined_) {
+  if (is_block_mined_.load()) {
     LogThreadMiningNonceInRangeTerminatedWithoutValidResult_(nonce_start, nonce_end);
     return;
   }
