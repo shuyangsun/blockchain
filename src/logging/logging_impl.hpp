@@ -28,6 +28,10 @@
 #include <utility>
 #include <memory>
 
+
+// --------------------------------------------------- Private Field --------------------------------------------------
+
+
 namespace ssybc {
   namespace logging {
 
@@ -71,7 +75,9 @@ inline std::ostream & ssybc::logging::operator<<(ssybc::logging::Logger const &l
 }
 
 
-inline std::ostream& ssybc::logging::operator<<(ssybc::logging::Logger const &logger, std::ostream& (*pf)(std::ostream&))
+inline std::ostream& ssybc::logging::operator<<(
+  ssybc::logging::Logger const &logger,
+  std::ostream& (*pf)(std::ostream&))
 {
   if (logger.Verbosity() <= global_logger_verbosity_) {
     return pf(std::cout);
