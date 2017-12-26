@@ -96,4 +96,26 @@ inline std::ostream& ssybc::logging::operator<<(
 }
 
 
+template<typename T>
+inline std::ostream & ssybc::logging::operator<<(ssybc::logging::ErrorLogger const &logger, T const &arg)
+{
+  return std::operator<<(std::cerr, arg);
+}
+
+
+template<typename T>
+inline std::ostream & ssybc::logging::operator<<(ssybc::logging::ErrorLogger const &logger, T &&arg)
+{
+  return std::operator<<(std::cerr, std::forward<T>(arg));
+}
+
+
+inline std::ostream& ssybc::logging::operator<<(
+  ssybc::logging::ErrorLogger const &logger,
+  std::ostream& (*pf)(std::ostream&))
+{
+  return pf(std::cerr);
+}
+
+
 #endif  // SSYBC_SRC_LOGGING_LOGGING_HPP_

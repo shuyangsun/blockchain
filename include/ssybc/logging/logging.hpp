@@ -53,10 +53,19 @@ namespace logging {
     LoggerVerbosity const verbosity_;
   };
 
+  class ErrorLogger {
+  public:
+
+    ErrorLogger() = default;
+
+  };
+
   Logger const notest{ LoggerVerbosity::kNoTest };
   Logger const debug{ LoggerVerbosity::kDebug };
   Logger const info{ LoggerVerbosity::kInfo };
   Logger const warning{ LoggerVerbosity::kWarning };
+
+  ErrorLogger const error{};
 
   
 // -------------------------------------------------- Public Function -------------------------------------------------
@@ -69,6 +78,12 @@ namespace logging {
   template<typename T>
   std::ostream &operator<<(Logger const &logger, T &&arg);
   std::ostream &operator<<(Logger const &logger, std::ostream& (*pf)(std::ostream&));
+
+  template<typename T>
+  std::ostream &operator<<(ErrorLogger const &logger, T const &arg);
+  template<typename T>
+  std::ostream &operator<<(ErrorLogger const &logger, T &&arg);
+  std::ostream &operator<<(ErrorLogger const &logger, std::ostream& (*pf)(std::ostream&));
 
 
 }  // namespace logging
