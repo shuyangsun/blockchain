@@ -25,6 +25,8 @@
 #include "include/ssybc/general/general.hpp"
 #include "include/ssybc/logging/logging.hpp"
 
+#include <utility>
+
 namespace ssybc {
   namespace logging {
 
@@ -48,10 +50,29 @@ ssybc::logging::Logger::Logger(LoggerVerbosity const verbosity):
 { EMPTY_BLOCK }
 
 
-template<typename ...Args>
-inline std::ostream & ssybc::logging::Logger::operator<<(Args && ...args) const
+inline ssybc::logging::LoggerVerbosity ssybc::logging::Logger::Verbosity() const
 {
-  return std::cout;  // TODO
+  return verbosity_;
+}
+
+
+template<typename ...Args>
+std::ostream & ssybc::logging::operator<<(ssybc::logging::Logger const logger, Args && ...args)
+{
+  if (logger.Verbosity() <= global_logger_verbosity_) {
+    return std::operator<<(std::cout, std::forward<Args>(args)...);
+  }
+  return std::operator<<(std::ostream(0), std::forward<Args>(args)...);
+}
+
+
+std::ostream& ssybc::logging::operator<<(ssybc::logging::Logger const logger, std::ostream& (*pf)(std::ostream&))
+{
+  if (logger.Verbosity() <= global_logger_verbosity_) {
+    return pf(std::cout);
+  }
+  std::ostream stream(0);
+  return pf(stream);
 }
 
 

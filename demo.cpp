@@ -25,6 +25,10 @@
 
 int main(int const argc, char const **argv) {
 
+  ssybc::logging::SetLoggerVerbosityLevel(ssybc::logging::LoggerVerbosity::kInfo);
+  
+  auto const logger_debug = ssybc::logging::Logger(ssybc::logging::LoggerVerbosity::kDebug);
+
   // Define a type alias for a blockchain with content type on each block as string.
   using StringBlockChain = typename ssybc::Blockchain<ssybc::Block<std::string>>;
   
@@ -33,35 +37,26 @@ int main(int const argc, char const **argv) {
   // hash; miner uses multi-thread brute force algorithm on CPU.
   // Data type, binary converter, hash calculator, vadlidator and miner are all customizable. User-defined custom data
   // types are also supported, as long as customized binary data converter provides a valid binary conversion.
-  
-  std::cout << "Started mining blocks..." << std::endl;
 
   // Initializing the Genesis Block with a string.
   StringBlockChain str_blockchain{
     StringBlockChain::GenesisBlockMinedWithData("This is a Genesis Block on SSY Blockchain!")
   };
-  std::cout << "Genesis block mined!" << std::endl;
 
   // Appending content onto the chain.
   str_blockchain.Append("Mining the second block on multi-thread CPU code is not that slow.");
-  std::cout << "Second block mined!" << std::endl;
-
   str_blockchain.Append("Third block may take a little longer.");
-  std::cout << "Third block mined!" << std::endl;
 
-  std::cout << "Block mining finished." << std::endl;
-  std::cout << std::endl;
- 
-  // Print Blockchain to human readable text.
-  std::cout << str_blockchain.Description() << std::endl;
+  logger_debug << std::endl;
+  logger_debug << str_blockchain.Description() << std::endl;
 
   // Looking up blocks by index and hash.
   auto genesis_block = str_blockchain.GenesisBlock();
   auto second_block = str_blockchain[1];
   auto last_block = str_blockchain.TailBlock();
 
-  std::cout << std::endl;
-  std::cout
+  logger_debug << std::endl;
+  logger_debug
     << "Block indices: "
     << genesis_block.Header().Index() << " "
     << second_block.Header().Index() << " "
@@ -71,54 +66,54 @@ int main(int const argc, char const **argv) {
   auto last_block_by_hash = str_blockchain[last_block.Header().Hash()];
   auto last_block_by_hash_str = str_blockchain[last_block.Header().HashAsString()];
 
-  std::cout << std::endl;
-  std::cout << "Found last block by negative index: " << (last_block_by_negative_idx == last_block) << std::endl;
-  std::cout << "Found last block by hash lookup: " << (last_block_by_hash == last_block) << std::endl;
-  std::cout << "Found last block by hash string lookup: " << (last_block_by_hash_str == last_block) << std::endl;
-  std::cout << std::endl;
+  logger_debug << std::endl;
+  logger_debug << "Found last block by negative index: " << (last_block_by_negative_idx == last_block) << std::endl;
+  logger_debug << "Found last block by hash lookup: " << (last_block_by_hash == last_block) << std::endl;
+  logger_debug << "Found last block by hash string lookup: " << (last_block_by_hash_str == last_block) << std::endl;
+  logger_debug << std::endl;
 
   // Export Blockchain to binary data, can be save to file later.
   auto str_chain_as_binary = str_blockchain.Binary();
 
   // Visualize binary data.
-  std::cout << std::endl;
-  std::cout << "Binary blockchain as hex:" << std::endl;
-  std::cout << ssybc::util::HexStringFromBytes(str_chain_as_binary, " ") << std::endl;
+  logger_debug << std::endl;
+  logger_debug << "Binary blockchain as hex:" << std::endl;
+  logger_debug << ssybc::util::HexStringFromBytes(str_chain_as_binary, " ") << std::endl;
 
   // Reconstruct Blockchain from binary data.
   StringBlockChain resconstructed_strchain{ str_chain_as_binary };
-  std::cout << std::endl;
-  std::cout
+  logger_debug << std::endl;
+  logger_debug
     << "Reconstructed blockchain from binary data is identical with original: "
     << (str_blockchain == resconstructed_strchain) << std::endl;
 
   // Export Blockchain headers to binary data.
   auto const strchain_header_binary = str_blockchain.BinaryHeadersOnly();
 
-  std::cout << std::endl;
-  std::cout << "Binary blockchain headers as hex:" << std::endl;
-  std::cout << ssybc::util::HexStringFromBytes(strchain_header_binary, " ") << std::endl;
+  logger_debug << std::endl;
+  logger_debug << "Binary blockchain headers as hex:" << std::endl;
+  logger_debug << ssybc::util::HexStringFromBytes(strchain_header_binary, " ") << std::endl;
 
   // Reconstruct Blockchain headers from binary data.
   StringBlockChain resconstructed_strchain_header{ strchain_header_binary };
-  std::cout << std::endl;
-  std::cout << "Reconstructed headers from binary data:" << std::endl;
-  std::cout << resconstructed_strchain_header.Description() << std::endl;
+  logger_debug << std::endl;
+  logger_debug << "Reconstructed headers from binary data:" << std::endl;
+  logger_debug << resconstructed_strchain_header.Description() << std::endl;
 
-  std::cout << std::endl;
-  std::cout
+  logger_debug << std::endl;
+  logger_debug
     << "Reconstructed blockchain headers from binary data is identical with original: "
     << (str_blockchain == resconstructed_strchain_header) << std::endl;
 
   // Save to binary file.
   std::string const file_path{ "temp.ssybc" };
   bool const save_succeeded{ str_blockchain.SaveHeadersOnlyBinaryToFileAtPath(file_path) };
-  std::cout << std::endl;
-  std::cout << "Save binary header to file succeeded: " << save_succeeded << std::endl;
+  logger_debug << std::endl;
+  logger_debug << "Save binary header to file succeeded: " << save_succeeded << std::endl;
 
   // Load from binary file.
   //auto loaded_blockchain = StringBlockChain::LoadFromBinaryFileAtPath(file_path);
-  //std::cout << "Loaded Blockchain is identical with original: " << (loaded_blockchain == str_blockchain) << std::endl;
+  //logger_debug << "Loaded Blockchain is identical with original: " << (loaded_blockchain == str_blockchain) << std::endl;
 
   return 0;
 }

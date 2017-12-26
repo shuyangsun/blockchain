@@ -24,7 +24,6 @@
 #include "include/ssybc/general/general.hpp"
 
 #include <ostream>
-#include <utility>
 
 namespace ssybc {
 
@@ -45,13 +44,15 @@ namespace logging {
   public:
 
     Logger(LoggerVerbosity const verbosity);
-
-    template<typename... Args>
-    std::ostream &operator<<(Args&&... args) const;
+    LoggerVerbosity Verbosity() const;
 
   private:
     LoggerVerbosity const verbosity_;
   };
+
+  template<typename ...Args>
+  std::ostream &operator<<(Logger const logger, Args&&... args);
+  std::ostream &operator<<(Logger const logger, std::ostream& (*pf)(std::ostream&));
   
 
 // -------------------------------------------- Specialization Declaration --------------------------------------------
