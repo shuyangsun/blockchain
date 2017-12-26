@@ -18,34 +18,49 @@
  *
  *********************************************************************************************************************/
 
-#ifndef SSYBC_INCLUDE_SSYBC_SSYBC_HPP
-#define SSYBC_INCLUDE_SSYBC_SSYBC_HPP
+#ifndef SSYBC_INCLUDE_SSYBC_LOGGING_LOGGING_HPP_
+#define SSYBC_INCLUDE_SSYBC_LOGGING_LOGGING_HPP_
 
 #include "include/ssybc/general/general.hpp"
 
-#include "include/ssybc/logging/logging.hpp"
+#include <ostream>
+#include <utility>
 
-#include "include/ssybc/utility/utility.hpp"
-#include "include/ssybc/utility/operator.hpp"
+namespace ssybc {
 
-#include "include/ssybc/binary_data_converter/binary_data_converter_interface.hpp"
-#include "include/ssybc/binary_data_converter/binary_data_converter_default.hpp"
+namespace logging {
 
-#include "include/ssybc/hash_calculator/hash_calculator_interface.hpp"
-#include "include/ssybc/hash_calculator/hash_calculator_sha256.hpp"
-#include "include/ssybc/hash_calculator/hash_calculator_double_sha256.hpp"
+  enum LoggerVerbosity: unsigned int {
+    kNoTest = 0,
+    kDebug,
+    kInfo,
+    kWarning
+  };
+  
+// -------------------------------------------------- Public Function -------------------------------------------------
 
-#include "include/ssybc/block/block.hpp"
-#include "include/ssybc/block/block_header/block_header.hpp"
-#include "include/ssybc/block/block_content/block_content.hpp"
+  void SetLoggerVerbosityLevel(LoggerVerbosity const verbosity);
+  
+  class Logger {
+  public:
 
-#include "include/ssybc/validator/block_validator.hpp"
-#include "include/ssybc/validator/block_validator_less_hash.hpp"
+    Logger(LoggerVerbosity const verbosity);
 
-#include "include/ssybc/blockchain/blockchain.hpp"
+    template<typename... Args>
+    std::ostream &operator<<(Args&&... args) const;
 
-#include "include/ssybc/miner/block_miner.hpp"
-#include "include/ssybc/miner/block_miner_cpu_brute_force.hpp"
+  private:
+    LoggerVerbosity const verbosity_;
+  };
+  
 
-#endif  // SSYBC_INCLUDE_SSYBC_SSYBC_HPP
+// -------------------------------------------- Specialization Declaration --------------------------------------------
+
+}  // namespace logging
+
+}  // namespace ssybc
+
+#include "src/logging/logging_impl.hpp"
+
+#endif  // SSYBC_INCLUDE_SSYBC_LOGGING_LOGGING_HPP_
 

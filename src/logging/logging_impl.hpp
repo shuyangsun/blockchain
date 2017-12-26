@@ -18,34 +18,41 @@
  *
  *********************************************************************************************************************/
 
-#ifndef SSYBC_INCLUDE_SSYBC_SSYBC_HPP
-#define SSYBC_INCLUDE_SSYBC_SSYBC_HPP
+
+#ifndef SSYBC_SRC_LOGGING_LOGGING_HPP_
+#define SSYBC_SRC_LOGGING_LOGGING_HPP_
 
 #include "include/ssybc/general/general.hpp"
-
 #include "include/ssybc/logging/logging.hpp"
 
-#include "include/ssybc/utility/utility.hpp"
-#include "include/ssybc/utility/operator.hpp"
+namespace ssybc {
+  namespace logging {
 
-#include "include/ssybc/binary_data_converter/binary_data_converter_interface.hpp"
-#include "include/ssybc/binary_data_converter/binary_data_converter_default.hpp"
+    static LoggerVerbosity global_logger_verbosity_{ LoggerVerbosity::kNoTest };
 
-#include "include/ssybc/hash_calculator/hash_calculator_interface.hpp"
-#include "include/ssybc/hash_calculator/hash_calculator_sha256.hpp"
-#include "include/ssybc/hash_calculator/hash_calculator_double_sha256.hpp"
+  }  // namespace logging
+}  // namespace ssybc
 
-#include "include/ssybc/block/block.hpp"
-#include "include/ssybc/block/block_header/block_header.hpp"
-#include "include/ssybc/block/block_content/block_content.hpp"
 
-#include "include/ssybc/validator/block_validator.hpp"
-#include "include/ssybc/validator/block_validator_less_hash.hpp"
+// --------------------------------------------------- Public Method --------------------------------------------------
 
-#include "include/ssybc/blockchain/blockchain.hpp"
 
-#include "include/ssybc/miner/block_miner.hpp"
-#include "include/ssybc/miner/block_miner_cpu_brute_force.hpp"
+void ssybc::logging::SetLoggerVerbosityLevel(LoggerVerbosity const verbosity)
+{
+  global_logger_verbosity_ = verbosity;
+}
 
-#endif  // SSYBC_INCLUDE_SSYBC_SSYBC_HPP
 
+ssybc::logging::Logger::Logger(LoggerVerbosity const verbosity):
+  verbosity_{ verbosity }
+{ EMPTY_BLOCK }
+
+
+template<typename ...Args>
+inline std::ostream & ssybc::logging::Logger::operator<<(Args && ...args) const
+{
+  return std::cout;  // TODO
+}
+
+
+#endif  // SSYBC_SRC_LOGGING_LOGGING_HPP_
