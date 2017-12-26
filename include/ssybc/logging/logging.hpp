@@ -36,7 +36,8 @@ namespace logging {
     kNoTest = 0,
     kDebug,
     kInfo,
-    kWarning
+    kWarning,
+    kThreading
   };
 
 
@@ -64,6 +65,7 @@ namespace logging {
   Logger const debug{ LoggerVerbosity::kDebug };
   Logger const info{ LoggerVerbosity::kInfo };
   Logger const warning{ LoggerVerbosity::kWarning };
+  Logger const threading{ LoggerVerbosity::kThreading };
 
   ErrorLogger const error{};
 

@@ -19,14 +19,15 @@
  *********************************************************************************************************************/
 
 
+#include "include/ssybc/ssybc.hpp"
+
 #include<iostream>
 
-#include "include/ssybc/ssybc.hpp"
 
 int main(int const argc, char const **argv) {
 
   // Set logging verbosity level and initialize a general purpose logger.
-  // To log CPU mining multi-threading information, set verbosity level to LoggerVerbosity::kInfo.
+  // To log multi-thread CPU mining information, set verbosity level to LoggerVerbosity::kThreading.
   ssybc::logging::SetLoggerVerbosityLevel(ssybc::logging::LoggerVerbosity::kDebug);
   auto const logger = ssybc::logging::notest;
 
