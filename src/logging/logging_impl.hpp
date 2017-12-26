@@ -27,6 +27,7 @@
 
 #include <utility>
 #include <memory>
+#include <atomic>
 
 
 // --------------------------------------------------- Private Field --------------------------------------------------
@@ -35,7 +36,7 @@
 namespace ssybc {
   namespace logging {
 
-    static LoggerVerbosity global_logger_verbosity_{ LoggerVerbosity::kNoTest };
+    static std::atomic<LoggerVerbosity> global_logger_verbosity_{ LoggerVerbosity::kNoTest };
     static std::unique_ptr<std::ostream> null_stream_{ std::make_unique<std::ostream>(nullptr) };
 
   }  // namespace logging
@@ -68,7 +69,7 @@ inline ssybc::logging::LoggerVerbosity ssybc::logging::Logger::Verbosity() const
 template<typename T>
 inline std::ostream & ssybc::logging::operator<<(ssybc::logging::Logger const &logger, T const &arg)
 {
-  if (logger.Verbosity() <= global_logger_verbosity_) {
+  if (logger.Verbosity() <= global_logger_verbosity_.load()) {
     return std::operator<<(std::cout, arg);
   }
   return *null_stream_;
@@ -78,7 +79,7 @@ inline std::ostream & ssybc::logging::operator<<(ssybc::logging::Logger const &l
 template<typename T>
 inline std::ostream & ssybc::logging::operator<<(ssybc::logging::Logger const &logger, T &&arg)
 {
-  if (logger.Verbosity() <= global_logger_verbosity_) {
+  if (logger.Verbosity() <= global_logger_verbosity_.load()) {
     return std::operator<<(std::cout, std::forward<T>(arg));
   }
   return *null_stream_;
@@ -89,7 +90,7 @@ inline std::ostream& ssybc::logging::operator<<(
   ssybc::logging::Logger const &logger,
   std::ostream& (*pf)(std::ostream&))
 {
-  if (logger.Verbosity() <= global_logger_verbosity_) {
+  if (logger.Verbosity() <= global_logger_verbosity_.load()) {
     return pf(std::cout);
   }
   return *null_stream_;
