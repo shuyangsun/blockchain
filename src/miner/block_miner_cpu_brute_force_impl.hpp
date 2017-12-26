@@ -25,6 +25,7 @@
 #include "include/ssybc/miner/block_miner_cpu_brute_force.hpp"
 #include "include/ssybc/validator/block_validator.hpp"
 #include "include/ssybc/utility/utility.hpp"
+#include "include/ssybc/logging/logging.hpp"
 
 #include <exception>
 #include <typeinfo>
@@ -67,6 +68,12 @@ namespace ssybc {
   static bool is_block_mined_{ false };
   static MinedResult block_result_{};
 
+  void LogThreadMiningNonceInRange_(BlockNonce const start, BlockNonce const stop);
+  void LogThreadMiningNonceInRangeTerminatedWithoutValidResult_(BlockNonce const start, BlockNonce const stop);
+  void LogThreadMiningNonceInRangeTerminatedWithValidResult_(
+    BlockNonce const start,
+    BlockNonce const stop,
+    BlockNonce const result);
 }
 
 
@@ -77,21 +84,24 @@ template<typename Validator>
 inline auto ssybc::BlockMinerCPUBruteForce<Validator>::MineGenesisInfo(
   BinaryData const & hashable_binary) const -> MinedResult
 {
+  logging::info << "Mining Genesis block variables..." << std::endl;
   auto const validator = Validator();
   using HashCalculatorType = typename BlockMinerCPUBruteForce::HashCalculatorType;
   auto const hash_calculator = HashCalculatorType();
   BlockTimeInterval result_ts{ util::TrailingTimeStampBeforeNonceFromBinaryData(hashable_binary) };
   if (validator.IsValidGenesisBlockHash(hash_calculator.Hash(hashable_binary))) {
+    logging::info << "Finished mining Genesis block variables." << std::endl;
     return { result_ts, util::TrailingNonceFromBinaryData(hashable_binary) };
   }
 
   auto const hardware_threads_count = std::thread::hardware_concurrency();
   auto thread_count = std::max<decltype(hardware_threads_count)>(1, hardware_threads_count);
   auto const max_nonce = std::numeric_limits<BlockNonce>::max();
-  auto const nonce_threads_gap = static_cast<BlockNonce>(max_nonce / thread_count);
+  auto nonce_threads_gap = static_cast<BlockNonce>(max_nonce / thread_count);
   if (nonce_threads_gap * thread_count != max_nonce) {
-    ++thread_count;
+    nonce_threads_gap = static_cast<BlockNonce>(max_nonce / (thread_count - 1));
   }
+  logging::info << "Creating " + util::ToString(thread_count) + " threads for genesis block mining..." << std::endl;
   std::vector<std::thread> worker_threads{};
   for (decltype(thread_count) i{ 0 }; i < thread_count; ++i) {
     worker_threads.push_back(std::thread(
@@ -110,10 +120,12 @@ inline auto ssybc::BlockMinerCPUBruteForce<Validator>::MineGenesisInfo(
   for (auto &worker : worker_threads) {
     worker.join();
   }
+  logging::info << "Joined " + util::ToString(thread_count) + " threads for genesis block mining." << std::endl;
 
   auto const result = MinedResult{ genesis_result_ };
   genesis_result_ = MinedResult();
   is_genesis_mined_ = false;
+  logging::info << "Finished mining Genesis block variables." << std::endl;
   return result;
 }
 
@@ -123,22 +135,25 @@ inline auto ssybc::BlockMinerCPUBruteForce<Validator>::MineInfo(
   BlockHash const & previous_hash,
   BinaryData const & hashable_binary) const -> MinedResult
 {
+  logging::info << "Mining block variables..." << std::endl;
   auto const validator = Validator();
   using HashCalculatorType = typename BlockMinerCPUBruteForce::HashCalculatorType;
   auto const hash_calculator = HashCalculatorType();
   BlockTimeInterval result_ts{ util::TrailingTimeStampBeforeNonceFromBinaryData(hashable_binary) };
   if (validator.IsValidHashToAppend(previous_hash, hash_calculator.Hash(hashable_binary))) {
+    logging::info << "Finished mining block variables." << std::endl;
     return { result_ts, util::TrailingNonceFromBinaryData(hashable_binary) };
   }
 
   auto const hardware_threads_count = std::thread::hardware_concurrency();
   auto thread_count = std::max<decltype(hardware_threads_count)>(1, hardware_threads_count);
   auto const max_nonce = std::numeric_limits<BlockNonce>::max();
-  auto const nonce_threads_gap = static_cast<BlockNonce>(max_nonce / thread_count);
+  auto nonce_threads_gap = static_cast<BlockNonce>(max_nonce / thread_count);
   if (nonce_threads_gap * thread_count != max_nonce) {
-    ++thread_count;
+    nonce_threads_gap = static_cast<BlockNonce>(max_nonce / (thread_count - 1));
   }
   std::vector<std::thread> worker_threads{};
+  logging::info << "Creating " + util::ToString(thread_count) + " threads for block mining..." << std::endl;
   for (decltype(thread_count) i{ 0 }; i < thread_count; ++i) {
     worker_threads.push_back(std::thread(
       MineInfoOnCPUThreadBruteForce_<Validator, HashCalculatorType>,
@@ -157,10 +172,12 @@ inline auto ssybc::BlockMinerCPUBruteForce<Validator>::MineInfo(
   for (auto &worker : worker_threads) {
     worker.join();
   }
+  logging::info << "Joined " + util::ToString(thread_count) + " threads for block mining." << std::endl;
 
   auto const result = MinedResult{ block_result_ };
   block_result_ = MinedResult();
   is_block_mined_ = false;
+  logging::info << "Finished mining block variables." << std::endl;
   return result;
 }
 
@@ -177,6 +194,7 @@ void ssybc::MineGenesisInfoOnCPUThreadBruteForce_(
   ValidatorT const validator,
   HashCalculatorT const hash_calculator)
 {
+  LogThreadMiningNonceInRange_(nonce_start, nonce_end);
   BlockNonce result_nonce{ nonce_start };
   BlockTimeInterval result_ts{ time_stamp };
   auto binary_mutable_copy = BinaryData(hashable_binary.begin(), hashable_binary.end());
@@ -192,11 +210,13 @@ void ssybc::MineGenesisInfoOnCPUThreadBruteForce_(
   }
 
   if (is_genesis_mined_) {
+    LogThreadMiningNonceInRangeTerminatedWithoutValidResult_(nonce_start, nonce_end);
     return;
   }
 
   genesis_result_ = MinedResult{ result_ts, result_nonce };
   is_genesis_mined_ = true;
+  LogThreadMiningNonceInRangeTerminatedWithValidResult_(nonce_start, nonce_end, result_nonce);
   genesis_mined_cv_.notify_one();
 }
 
@@ -210,7 +230,7 @@ void ssybc::MineInfoOnCPUThreadBruteForce_(
   ValidatorT const validator,
   HashCalculatorT const hash_calculator)
 {
-
+  LogThreadMiningNonceInRange_(nonce_start, nonce_end);
   BlockNonce result_nonce{ nonce_start };
   BlockTimeInterval result_ts{ time_stamp };
   auto binary_mutable_copy = BinaryData(hashable_binary.begin(), hashable_binary.end());
@@ -229,12 +249,51 @@ void ssybc::MineInfoOnCPUThreadBruteForce_(
   }
 
   if (is_block_mined_) {
+    LogThreadMiningNonceInRangeTerminatedWithoutValidResult_(nonce_start, nonce_end);
     return;
   }
 
   block_result_ = MinedResult{ result_ts, result_nonce };
   is_block_mined_ = true;
+  LogThreadMiningNonceInRangeTerminatedWithValidResult_(nonce_start, nonce_end, result_nonce);
   block_mined_cv_.notify_one();
+}
+
+
+inline void ssybc::LogThreadMiningNonceInRange_(BlockNonce const start, BlockNonce const stop)
+{
+  logging::info << "Thread mining nonce in range ["
+    + util::ToString(start)
+    + ", "
+    + util::ToString(stop)
+    + ")..." << std::endl;
+}
+
+
+inline void ssybc::LogThreadMiningNonceInRangeTerminatedWithoutValidResult_(
+  BlockNonce const start,
+  BlockNonce const stop)
+{
+  logging::info << "Thread mining nonce in range ["
+    + util::ToString(start)
+    + ", "
+    + util::ToString(stop)
+    + ") terminated without valid result." << std::endl;
+}
+
+
+inline void ssybc::LogThreadMiningNonceInRangeTerminatedWithValidResult_(
+  BlockNonce const start,
+  BlockNonce const stop,
+  BlockNonce const result)
+{
+  logging::info << "Thread mining nonce in range ["
+    + util::ToString(start)
+    + ", "
+    + util::ToString(stop)
+    + ") terminated with valid result: "
+    + util::ToString(result)
+    + "." << std::endl;
 }
 
 

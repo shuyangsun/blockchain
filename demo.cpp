@@ -25,8 +25,9 @@
 
 int main(int const argc, char const **argv) {
 
-  // Set logging verbosity level and initialize a debug logger.
-  ssybc::logging::SetLoggerVerbosityLevel(ssybc::logging::LoggerVerbosity::kInfo);
+  // Set logging verbosity level and initialize a general purpose logger.
+  // To log CPU mining multi-threading information, set verbosity level to LoggerVerbosity::kInfo.
+  ssybc::logging::SetLoggerVerbosityLevel(ssybc::logging::LoggerVerbosity::kDebug);
   auto const logger = ssybc::logging::notest;
 
   // Define a type alias for a blockchain with content type on each block as string.

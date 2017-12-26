@@ -35,8 +35,7 @@
 template<typename Validator>
 inline auto ssybc::BlockMiner<Validator>::MineGenesis(BlockType const & block) const -> BlockType
 {
-  auto const info_logger = logging::Logger(logging::LoggerVerbosity::kInfo);
-  info_logger << "Mining Genesis block..." << std::endl;
+  logging::debug << "Mining Genesis block..." << std::endl;
   if (block.Header().Index() != 0) {
     std::string const message{
       "Cannot mine Genesis Block, index is "
@@ -68,7 +67,7 @@ inline auto ssybc::BlockMiner<Validator>::MineGenesis(BlockType const & block) c
     );
   }
 
-  info_logger << "Finished mining Genesis block." << std::endl;
+  logging::debug << "Finished mining Genesis block." << std::endl;
   if (block.IsHeaderOnly()) {
     return BlockType{ result_header };
   }
@@ -81,8 +80,7 @@ inline auto ssybc::BlockMiner<Validator>::Mine(
   BlockType const & previous_block,
   BlockType const & block) const -> BlockType
 {
-  auto const info_logger = logging::Logger(logging::LoggerVerbosity::kInfo);
-  info_logger << "Mining block # " << util::ToString(block.Header().Index()) << "..." << std::endl;
+  logging::debug << "Mining block # " << util::ToString(block.Header().Index()) << "..." << std::endl;
   if (block.Header().PreviousHash() != previous_block.Header().Hash()) {
     throw std::invalid_argument(
       "Cannot mine Block " + std::to_string(block.Header().Index()) + ", it is not post-adjacent "
@@ -107,7 +105,7 @@ inline auto ssybc::BlockMiner<Validator>::Mine(
     );
   }
 
-  info_logger << "Finished mining block # " << util::ToString(block.Header().Index()) << "." << std::endl;
+  logging::debug << "Finished mining block # " << util::ToString(block.Header().Index()) << "." << std::endl;
   if (block.IsHeaderOnly()) {
     return BlockType{ result_header };
   }
