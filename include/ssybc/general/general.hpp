@@ -37,6 +37,7 @@ namespace ssybc {
   using Byte = unsigned char;
   using BinaryData = std::vector<Byte>;
   using BlockHash = BinaryData;
+  using HashDifficulty = unsigned short;
 
   constexpr unsigned char kNumberOfBitsInByte{8};
   constexpr unsigned int kNumberOfBytesInMB{1024 * 1024};

@@ -25,7 +25,7 @@
 
 namespace ssybc {
 
-  template<typename BlockT>
+  template<typename BlockT, HashDifficulty Difficulty>
   class BlockValidator {
   public:
 

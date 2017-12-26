@@ -28,8 +28,10 @@
 // --------------------------------------------------- Public Method --------------------------------------------------
 
 
-template<typename BlockT>
-inline bool ssybc::BlockValidator<BlockT>::IsBlockPreAdjacentTo(BlockT const & lhs, BlockT const & rhs) const
+template<typename BlockT, ssybc::HashDifficulty Difficulty>
+inline bool ssybc::BlockValidator<BlockT, Difficulty>::IsBlockPreAdjacentTo(
+  BlockT const & lhs,
+  BlockT const & rhs) const
 {
   if (lhs.Header().Index() != (rhs.Header().Index() - 1)) { return false;  }
   if (lhs.Header().TimeStamp() > rhs.Header().TimeStamp()) { return false; }
@@ -38,8 +40,8 @@ inline bool ssybc::BlockValidator<BlockT>::IsBlockPreAdjacentTo(BlockT const & l
 }
 
 
-template<typename BlockT>
-inline bool ssybc::BlockValidator<BlockT>::IsValidGenesisBlock(BlockT const & block) const
+template<typename BlockT, ssybc::HashDifficulty Difficulty>
+inline bool ssybc::BlockValidator<BlockT, Difficulty>::IsValidGenesisBlock(BlockT const & block) const
 {
   bool const is_hash_valid {
     block.Header().PreviousHash() == typename BlockT::HeaderHashCalculatorType().GenesisBlockPreviousHash()
@@ -48,8 +50,8 @@ inline bool ssybc::BlockValidator<BlockT>::IsValidGenesisBlock(BlockT const & bl
 }
 
 
-template<typename BlockT>
-inline bool ssybc::BlockValidator<BlockT>::IsValidToAppend(
+template<typename BlockT, ssybc::HashDifficulty Difficulty>
+inline bool ssybc::BlockValidator<BlockT, Difficulty>::IsValidToAppend(
   BlockT const & previous_block,
   BlockT const & block) const
 {

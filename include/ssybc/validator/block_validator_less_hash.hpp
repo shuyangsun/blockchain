@@ -25,8 +25,8 @@
 
 namespace ssybc {
 
-  template<typename BlockT>
-  class BlockValidatorLessHash: public virtual BlockValidator<BlockT> {
+  template<typename BlockT, HashDifficulty Difficulty>
+  class BlockValidatorLessHash: public virtual BlockValidator<BlockT, Difficulty> {
   public:
 
 // --------------------------------------------------- Public Method --------------------------------------------------

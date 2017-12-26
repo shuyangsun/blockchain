@@ -32,7 +32,10 @@
 
 namespace ssybc {
 
-  template<typename BlockT, template<typename> class ValidatorTemplate = BlockValidatorLessHash>
+  template<
+    typename BlockT,
+    HashDifficulty Difficulty = 2,
+    template<typename, HashDifficulty> class ValidatorTemplate = BlockValidatorLessHash>
   class Blockchain {
   public:
 
@@ -44,7 +47,7 @@ namespace ssybc {
     using ContentBinaryConverterType = typename BlockType::ContentBinaryConverterType;
     using HeaderHashCalculatorType = typename BlockType::HeaderHashCalculatorType;
     using ContentHashCalculatorType = typename BlockType::ContentHashCalculatorType;
-    using ValidatorType = ValidatorTemplate<BlockType>;
+    using ValidatorType = ValidatorTemplate<BlockType, Difficulty>;
     using MinerType = BlockMiner<ValidatorType>;
 
 // --------------------------------------------- Constructor & Destructor ---------------------------------------------

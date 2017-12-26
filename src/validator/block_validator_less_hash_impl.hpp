@@ -27,14 +27,13 @@
 #include <limits>
 
 
-template<typename BlockT>
-inline ssybc::BlockValidatorLessHash<BlockT>::BlockValidatorLessHash():
-  BlockValidator<BlockT>()
+template<typename BlockT, ssybc::HashDifficulty Difficulty>
+inline ssybc::BlockValidatorLessHash<BlockT, Difficulty>::BlockValidatorLessHash():
+  BlockValidator<BlockT, Difficulty>()
 {
-  unsigned short const genesis_difficulty_level{ 2 };
   auto const byte_max{ std::numeric_limits<Byte>::max() };
   auto max_hash = BlockHash(typename BlockT::HeaderHashCalculatorType().SizeOfHashInBytes());
-  for (std::size_t i{ genesis_difficulty_level }; i < max_hash.size(); ++i) {
+  for (std::size_t i{ Difficulty }; i < max_hash.size(); ++i) {
     max_hash[i] = byte_max;
   }
   max_hash_ = max_hash;
@@ -44,15 +43,15 @@ inline ssybc::BlockValidatorLessHash<BlockT>::BlockValidatorLessHash():
 // --------------------------------------------------- Public Method --------------------------------------------------
 
 
-template<typename BlockT>
-inline bool ssybc::BlockValidatorLessHash<BlockT>::IsValidGenesisBlockHash(BlockHash const & hash) const
+template<typename BlockT, ssybc::HashDifficulty Difficulty>
+inline bool ssybc::BlockValidatorLessHash<BlockT, Difficulty>::IsValidGenesisBlockHash(BlockHash const & hash) const
 {
   return hash <= max_hash_;
 }
 
 
-template<typename BlockT>
-inline bool ssybc::BlockValidatorLessHash<BlockT>::IsValidHashToAppend(
+template<typename BlockT, ssybc::HashDifficulty Difficulty>
+inline bool ssybc::BlockValidatorLessHash<BlockT, Difficulty>::IsValidHashToAppend(
   BlockHash const & previous_hash,
   BlockHash const & hash) const
 {
