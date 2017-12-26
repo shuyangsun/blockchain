@@ -26,17 +26,19 @@
 #include "include/ssybc/logging/logging.hpp"
 
 #include <utility>
+#include <memory>
 
 namespace ssybc {
   namespace logging {
 
     static LoggerVerbosity global_logger_verbosity_{ LoggerVerbosity::kNoTest };
+    static std::unique_ptr<std::ostream> null_stream_{ std::make_unique<std::ostream>(nullptr) };
 
   }  // namespace logging
 }  // namespace ssybc
 
 
-// --------------------------------------------------- Public Method --------------------------------------------------
+// --------------------------------------------------- Public Class ---------------------------------------------------
 
 
 void ssybc::logging::SetLoggerVerbosityLevel(LoggerVerbosity const verbosity)
@@ -56,23 +58,25 @@ inline ssybc::logging::LoggerVerbosity ssybc::logging::Logger::Verbosity() const
 }
 
 
+// -------------------------------------------------- Public Function -------------------------------------------------
+
+
 template<typename ...Args>
-std::ostream & ssybc::logging::operator<<(ssybc::logging::Logger const logger, Args && ...args)
+inline std::ostream & ssybc::logging::operator<<(ssybc::logging::Logger const &logger, Args && ...args)
 {
   if (logger.Verbosity() <= global_logger_verbosity_) {
     return std::operator<<(std::cout, std::forward<Args>(args)...);
   }
-  return std::operator<<(std::ostream(0), std::forward<Args>(args)...);
+  return *null_stream_;
 }
 
 
-std::ostream& ssybc::logging::operator<<(ssybc::logging::Logger const logger, std::ostream& (*pf)(std::ostream&))
+inline std::ostream& ssybc::logging::operator<<(ssybc::logging::Logger const &logger, std::ostream& (*pf)(std::ostream&))
 {
   if (logger.Verbosity() <= global_logger_verbosity_) {
     return pf(std::cout);
   }
-  std::ostream stream(0);
-  return pf(stream);
+  return *null_stream_;
 }
 
 

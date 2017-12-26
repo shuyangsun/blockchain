@@ -25,8 +25,8 @@
 
 int main(int const argc, char const **argv) {
 
+  // Set logging verbosity level and initialize a debug logger.
   ssybc::logging::SetLoggerVerbosityLevel(ssybc::logging::LoggerVerbosity::kInfo);
-  
   auto const logger_debug = ssybc::logging::Logger(ssybc::logging::LoggerVerbosity::kDebug);
 
   // Define a type alias for a blockchain with content type on each block as string.
@@ -112,8 +112,9 @@ int main(int const argc, char const **argv) {
   logger_debug << "Save binary header to file succeeded: " << save_succeeded << std::endl;
 
   // Load from binary file.
-  //auto loaded_blockchain = StringBlockChain::LoadFromBinaryFileAtPath(file_path);
-  //logger_debug << "Loaded Blockchain is identical with original: " << (loaded_blockchain == str_blockchain) << std::endl;
+  auto loaded_blockchain = StringBlockChain::LoadFromBinaryFileAtPath(file_path);
+  logger_debug << "Loaded Blockchain is identical with original: " << (loaded_blockchain == str_blockchain);
+  logger_debug << std::endl;
 
   return 0;
 }

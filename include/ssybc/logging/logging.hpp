@@ -23,11 +23,14 @@
 
 #include "include/ssybc/general/general.hpp"
 
-#include <ostream>
+#include <iostream>
 
 namespace ssybc {
 
 namespace logging {
+
+// ------------------------------------------------------- Enum -------------------------------------------------------
+
 
   enum LoggerVerbosity: unsigned int {
     kNoTest = 0,
@@ -35,11 +38,11 @@ namespace logging {
     kInfo,
     kWarning
   };
-  
-// -------------------------------------------------- Public Function -------------------------------------------------
 
-  void SetLoggerVerbosityLevel(LoggerVerbosity const verbosity);
+
+// --------------------------------------------------- Public Class ---------------------------------------------------
   
+
   class Logger {
   public:
 
@@ -50,12 +53,16 @@ namespace logging {
     LoggerVerbosity const verbosity_;
   };
 
-  template<typename ...Args>
-  std::ostream &operator<<(Logger const logger, Args&&... args);
-  std::ostream &operator<<(Logger const logger, std::ostream& (*pf)(std::ostream&));
   
+// -------------------------------------------------- Public Function -------------------------------------------------
 
-// -------------------------------------------- Specialization Declaration --------------------------------------------
+
+  void SetLoggerVerbosityLevel(LoggerVerbosity const verbosity);
+
+  template<typename ...Args>
+  std::ostream &operator<<(Logger const &logger, Args&&... args);
+  std::ostream &operator<<(Logger const &logger, std::ostream& (*pf)(std::ostream&));
+
 
 }  // namespace logging
 
