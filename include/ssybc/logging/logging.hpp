@@ -59,8 +59,10 @@ namespace logging {
 
   void SetLoggerVerbosityLevel(LoggerVerbosity const verbosity);
 
-  template<typename ...Args>
-  std::ostream &operator<<(Logger const &logger, Args&&... args);
+  template<typename T>
+  std::ostream &operator<<(Logger const &logger, T const &arg);
+  template<typename T>
+  std::ostream &operator<<(Logger const &logger, T &&arg);
   std::ostream &operator<<(Logger const &logger, std::ostream& (*pf)(std::ostream&));
 
 

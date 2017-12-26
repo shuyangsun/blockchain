@@ -56,20 +56,30 @@ ssybc::logging::Logger::Logger(LoggerVerbosity const verbosity):
 { EMPTY_BLOCK }
 
 
+// -------------------------------------------------- Public Function -------------------------------------------------
+
+
 inline ssybc::logging::LoggerVerbosity ssybc::logging::Logger::Verbosity() const
 {
   return verbosity_;
 }
 
 
-// -------------------------------------------------- Public Function -------------------------------------------------
-
-
-template<typename ...Args>
-inline std::ostream & ssybc::logging::operator<<(ssybc::logging::Logger const &logger, Args && ...args)
+template<typename T>
+inline std::ostream & ssybc::logging::operator<<(ssybc::logging::Logger const &logger, T const &arg)
 {
   if (logger.Verbosity() <= global_logger_verbosity_) {
-    return std::operator<<(std::cout, std::forward<Args>(args)...);
+    return std::operator<<(std::cout, std::forward<T const>(arg));
+  }
+  return *null_stream_;
+}
+
+
+template<typename T>
+inline std::ostream & ssybc::logging::operator<<(ssybc::logging::Logger const &logger, T &&arg)
+{
+  if (logger.Verbosity() <= global_logger_verbosity_) {
+    return std::operator<<(std::cout, std::forward<T>(arg));
   }
   return *null_stream_;
 }
