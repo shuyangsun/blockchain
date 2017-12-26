@@ -18,34 +18,57 @@
  *
  *********************************************************************************************************************/
 
-#ifndef SSYBC_INCLUDE_SSYBC_SSYBC_HPP
-#define SSYBC_INCLUDE_SSYBC_SSYBC_HPP
+#ifndef SSYBC_INCLUDE_SSYBC_LOGGING_LOGGING_HPP_
+#define SSYBC_INCLUDE_SSYBC_LOGGING_LOGGING_HPP_
 
 #include "include/ssybc/general/general.hpp"
 
-#include "include/ssybc/logging/logging.hpp"
+#include <iostream>
 
-#include "include/ssybc/utility/utility.hpp"
-#include "include/ssybc/utility/operator.hpp"
+namespace ssybc {
 
-#include "include/ssybc/binary_data_converter/binary_data_converter_interface.hpp"
-#include "include/ssybc/binary_data_converter/binary_data_converter_default.hpp"
+namespace logging {
 
-#include "include/ssybc/hash_calculator/hash_calculator_interface.hpp"
-#include "include/ssybc/hash_calculator/hash_calculator_sha256.hpp"
-#include "include/ssybc/hash_calculator/hash_calculator_double_sha256.hpp"
+// ------------------------------------------------------- Enum -------------------------------------------------------
 
-#include "include/ssybc/block/block.hpp"
-#include "include/ssybc/block/block_header/block_header.hpp"
-#include "include/ssybc/block/block_content/block_content.hpp"
 
-#include "include/ssybc/validator/block_validator.hpp"
-#include "include/ssybc/validator/block_validator_less_hash.hpp"
+  enum LoggerVerbosity: unsigned int {
+    kNoTest = 0,
+    kDebug,
+    kInfo,
+    kWarning
+  };
 
-#include "include/ssybc/blockchain/blockchain.hpp"
 
-#include "include/ssybc/miner/block_miner.hpp"
-#include "include/ssybc/miner/block_miner_cpu_brute_force.hpp"
+// --------------------------------------------------- Public Class ---------------------------------------------------
+  
 
-#endif  // SSYBC_INCLUDE_SSYBC_SSYBC_HPP
+  class Logger {
+  public:
+
+    Logger(LoggerVerbosity const verbosity);
+    LoggerVerbosity Verbosity() const;
+
+  private:
+    LoggerVerbosity const verbosity_;
+  };
+
+  
+// -------------------------------------------------- Public Function -------------------------------------------------
+
+
+  void SetLoggerVerbosityLevel(LoggerVerbosity const verbosity);
+
+  template<typename ...Args>
+  std::ostream &operator<<(Logger const &logger, Args&&... args);
+  std::ostream &operator<<(Logger const &logger, std::ostream& (*pf)(std::ostream&));
+
+
+}  // namespace logging
+
+}  // namespace ssybc
+
+#include "src/logging/logging_impl.hpp"
+
+#endif  // SSYBC_INCLUDE_SSYBC_LOGGING_LOGGING_HPP_
 
