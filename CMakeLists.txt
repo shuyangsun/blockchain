@@ -56,6 +56,25 @@ macro(filelist result curdir)
   set(${result} ${flist})
 endmacro()
 
+
+macro(header_file_list result curdir)
+  file(GLOB children relative ${curdir} ${curdir}/*)
+  set(flist "")
+  foreach(child ${children})
+    if(IS_DIRECTORY ${curdir}/${child})
+      header_file_list(sub_header_file_list ${curdir} ${child})
+      list(append flist ${sub_header_file_list})
+    else()
+      get_filename_component(file_extension ${curdir}/${child} EXT)
+      MESSAGE( STATUS "EXTENSION: " ${file_extension} )
+      if(file_extension STREQUAL ".hpp")
+        list(append flist ${child})
+      endif()
+    endif()
+  endforeach()
+  set(${result} ${flist})
+endmacro()
+
 # Configure Options
 
 if (SSYBC_BUILD_SAMPLES)
@@ -72,20 +91,18 @@ endif (SSYBC_BUILD_SAMPLES)
 
 # Create Library
 
-file(GLOB SSYBC_SRC_FILES
-    "*.h"
-    "*.hpp"
-)
+header_file_list(SSYBC_SRC_FILES ${PROJECT_SOURCE_DIR})
+MESSAGE( STATUS "SSYBC_SRC_FILES: " ${SSYBC_SRC_FILES} )
 
 set(SSYBC_HEADER_FILE ${PROJECT_SOURCE_DIR}/include/ssybc/ssybc.hpp)
 
-# add_library(ssy_blockchain SSYBC_SRC_FILES)
+add_library(ssy_blockchain ${SSYBC_SRC_FILES})
 
-# install (TARGETS ssy_blockchain DESTINATION bin)
-# install (FILES SSYBC_SRC_FILES DESTINATION include)
+install (TARGETS ssy_blockchain DESTINATION bin)
+install (FILES ${SSYBC_SRC_FILES} DESTINATION include)
 
 # target_link_libraries (SSYBlockchain ssy_blockchain)
 
 # add the install targets
-add_executable (SSYBlockchain ${PROJECT_SOURCE_DIR}/samples/sample_01_cpu_string/sample_01_cpu_string.cpp)
-install (TARGETS SSYBlockchain DESTINATION bin)
+# add_executable (SSYBlockchain ${PROJECT_SOURCE_DIR}/samples/sample_01_cpu_string/sample_01_cpu_string.cpp)
+# install (TARGETS SSYBlockchain DESTINATION bin)
