@@ -1,108 +1,117 @@
 cmake_minimum_required (VERSION 2.8)
-project (SSYBlockchain)
 
 # Version Number
 
 set (SSYBC_VERSION_MAJOR 0)
 set (SSYBC_VERSION_MINOR 1)
+set (SSYBC_VERSION_BUILD 1)
+
+project (SSYBlockchain DESCRIPTION "Generic purpose lightweight blockchain library.")
 
 # C++ Compiler Flag
 
-SET(CPP_STANDARD_COMPILE_FLAGS "-std=c++11")
-add_definitions(${CPP_STANDARD_COMPILE_FLAGS})
+set(CPP_STANDARD_COMPILE_FLAGS "-std=c++11")
 
 # Configuration File
 
-set(CONFIG_HEADER ${PROJECT_SOURCE_DIR}/include/ssybc/config/ssybc_config.hpp)
 configure_file (
   "${PROJECT_SOURCE_DIR}/include/ssybc/config/ssybc_config.hpp.in"
-  ${CONFIG_HEADER}
+  "${PROJECT_SOURCE_DIR}/include/ssybc/config/ssybc_config.hpp"
 )
 
 # CMake Option
 
 option (
-  SSYBC_BUILD_SAMPLES
+  BUILD_SAMPLES
   "Enable CUDA for GPU mining." ON
 )
 
 option (
-  SSYBC_ENABLE_CUDA
+  ENABLE_CUDA
   "Enable CUDA for GPU mining." OFF
 )
+
+if(ENABLE_CUDA)
+  add_definitions(SSYBC_IS_CUDA_ENABLED)
+endif(ENABLE_CUDA)
 
 
 # Macro
 
-macro(subdir_list result curdir)
-  file(GLOB children relative ${curdir} ${curdir}/*)
-  set(dirlist "")
-  foreach(child ${children})
-    if(IS_DIRECTORY ${curdir}/${child})
-      list(append dirlist ${child})
-    endif()
-  endforeach()
-  set(${result} ${dirlist})
-endmacro()
 
-macro(filelist result curdir)
-  file(GLOB children relative ${curdir} ${curdir}/*)
-  set(flist "")
-  foreach(child ${children})
-    if(not IS_DIRECTORY ${curdir}/${child})
-      list(append flist ${child})
-    endif()
-  endforeach()
-  set(${result} ${flist})
+macro(get_header_files result curdir)
+  file(GLOB_RECURSE res
+    "${curdir}/*.h"
+    "${curdir}/*.h++"
+    "${curdir}/*.hpp"
+  )
+  set(${result} ${res})
 endmacro()
 
 
-macro(header_file_list result curdir)
-  file(GLOB children relative ${curdir} ${curdir}/*)
-  set(flist "")
-  foreach(child ${children})
-    if(IS_DIRECTORY ${curdir}/${child})
-      header_file_list(sub_header_file_list ${curdir} ${child})
-      list(append flist ${sub_header_file_list})
-    else()
-      get_filename_component(file_extension ${curdir}/${child} EXT)
-      MESSAGE( STATUS "EXTENSION: " ${file_extension} )
-      if(file_extension STREQUAL ".hpp")
-        list(append flist ${child})
-      endif()
-    endif()
-  endforeach()
-  set(${result} ${flist})
+macro(get_source_files result curdir)
+  get_header_files(res ${curdir})
+  file(GLOB_RECURSE res_srcs
+    "${curdir}/*.c"
+    "${curdir}/*.cc"
+    "${curdir}/*.cpp"
+  )
+
+  list(APPEND res ${res_srcs})
+
+  if(ENABLE_CUDA)
+    file(GLOB_RECURSE res_cuda "${curdir}/*.cu")
+    list(APPEND res ${res_cuda})
+  endif(ENABLE_CUDA)
+
+  set(${result} ${res})
 endmacro()
 
-# Configure Options
 
-if (SSYBC_BUILD_SAMPLES)
-  subdir_list(sample_dirs "${PROJECT_SOURCE_DIR}/samples")
-  foreach(sample_dir ${sample_dirs})
-    add_subdirectory(${sample_dir})
-    filelist(sample_files ${sample_dir})
-    foreach(sample_file ${sample_files})
-      add_executable(SSYBlockchain ${sample_file})
-    endforeach()
-  endforeach()
-endif (SSYBC_BUILD_SAMPLES)
+macro(get_subdir_list result curdir format)
+  FILE(GLOB children "${curdir}/${format}")
+  SET(dirlist "")
+  FOREACH(child ${children})
+    IF(IS_DIRECTORY ${child})
+      LIST(APPEND dirlist ${child})
+    ENDIF()
+  ENDFOREACH()
+  SET(${result} ${dirlist})
+ENDMACRO()
 
+
+# Get Header and Source Files
+
+set(SSYBC_HPP "${PROJECT_SOURCE_DIR}/include/ssybc/ssybc.hpp")
+set(SSYBC_INCLUDE_DIR "${PROJECT_SOURCE_DIR}/include")
+set(SSYBC_LIBRARY_DIR "${PROJECT_SOURCE_DIR}/library")
+set(SSYBC_SRC_DIR "${PROJECT_SOURCE_DIR}/src")
+
+get_header_files(SSYBC_HEADER_FILES ${SSYBC_INCLUDE_DIR})
+get_source_files(SSYBC_LIB_FILES ${SSYBC_LIBRARY_DIR})
+get_source_files(SSYBC_SRC_FILES ${SSYBC_SRC_DIR})
 
 # Create Library
 
-header_file_list(SSYBC_SRC_FILES ${PROJECT_SOURCE_DIR})
-MESSAGE( STATUS "SSYBC_SRC_FILES: " ${SSYBC_SRC_FILES} )
+add_library(SSYBlockchain ${SSYBC_HEADER_FILES} ${SSYBC_LIB_FILES} ${SSYBC_SRC_FILES})
+target_include_directories(SSYBlockchain PUBLIC ${PROJECT_SOURCE_DIR})
+target_compile_options( SSYBlockchain PUBLIC ${CPP_STANDARD_COMPILE_FLAGS} )
 
-set(SSYBC_HEADER_FILE ${PROJECT_SOURCE_DIR}/include/ssybc/ssybc.hpp)
+install (TARGETS SSYBlockchain DESTINATION bin)
+install (FILES ${SSYBC_HPP} DESTINATION include)
 
-add_library(ssy_blockchain ${SSYBC_SRC_FILES})
+# Add Sample Projects
 
-install (TARGETS ssy_blockchain DESTINATION bin)
-install (FILES ${SSYBC_SRC_FILES} DESTINATION include)
+if (BUILD_SAMPLES)
+  set(ssybc_samples_dir "${PROJECT_SOURCE_DIR}/samples")
+  get_subdir_list(ssybc_sample_subdirs ${ssybc_samples_dir} "*cpu*")
+  
+  if (ENABLE_CUDA)
+    get_subdir_list(ssybc_cuda_sample_dirs ${ssybc_samples_dir} "*cuda*")
+    list(APPEND ssybc_sample_subdirs ${ssybc_cuda_sample_dirs})
+  endif(ENABLE_CUDA)
 
-# target_link_libraries (SSYBlockchain ssy_blockchain)
-
-# add the install targets
-# add_executable (SSYBlockchain ${PROJECT_SOURCE_DIR}/samples/sample_01_cpu_string/sample_01_cpu_string.cpp)
-# install (TARGETS SSYBlockchain DESTINATION bin)
+  foreach(dir ${ssybc_sample_subdirs})
+    add_subdirectory (${dir})
+  endforeach()
+endif (BUILD_SAMPLES)
