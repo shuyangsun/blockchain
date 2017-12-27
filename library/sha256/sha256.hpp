@@ -31,6 +31,4 @@ void sha256_init(SHA256_CTX *ctx);
 void sha256_update(SHA256_CTX *ctx, const BYTE data[], size_t len);
 void sha256_final(SHA256_CTX *ctx, BYTE hash[]);
 
-#include "library/sha256/sha256_impl.hpp"
-
 #endif   // SSYBC_LIBRARY_SHA256_SHA256_HPP_

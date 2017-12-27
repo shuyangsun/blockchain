@@ -41,7 +41,6 @@ namespace util {
 
 }  // namespace ssybc
 
-#include "src/utility/operator_impl.hpp"
 
 #endif  // SSYBC_INCLUDE_SSYBC_UTILITY_OPERATOR_HPP_
 

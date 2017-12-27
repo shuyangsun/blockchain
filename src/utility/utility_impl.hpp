@@ -83,7 +83,13 @@ namespace ssybc{
 // -------------------------------------------------- Public Function -------------------------------------------------
 
 
-inline ssybc::BlockTimeInterval ssybc::util::UTCTime()
+ std::string ssybc::util::VersionString()
+ {
+   return ToString(SSYBC_VERSION_MAJOR) + "." + ToString(SSYBC_VERSION_MINOR) + "." + ToString(SSYBC_VERSION_BUILD);
+ }
+
+
+ inline ssybc::BlockTimeInterval ssybc::util::UTCTime()
 {
   time_t rawtime;
   struct tm ptm;

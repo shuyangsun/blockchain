@@ -21,6 +21,8 @@
 #ifndef SSYBC_INCLUDE_SSYBC_GENERAL_GENERAL_HPP_
 #define SSYBC_INCLUDE_SSYBC_GENERAL_GENERAL_HPP_
 
+#include "include/ssybc/config/ssybc_config.hpp"
+
 #include <string>
 #include <vector>
 #include <ctime>
