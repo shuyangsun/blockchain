@@ -32,6 +32,7 @@ namespace util {
   
 // -------------------------------------------------- Public Function -------------------------------------------------
 
+  std::string VersionString();
 
   BlockTimeInterval UTCTime();
 

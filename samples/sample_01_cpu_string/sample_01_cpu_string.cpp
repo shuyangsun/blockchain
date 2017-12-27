@@ -31,6 +31,9 @@ int main(int const argc, char const **argv) {
   ssybc::logging::SetLoggerVerbosityLevel(ssybc::logging::LoggerVerbosity::kDebug);
   auto const logger = ssybc::logging::notest;
 
+  logger << "SSYBlockchain Version " << ssybc::util::VersionString() << std::endl;
+  logger << std::endl;
+
   // Define a type alias for a blockchain with content type on each block as string.
   using StringBlockChain = typename ssybc::Blockchain<ssybc::Block<std::string>>;
   
