@@ -17,11 +17,10 @@ set(CPP_COMPILER_FLAGS "-std=c++14")
 include (CheckCXXSourceCompiles)
 
 CHECK_CXX_SOURCE_COMPILES ("
-  #include <thread>
   #include <atomic>
   struct Dummy { int val; };
   int main() {
-    std::atomic<struct Dummy> dummy = struct Dummy();
+    std::atomic<struct Dummy> dummy = Dummy();
     int val = dummy.load().val;
     return 0;
   }
