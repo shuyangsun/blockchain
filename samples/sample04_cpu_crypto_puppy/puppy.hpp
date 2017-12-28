@@ -23,7 +23,53 @@
 
 #include "include/ssybc/ssybc.hpp"
 
+#include <string>
 
+namespace crypto_puppy {
+
+  enum PuppyBreed : unsigned int {
+    kHusky = 0,
+    kBulldog,
+    COUNT
+  };
+
+  enum PuppyLevel : unsigned int {
+    kBaby = 0,
+    kAdult,
+    COUNT
+  };
+
+  class Puppy {
+  public:
+    Puppy() = delete;
+
+    Puppy(std::string const &owner_id, PuppyBreed const breed);
+
+    Puppy(Puppy const &puppy);
+    Puppy(Puppy &&puppy);
+
+    ~Puppy() = default;
+
+    std::string OwnerID() const;
+    PuppyBreed Breed() const;
+    PuppyLevel Level() const;
+
+    void LevelUp();
+    operator std::string() const;
+
+  private:
+    std::string const owner_id_;
+    PuppyBreed const breed_;
+    PuppyLevel level_;
+  };
+
+  class PuppyBinaryConverter : ssybc::BinaryDataConverterInterface<Puppy> {
+  public:
+    ssybc::BinaryData BinaryDataFromData(Puppy const &data) const override;
+    Puppy DataFromBinaryData(Puppy const &ssybc::binary_data) const override;
+  };
+
+}  // crypto_puppy
 
 #include "puppy_impl.hpp"
 
