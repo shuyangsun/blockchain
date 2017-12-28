@@ -31,7 +31,8 @@
 #include <string>
 #include <fstream>
 #include <type_traits>
-#include <time.h>
+#include <ctime>
+#include <cstring>
 
 
  // ----------------------------------------------------- Helper ------------------------------------------------------
