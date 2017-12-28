@@ -21,7 +21,7 @@
 
 #include "include/ssybc/ssybc.hpp"
 
-#include<iostream>
+#include <iostream>
 
 
 int main(int const argc, char const **argv) {

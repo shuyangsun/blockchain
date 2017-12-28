@@ -10,7 +10,11 @@ project (SSYBlockchain DESCRIPTION "Generic purpose lightweight blockchain libra
 
 # C++ Compiler Flag
 
-set(CPP_STANDARD_COMPILE_FLAGS "-std=c++14")
+set(CPP_COMPILER_FLAGS "-std=c++14")
+
+if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+  list(APPEND CPP_COMPILER_FLAGS "-lpthread")
+endif()
 
 # OS and Compiler Flag
 
@@ -114,7 +118,7 @@ get_source_files(SSYBC_SRC_FILES ${SSYBC_SRC_DIR})
 
 add_library(SSYBlockchain ${SSYBC_HEADER_FILES} ${SSYBC_LIB_FILES} ${SSYBC_SRC_FILES})
 target_include_directories(SSYBlockchain PUBLIC ${PROJECT_SOURCE_DIR})
-target_compile_options( SSYBlockchain PUBLIC ${CPP_STANDARD_COMPILE_FLAGS} )
+target_compile_options( SSYBlockchain PUBLIC ${CPP_COMPILER_FLAGS} )
 
 install (TARGETS SSYBlockchain DESTINATION bin)
 install (FILES ${SSYBC_HPP} DESTINATION include)
