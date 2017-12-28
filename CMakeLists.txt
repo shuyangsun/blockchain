@@ -12,6 +12,25 @@ project (SSYBlockchain DESCRIPTION "Generic purpose lightweight blockchain libra
 
 set(CPP_STANDARD_COMPILE_FLAGS "-std=c++11")
 
+# OS and Compiler Flag
+
+include (CheckCXXSourceCompiles)
+
+CHECK_CXX_SOURCE_COMPILES ("
+  #include <time.h>
+  int main() { struct tm ptm; time_t t; gmtime_s(&t, &ptm); return 0; }
+" SSYBC_HAS_C11_GMTIME_S)
+
+CHECK_CXX_SOURCE_COMPILES ("
+  #include <time.h>
+  int main() { struct tm ptm; time_t t; gmtime_s(&ptm, &t); return 0; }
+" SSYBC_HAS_WIN32_GMTIME_S)
+
+CHECK_CXX_SOURCE_COMPILES ("
+  #include <time.h>
+  int main() { struct tm ptm; time_t t; gmtime_r(&t, &ptm); return 0; }
+" SSYBC_HAS_UNIX_GMTIME_R)
+
 # Configuration File
 
 configure_file (
@@ -32,7 +51,7 @@ option (
 )
 
 if(ENABLE_CUDA)
-  add_definitions(SSYBC_IS_CUDA_ENABLED)
+  set(SSYBC_IS_CUDA_ENABLED "SSYBC_IS_CUDA_ENABLED")
 endif(ENABLE_CUDA)
 
 

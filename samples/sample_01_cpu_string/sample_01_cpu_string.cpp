@@ -125,6 +125,8 @@ int main(int const argc, char const **argv) {
 }
 
 /**************************************************** Sample Output ***************************************************
+ * 
+ * SSYBlockchain Version 0.1.1
  *
  * Mining Genesis block...
  * Finished mining Genesis block.

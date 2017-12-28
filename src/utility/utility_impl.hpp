@@ -31,7 +31,7 @@
 #include <string>
 #include <fstream>
 #include <type_traits>
-#include <ctime>
+#include <time.h>
 
 
  // ----------------------------------------------------- Helper ------------------------------------------------------
@@ -93,11 +93,16 @@ namespace ssybc{
 {
   time_t rawtime;
   struct tm ptm;
-
   time(&rawtime);
-  errno_t err{};
-  err = gmtime_s(&ptm, &rawtime);
-//  auto const ptm_ptr = gmtime_r(&rawtime, &ptm);
+
+#ifdef SSYBC_HAS_WIN32_GMTIME_S
+  gmtime_s(&ptm, &rawtime);
+#elif defined(SSYBC_HAS_C11_GMTIME_S)
+  gmtime_s(&rawtime, &ptm);
+#elif defined(SSYBC_HAS_UNIX_GMTIME_R)
+  gmtime_r(&rawtime, &ptm);
+#endif
+
   return static_cast<BlockTimeInterval>(mktime(&ptm));
 }
 
@@ -112,10 +117,15 @@ std::string ssybc::util::ToString(T const &value)
 inline std::string ssybc::util::DateTimeStringFromTimeStamp(BlockTimeInterval const time_stamp, std::string const time_format)
 {
   struct tm ptm {};
-  errno_t err{};
-  err = gmtime_s(&ptm, &time_stamp);
-//  time_t const ts = static_cast<time_t>(time_stamp);
-//  auto const ptm_ptr = gmtime_r(&ts, &ptm);
+
+#ifdef SSYBC_HAS_WIN32_GMTIME_S
+  gmtime_s(&ptm, &time_stamp);
+#elif defined(SSYBC_HAS_C11_GMTIME_S)
+  gmtime_s(&time_stamp, &ptm);
+#elif defined(SSYBC_HAS_UNIX_GMTIME_R)
+  time_t const ts = static_cast<time_t>(time_stamp);
+  gmtime_r(&ts, &ptm);
+#endif
 
   SizeT const buffer_size{30};
   char buffer[buffer_size];
