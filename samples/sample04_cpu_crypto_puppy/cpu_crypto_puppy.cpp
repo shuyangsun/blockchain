@@ -29,8 +29,6 @@ int main(int const argc, char const **argv) {
   ssybc::logging::SetLoggerVerbosityLevel(ssybc::logging::LoggerVerbosity::kDebug);
   auto const logger = ssybc::logging::notest;
 
-  
-
   return 0;
 }
 

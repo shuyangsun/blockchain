@@ -23,13 +23,17 @@
 
 #include "puppy.hpp"
 
+#include <type_traits>
+#include <vector>
+#include <iterator>
+
 
 namespace crypto_puppy {
   std::string OwnerInfo_(Puppy const &puppy);
 }
 
 
-inline crypto_puppy::Puppy::Puppy(std::string const & owner_id, PuppyBreed const breed):
+inline crypto_puppy::Puppy::Puppy(PuppyBreed const breed, std::string const & owner_id):
   owner_id_{ owner_id },
   breed_{ breed },
   level_{ PuppyLevel::kBaby }
@@ -79,6 +83,74 @@ inline void crypto_puppy::Puppy::LevelUp()
 inline crypto_puppy::Puppy::operator std::string() const
 {
   std::string result{ OwnerInfo_(*this) };
+  return result;
+}
+
+
+ssybc::BinaryData crypto_puppy::PuppyBinaryConverter::BinaryDataFromData(Puppy const & puppy) const
+{
+  auto level = puppy.Level();
+  auto breed = puppy.Breed();
+  auto owner_id = puppy.OwnerID();
+
+  using level_raw_type = typename std::underlying_type<decltype(level)>::type;
+  using breed_raw_type = typename std::underlying_type<decltype(breed)>::type;
+
+  auto level_raw = static_cast<level_raw_type>(level);
+  auto breed_raw = static_cast<breed_raw_type>(breed);
+  ssybc::SizeT owner_id_size = static_cast<ssybc::SizeT>(owner_id.size());
+
+  auto level_binary = ssybc::BinaryDataConverterDefault<level_raw_type>().BinaryDataFromData(level_raw);
+  auto breed_binary = ssybc::BinaryDataConverterDefault<breed_raw_type>().BinaryDataFromData(breed_raw);
+  auto owner_id_size_binary = ssybc::BinaryDataConverterDefault<ssybc::SizeT>().BinaryDataFromData(owner_id_size);
+  auto owner_id_binary = ssybc::BinaryDataConverterDefault<std::string>().BinaryDataFromData(owner_id);
+
+  return ssybc::util::ConcatenateMoveDestructive(
+    std::vector<ssybc::BinaryData> {level_binary, breed_binary, owner_id_size_binary, owner_id_binary}
+  );
+}
+
+
+inline auto crypto_puppy::PuppyBinaryConverter::DataFromBinaryData(
+  ssybc::BinaryData const & binary_data) const -> Puppy
+{
+  ssybc::BinaryData bin_copy{ binary_data.begin(), binary_data.end() };
+  auto iter_begin = bin_copy.begin();
+  auto iter_end = bin_copy.begin();
+
+  using level_raw_type = typename std::underlying_type<PuppyLevel>::type;
+  using breed_raw_type = typename std::underlying_type<PuppyBreed>::type;
+
+  auto level_size = sizeof(level_raw_type);
+  auto breed_size = sizeof(breed_raw_type);
+  auto size_size = sizeof(ssybc::SizeT);
+
+  std::advance(iter_end, level_size);
+  auto level_raw = ssybc::BinaryDataConverterDefault<level_raw_type>().DataFromBinaryData(
+    ssybc::BinaryData{iter_begin, iter_end}
+  );
+  iter_begin = iter_end;
+  std::advance(iter_end, breed_size);
+  auto breed_raw = ssybc::BinaryDataConverterDefault<breed_raw_type>().DataFromBinaryData(
+    ssybc::BinaryData{ iter_begin, iter_end }
+  );
+  iter_begin = iter_end;
+  std::advance(iter_end, size_size);
+  auto size_of_owner_id = ssybc::BinaryDataConverterDefault<ssybc::SizeT>().DataFromBinaryData(
+    ssybc::BinaryData{ iter_begin, iter_end }
+  );
+  auto owner_id_size = static_cast<std::size_t>(size_of_owner_id);
+  iter_begin = iter_end;
+  std::advance(iter_end, owner_id_size);
+  std::string owner_id = ssybc::BinaryDataConverterDefault<std::string>().DataFromBinaryData(
+    ssybc::BinaryData{ iter_begin, iter_end }
+  );
+
+  auto breed = static_cast<PuppyBreed>(breed_raw);
+  auto level = static_cast<PuppyLevel>(level_raw);
+  
+  Puppy result{ breed, owner_id };
+  result.level_ = level;
   return result;
 }
 

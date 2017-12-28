@@ -27,23 +27,31 @@
 
 namespace crypto_puppy {
 
-  enum PuppyBreed : unsigned int {
+  enum PuppyBreed : uint32_t {
     kHusky = 0,
     kBulldog,
-    COUNT
+    kPuppyBreedCount
   };
 
-  enum PuppyLevel : unsigned int {
+  enum PuppyLevel : uint32_t {
     kBaby = 0,
     kAdult,
-    COUNT
+    kPuppyLevelCount
+  };
+
+  class Puppy;
+
+  class PuppyBinaryConverter: ssybc::BinaryDataConverterInterface<Puppy> {
+  public:
+    ssybc::BinaryData BinaryDataFromData(Puppy const &puppy) const override;
+    Puppy DataFromBinaryData(ssybc::BinaryData const &binary_data) const override;
   };
 
   class Puppy {
   public:
     Puppy() = delete;
 
-    Puppy(std::string const &owner_id, PuppyBreed const breed);
+    Puppy(PuppyBreed const breed, std::string const &owner_id);
 
     Puppy(Puppy const &puppy);
     Puppy(Puppy &&puppy);
@@ -57,17 +65,15 @@ namespace crypto_puppy {
     void LevelUp();
     operator std::string() const;
 
+    friend Puppy PuppyBinaryConverter::DataFromBinaryData(ssybc::BinaryData const &binary_data) const;
+
   private:
     std::string const owner_id_;
     PuppyBreed const breed_;
     PuppyLevel level_;
   };
 
-  class PuppyBinaryConverter : ssybc::BinaryDataConverterInterface<Puppy> {
-  public:
-    ssybc::BinaryData BinaryDataFromData(Puppy const &data) const override;
-    Puppy DataFromBinaryData(ssybc::BinaryData const &binary_data) const override;
-  };
+
 
   std::string PuppyBreedDescription(PuppyBreed const breed);
   std::string PuppyLevelDescription(PuppyLevel const level);
