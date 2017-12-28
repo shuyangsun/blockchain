@@ -3,7 +3,7 @@ cmake_minimum_required (VERSION 2.8)
 # Version Number
 
 set (SSYBC_VERSION_MAJOR 0)
-set (SSYBC_VERSION_MINOR 1)
+set (SSYBC_VERSION_MINOR 2)
 set (SSYBC_VERSION_BUILD 1)
 
 project (SSYBlockchain DESCRIPTION "Generic purpose lightweight blockchain library.")
@@ -12,11 +12,7 @@ project (SSYBlockchain DESCRIPTION "Generic purpose lightweight blockchain libra
 
 set(CPP_COMPILER_FLAGS "-std=c++14")
 
-if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
-  list(APPEND CPP_COMPILER_FLAGS "-lpthread")
-endif()
-
-# OS and Compiler Flag
+# Platform and Library Requirement Check
 
 include (CheckCXXSourceCompiles)
 
@@ -34,6 +30,8 @@ CHECK_CXX_SOURCE_COMPILES ("
   #include <time.h>
   int main() { struct tm ptm; time_t t; gmtime_r(&t, &ptm); return 0; }
 " SSYBC_HAS_UNIX_GMTIME_R)
+
+find_package (Threads)
 
 # Configuration File
 
@@ -117,6 +115,7 @@ get_source_files(SSYBC_SRC_FILES ${SSYBC_SRC_DIR})
 # Create Library
 
 add_library(SSYBlockchain ${SSYBC_HEADER_FILES} ${SSYBC_LIB_FILES} ${SSYBC_SRC_FILES})
+target_link_libraries (SSYBlockchain ${CMAKE_THREAD_LIBS_INIT})
 target_include_directories(SSYBlockchain PUBLIC ${PROJECT_SOURCE_DIR})
 target_compile_options( SSYBlockchain PUBLIC ${CPP_COMPILER_FLAGS} )
 
