@@ -17,6 +17,17 @@ set(CPP_COMPILER_FLAGS "-std=c++14")
 include (CheckCXXSourceCompiles)
 
 CHECK_CXX_SOURCE_COMPILES ("
+  #include <thread>
+  #include <atomic>
+  struct Dummy { int val; };
+  int main() {
+    std::atomic<struct Dummy> dummy = struct Dummy();
+    int val = dummy.load().val;
+    return 0;
+  }
+" SSYBC_HAS_ATOMIC_FOR_CUSTOM_TYPE)
+
+CHECK_CXX_SOURCE_COMPILES ("
   #include <time.h>
   int main() { struct tm ptm; time_t t; gmtime_s(&t, &ptm); return 0; }
 " SSYBC_HAS_C11_GMTIME_S)
@@ -114,7 +125,7 @@ get_source_files(SSYBC_SRC_FILES ${SSYBC_SRC_DIR})
 
 # Create Library
 
-add_library(SSYBlockchain ${SSYBC_HEADER_FILES} ${SSYBC_LIB_FILES} ${SSYBC_SRC_FILES})
+add_library(SSYBlockchain STATIC ${SSYBC_HEADER_FILES} ${SSYBC_LIB_FILES} ${SSYBC_SRC_FILES})
 target_link_libraries (SSYBlockchain ${CMAKE_THREAD_LIBS_INIT})
 target_include_directories(SSYBlockchain PUBLIC ${PROJECT_SOURCE_DIR})
 target_compile_options( SSYBlockchain PUBLIC ${CPP_COMPILER_FLAGS} )

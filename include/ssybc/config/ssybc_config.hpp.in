@@ -9,6 +9,7 @@
 
 #cmakedefine ENABLE_CUDA
 
+#cmakedefine SSYBC_HAS_ATOMIC_FOR_CUSTOM_TYPE
 #cmakedefine SSYBC_HAS_C11_GMTIME_S
 #cmakedefine SSYBC_HAS_WIN32_GMTIME_S
 #cmakedefine SSYBC_HAS_UNIX_GMTIME_R

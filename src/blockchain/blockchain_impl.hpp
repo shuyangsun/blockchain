@@ -383,7 +383,11 @@ BlockT ssybc::Blockchain<
   Difficulty,
   ValidatorTemplate>::GenesisBlockMinedWithData(BlockDataType const & data, MinerType const &miner)
 {
-  auto genesis_init = BlockInitializedWithData_(data, 0, 0, HeaderHashCalculatorType().GenesisBlockPreviousHash());
+  auto genesis_init = BlockInitializedWithData_(
+    data,
+    SSYBC_VERSION_MAJOR,
+    0,
+    HeaderHashCalculatorType().GenesisBlockPreviousHash());
   return miner.MineGenesis(genesis_init);
 }
 

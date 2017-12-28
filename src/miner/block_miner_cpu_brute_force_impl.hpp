@@ -34,6 +34,10 @@
 #include <mutex>
 #include <condition_variable>
 
+#ifdef SSYBC_HAS_ATOMIC_FOR_CUSTOM_TYPE
+#include <atomic>
+#endif
+
 
 // ----------------------------------------------------- Helper -------------------------------------------------------
 
@@ -61,7 +65,12 @@ namespace ssybc {
   static std::mutex block_mining_mtx_;
   static std::condition_variable block_mined_cv_;
   static bool is_block_mined_{ false };
+
+#ifdef SSYBC_HAS_ATOMIC_FOR_CUSTOM_TYPE
+  static std::atomic<MinedResult> block_result_{};
+#else
   static MinedResult block_result_{};
+#endif
 
   void LogThreadMiningNonceInRange_(BlockNonce const start, BlockNonce const stop);
   void LogThreadMiningNonceInRangeTerminatedWithoutValidResult_(BlockNonce const start, BlockNonce const stop);
@@ -117,7 +126,13 @@ inline auto ssybc::BlockMinerCPUBruteForce<Validator>::MineGenesisInfo(
   }
   logging::info << "Joined " + util::ToString(thread_count) + " threads for genesis block mining." << std::endl;
 
-  auto const result = MinedResult{ block_result_ };
+  auto const result = MinedResult{
+#ifdef SSYBC_HAS_ATOMIC_FOR_CUSTOM_TYPE
+    block_result_.load()
+#else
+    block_result_
+#endif
+  };
   block_result_ = MinedResult();
   is_block_mined_ = false;
   logging::info << "Finished mining Genesis block variables." << std::endl;
@@ -169,7 +184,13 @@ inline auto ssybc::BlockMinerCPUBruteForce<Validator>::MineInfo(
   }
   logging::info << "Joined " + util::ToString(thread_count) + " threads for block mining." << std::endl;
 
-  auto const result = MinedResult{ block_result_ };
+  auto const result = MinedResult{
+#ifdef SSYBC_HAS_ATOMIC_FOR_CUSTOM_TYPE
+    block_result_.load()
+#else
+    block_result_
+#endif
+  };
   block_result_ = MinedResult();
   is_block_mined_ = false;
   logging::info << "Finished mining block variables." << std::endl;
