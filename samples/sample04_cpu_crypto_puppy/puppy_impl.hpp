@@ -82,32 +82,38 @@ inline crypto_puppy::Puppy::operator std::string() const
   return result;
 }
 
+
+std::string crypto_puppy::PuppyBreedDescription(PuppyBreed const breed)
+{
+  switch (breed) {
+  case PuppyBreed::kHusky:
+    return "Husky";
+  case PuppyBreed::kBulldog:
+    return "Bulldog";
+  default:
+    return "Unknown breed";
+  }
+}
+
+
+std::string crypto_puppy::PuppyLevelDescription(PuppyLevel const level)
+{
+  switch (level) {
+  case PuppyLevel::kBaby:
+    return "Baby";
+  case PuppyLevel::kAdult:
+    return "Adult";
+  default:
+    return "Unknown level";
+  }
+}
+
+
 std::string crypto_puppy::OwnerInfo_(Puppy const &puppy)
 {
-  std::string result{""};
-  switch (puppy.Level()) {
-  case PuppyLevel::kBaby:
-    result += "A baby";
-    break;
-  case PuppyLevel::kAdult:
-    result += "An adult";
-    break;
-  default:
-    result += "An unknown level";
-    break;
-  }
+  std::string result{ PuppyLevelDescription(puppy.Level()) };
   result += " ";
-  switch (puppy.Breed()) {
-  case PuppyBreed::kHusky:
-    result += "Husky";
-    break;
-  case PuppyBreed::kBulldog:
-    result += "Bulldog";
-    break;
-  default:
-    result += "unknown breed";
-    break;
-  }
+  result += PuppyBreedDescription(puppy.Breed());
   result += " owned by " + puppy.OwnerID() + "!";
   return result;
 }

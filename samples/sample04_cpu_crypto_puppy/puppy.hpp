@@ -66,8 +66,11 @@ namespace crypto_puppy {
   class PuppyBinaryConverter : ssybc::BinaryDataConverterInterface<Puppy> {
   public:
     ssybc::BinaryData BinaryDataFromData(Puppy const &data) const override;
-    Puppy DataFromBinaryData(Puppy const &ssybc::binary_data) const override;
+    Puppy DataFromBinaryData(ssybc::BinaryData const &binary_data) const override;
   };
+
+  std::string PuppyBreedDescription(PuppyBreed const breed);
+  std::string PuppyLevelDescription(PuppyLevel const level);
 
 }  // crypto_puppy
 
