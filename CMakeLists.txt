@@ -10,7 +10,7 @@ project (SSYBlockchain DESCRIPTION "Generic purpose lightweight blockchain libra
 
 # C++ Compiler Flag
 
-set(CPP_STANDARD_COMPILE_FLAGS "-std=c++11")
+set(CPP_STANDARD_COMPILE_FLAGS "-std=c++14")
 
 # OS and Compiler Flag
 
