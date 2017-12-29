@@ -27,9 +27,114 @@
 #include <vector>
 #include <iterator>
 
-
 namespace crypto_puppy {
   std::string OwnerInfo_(Puppy const &puppy);
+  std::string ASCIIArtForPuppy_(Puppy const &puppy);
+
+  // ASCII artworks from http://www.chris.com/ascii/index.php?art=animals/dogs
+
+  static std::vector<std::string> puppy_ascii_arts_{
+    std::string
+  {
+    "                             ;\ \n"
+    "                            |' \ \n"
+    "         _                  ; : ; \n"
+    "        / `-.              /: : | \n"
+    "       |  ,-.`-.          ,': : | \n"
+    "       \  :  `. `.       ,'-. : | \n"
+    "        \ ;    ;  `-.__,'    `-.| \n"
+    "         \ ;   ;  :::  ,::'`:.  `. \n"
+    "          \ `-. :  `    :.    `.  \ \n"
+    "           \   \    ,   ;   ,:    (\ \n"
+    "            \   :., :.    ,'o)): ` `-. \n"
+    "           ,/,' ;' ,::\"'`.`---'   `.  `-._ \n"
+    "         ,/  :  ; '\"      `;'          ,--`. \n"
+    "        ;/   :; ;             ,:'     (   ,:) \n"
+    "          ,.,:.    ; ,:.,  ,-._ `.     \\\"\"'/ \n"
+    "          '::'     `:'`  ,'(  \`._____.-'\"' \n"
+    "             ;,   ;  `.  `. `._`-.  \\ \n"
+    "             ;:.  ;:       `-._`-.\  \`. \n"
+    "              '`:. :        |' `. `\  ) \ \n"
+    "      -hrr-      ` ;:       |    `--\__,' \n"
+    "                   '`      ,' \n"
+    "                        ,-' \n"
+  },
+    std::string
+  {
+    "                     , \n"
+    "                ,.  | \ \n"
+    "               |: \ ; :\ \n"
+    "               :' ;\| ::\ \n"
+    "                \ : | `::\ \n"
+    "                _)  |   `:`. \n"
+    "              ,' , `.    ;: ; \n"
+    "            ,' ;:  ;\"'  ,:: |_ \n"
+    "           /,   ` .    ;::: |:`-.__ \n"
+    "        _,' _o\  ,::.`:' ;  ;   . ' \n"
+    "    _,-'           `:.          ;""\, \n"
+    " ,-'                     ,:         `-;, \n"
+    " \,                       ;:           ;--._ \n"
+    "  `.______,-,----._     ,' ;:        ,/ ,  ,` \n"
+    "         / /,-';'  \     ; `:      ,'/,::.::: \n"
+    "       ,',;-'-'_,--;    ;   :.   ,',',;:::::: \n"
+    "      ( /___,-'     `.     ;::,,'o/  ,::::::: \n"
+    "       `'             )    ;:,'o /  ;\" - -:: \n"
+    "                      \__ _,'o ,'         ,:: \n"
+    "                         ) `--'       ,..:::: \n"
+    "      -hrr-              ; `.        ,::::::: \n"
+    "                          ;  ``::.    ::::::: \n"
+    "\n"
+  },
+    std::string
+  {
+    "        ,--._______,-. \n"
+    "       ,','  ,    .  ,_`-. \n"
+    "      / /  ,' , _` ``. |  )       `-.. \n"
+    "     (,';'\"\"`/ '\"`-._ ` \ / ______    \\ \n"
+    "       : ,o.-`- ,o.  )\` -'      `---.)) \n"
+    "       : , d8b ^-.   '|   `.      `    `. \n"
+    "       |/ __:_     `. |  ,  `       `    \ \n"
+    "       | ( ,-.`-.    ;'  ;   `       :    ; \n"
+    "       | |  ,   `.      /     ;      :    \ \n"
+    "       ;-'`:::._,`.__),'             :     ; \n"
+    "      / ,  `-   `--                  ;     | \n"
+    "     /  \                   `       ,      | \n"
+    "    (    `     :              :    ,\      | \n"
+    "     \   `.    :     :        :  ,'  \    : \n"
+    "      \    `|-- `     \ ,'    ,-'     :-.-'; \n"
+    "      :     |`--.______;     |        :    : \n"
+    "       :    /           |    |         |   \ \n"
+    "       |    ;           ;    ;        /     ; \n"
+    "     _/--' |   -hrr-   :`-- /         \_:_:_| \n"
+    "   ,',','  |           |___ \ \n"
+    "   `^._,--'           / , , .) \n"
+    "                      `-._,-' \n"
+  },
+    std::string
+  {
+    "      __,-----._                       ,-. \n"
+    "     ,'   ,-.    \`---.          ,-----<._/ \n"
+    "    (,.-. o:.`    )),\"\\ - ._    ,'         `. \n"
+    "   ('\" - ` .\       \`:_ )\  `-; '-._          \ \n"
+    "  ,,-.    \` ;  :  \( `-'     ) -._     :   `: \n"
+    " (    \ `._\\ ` ;             ;    `    :    ) \n"
+    "  \`.  `-.    __   ,         /  \        ;, ( \n"
+    "   `.`-.___--'  `-          /    ;     | :   | \n"
+    "     `-' `-.`--._          '           ;     | \n"
+    "           (`--._`.                ;   /\    | \n"
+    "            \     '                \  ,  )   : \n"
+    "            |  `--::----            \'   ;  ;| \n"
+    "            \    .__,-      (        )   :  :| \n"
+    "             \    : `------; \      |    |   ; \n"
+    "              \   :       / , )     |    |  ( \n"
+    "     -hrr-     \   \      `-^-|     |   / , ,\ \n"
+    "                )  )          | -^- ;   `-^-^' \n"
+    "             _,' _ ;          |    | \n"
+    "            / , , ,'         /---. : \n"
+    "            `-^-^'          (  :  :,' \n"
+    "\n"
+  }
+  };
 }
 
 
@@ -92,6 +197,8 @@ inline void crypto_puppy::Puppy::LevelUp()
 inline crypto_puppy::Puppy::operator std::string() const
 {
   std::string result{ OwnerInfo_(*this) };
+  result += "\n";
+  result += ASCIIArtForPuppy_(*this);
   return result;
 }
 
@@ -215,5 +322,16 @@ std::string crypto_puppy::OwnerInfo_(Puppy const &puppy)
   result += ")!";
   return result;
 }
+
+std::string crypto_puppy::ASCIIArtForPuppy_(Puppy const &puppy)
+{
+  auto breed_raw = static_cast<BreedRawType>(puppy.Breed());
+  auto breed_max = static_cast<BreedRawType>(PuppyBreed::kPuppyBreedCount);
+  auto level_raw = static_cast<BreedRawType>(puppy.Level());
+
+  std::size_t index = static_cast<std::size_t>(breed_raw * breed_max + level_raw);
+  return puppy_ascii_arts_[index];
+}
+
 
 #endif  // SSYBC_SAMPLES_SAMPLE_CPU_CRYPTO_PUPPY_PUPPY_IMPL_HPP_

@@ -24,6 +24,12 @@
 #include <iostream>
 #include <type_traits>
 
+/**********************************************************************************************************************
+ *
+ * ASCII artworks from http://www.chris.com/ascii/index.php?art=animals/dogs
+ *
+ *********************************************************************************************************************/
+
 void PrintBreedSelections_();
 
 int main(int const argc, char const **argv) {
@@ -124,6 +130,147 @@ void PrintBreedSelections_()
 
 /**************************************************** Sample Output ***************************************************
  *
+ * Welcome to CryptoPuppy!
+ * Please type in your name to adopt a puppy: Shuyang
+ * 
+ * Now please select the breed of your puppy you'd like to adopt:
+ * 1: Husky
+ * 2: Bulldog
+ * Type in number of selected breed: 1
+ * What would you like to name it? : Blosky
+ * 
+ * Great job Shuyang!
+ * Please be patient while we're building a pet house for Blosky...
+ * 
+ * Mining Genesis block...
+ * Finished mining Genesis block.
+ * 
+ * Congratulations! Blosky is living in a pet house on blockchain now!
+ * [{
+ *   header: {
+ *     version: 0,
+ *     index: 0,
+ *     time_stamp: 2017-12-29T09:47:39UTC,
+ *     nonce: 16769767339735958599,
+ *     merkel_root:   50f0d38f1c22e73f0d10cb5f10e8de9ceefaf9961a6a5ed53ca82bf2d2a6de03,
+ *     previous_hash: 0000000000000000000000000000000000000000000000000000000000000000,
+ *     hash:          00004b3f9f2f964b2dd6e39e98483062fde26596a10da194762c161c8f5f0ae7
+ *   },
+ *   content: {
+ *     size: 37,
+ *     data: Shuyang's Blosky (Baby Husky)!
+ *                              ;
+ *                             |'
+ *          _                  ; : ;
+ *         / `-.              /: : |
+ *        |  ,-.`-.          ,': : |
+ *          :  `. `.       ,'-. : |
+ *          ;    ;  `-.__,'    `-.|
+ *           ;   ;  :::  ,::'`:.  `.
+ *            `-. :  `    :.    `.
+ *                   ,   ;   ,:    (
+ *                :., :.    ,'o)): ` `-.
+ *            ,/,' ;' ,::"'`.`---'   `.  `-._
+ *          ,/  :  ; '"      `;'          ,--`.
+ *         ;/   :; ;             ,:'     (   ,:)
+ *           ,.,:.    ; ,:.,  ,-._ `.     \""'/
+ *           '::'     `:'`  ,'(  `._____.-'"'
+ *              ;,   ;  `.  `. `._`-.  \
+ *              ;:.  ;:       `-._`-.  `.
+ *               '`:. :        |' `. `  )
+ *       -hrr-      ` ;:       |    `--__,'
+ *                    '`      ,'
+ *                         ,-'
+ * 
+ *   }
+ * }]
+ * Would you like to grow Blosky? [y/n] : y
+ * Feeding and playing with Blosky...
+ * Mining block # 1...
+ * Finished mining block # 1.
+ * Blosky has grown up! Here's Blosky's history:
+ * [{
+ *   header: {
+ *     version: 0,
+ *     index: 0,
+ *     time_stamp: 2017-12-29T09:47:39UTC,
+ *     nonce: 16769767339735958599,
+ *     merkel_root:   50f0d38f1c22e73f0d10cb5f10e8de9ceefaf9961a6a5ed53ca82bf2d2a6de03,
+ *     previous_hash: 0000000000000000000000000000000000000000000000000000000000000000,
+ *     hash:          00004b3f9f2f964b2dd6e39e98483062fde26596a10da194762c161c8f5f0ae7
+ *   },
+ *   content: {
+ *     size: 37,
+ *     data: Shuyang's Blosky (Baby Husky)!
+ *                              ;
+ *                             |'
+ *          _                  ; : ;
+ *         / `-.              /: : |
+ *        |  ,-.`-.          ,': : |
+ *          :  `. `.       ,'-. : |
+ *          ;    ;  `-.__,'    `-.|
+ *           ;   ;  :::  ,::'`:.  `.
+ *            `-. :  `    :.    `.
+ *                   ,   ;   ,:    (
+ *                :., :.    ,'o)): ` `-.
+ *            ,/,' ;' ,::"'`.`---'   `.  `-._
+ *          ,/  :  ; '"      `;'          ,--`.
+ *         ;/   :; ;             ,:'     (   ,:)
+ *           ,.,:.    ; ,:.,  ,-._ `.     \""'/
+ *           '::'     `:'`  ,'(  `._____.-'"'
+ *              ;,   ;  `.  `. `._`-.  \
+ *              ;:.  ;:       `-._`-.  `.
+ *               '`:. :        |' `. `  )
+ *       -hrr-      ` ;:       |    `--__,'
+ *                    '`      ,'
+ *                         ,-'
+ * 
+ *   }
+ * },
+ * {
+ *   header: {
+ *     version: 0,
+ *     index: 1,
+ *     time_stamp: 2017-12-29T09:47:43UTC,
+ *     nonce: 5030930201920802644,
+ *     merkel_root:   23b1c0505cfa172721400053ac4cf8bc37b5e0734fb7b7ba09774712068800f2,
+ *     previous_hash: 00004b3f9f2f964b2dd6e39e98483062fde26596a10da194762c161c8f5f0ae7,
+ *     hash:          000044794e3c9f6fa77248fb1fee3bcb053a7966c0e5538b2cb86f57bbaa5064
+ *   },
+ *   content: {
+ *     size: 37,
+ *     data: Shuyang's Blosky (Adult Husky)!
+ *                      ,
+ *                 ,.  |
+ *                |:  ; :
+ *                :' ;| ::
+ *                  : | `::
+ *                 _)  |   `:`.
+ *               ,' , `.    ;: ;
+ *             ,' ;:  ;"'  ,:: |_
+ *            /,   ` .    ;::: |:`-.__
+ *         _,' _o  ,::.`:' ;  ;   . '
+ *     _,-'           `:.          ;,
+ *  ,-'                     ,:         `-;,
+ *  ,                       ;:           ;--._
+ *   `.______,-,----._     ,' ;:        ,/ ,  ,`
+ *          / /,-';'       ; `:      ,'/,::.:::
+ *        ,',;-'-'_,--;    ;   :.   ,',',;::::::
+ *       ( /___,-'     `.     ;::,,'o/  ,:::::::
+ *        `'             )    ;:,'o /  ;" - -::
+ *                       __ _,'o ,'         ,::
+ *                          ) `--'       ,..::::
+ *       -hrr-              ; `.        ,:::::::
+ *                           ;  ``::.    :::::::
+ * 
+ * 
+ *   }
+ * }]
+ * 
+ * Would you like to save Blosky's history to a binary file (so it can be reloaded later)? [y/n] : y
+ * 
+ * Please type in the file path: ~/Desktop/blosky_chain.ssybc
+ * Blosky saved to file! Have a great day!
  *
  *********************************************************************************************************************/
 
