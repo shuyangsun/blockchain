@@ -21,8 +21,8 @@ SSYBlockchain is distributed with [CMake](https://cmake.org/), to generate build
 
 ### macOS
 
-1. Open CMake appliation, you will be given options to select source and destination location. Simply set source location to source file location, and binary destination to a folder of your choice.
-2. Click "Configue". By default macOS generates Unix Makefiles for build system, but you can select other build systems if you'd like.
+1. Open CMake application, you will be given options to select source and destination location. Simply set source location to source file location, and binary destination to a folder of your choice.
+2. Click "Configure". By default macOS generates Unix Makefiles for build system, but you can select other build systems if you'd like.
 3. After project configuration is done, you can configure project options. Check "BUILD_SAMPLES" to build executable sample projects, by default this option is "ON".
 4. Click "Generate" to generate your build system.
 5. After project generation is done, simply go to the binary folder, and build the project (i.e., run `make all` for Unix Makefiles).
@@ -31,7 +31,7 @@ If you chose to build sample projects,they will be inside the "samples" folder.
 
 ### Windows
 
-Windows follows the same proceedure as macOS, except the default system generated is a Visual Studio solution. Make sure you have Visual Studio installed to open the solution.
+Windows follows the same procedure as macOS, except the default system generated is a Visual Studio solution. Make sure you have Visual Studio installed to open the solution.
 
 An alternative option is opening source file folder from Visual Studio directly. Microsoft started supporting CMake natively since Visual Studio 2017, checkout a simple tutorial on Microsoft's [blog](https://blogs.msdn.microsoft.com/vcblog/2016/10/05/cmake-support-in-visual-studio/).
 
@@ -39,7 +39,7 @@ An alternative option is opening source file folder from Visual Studio directly.
 
 There is no CMake GUI interface available on Linux platforms, the only option is to run CMake on command line. For CMake installation on Linux, checkout CMake's official [tutorial](https://cmake.org/install/).
 
-Below is the proceedure to generate build system on command line:
+Below is the procedure to generate build system on command line:
 
 1. Create a folder at a location of your choice, this will be the binary destination folder.
 2. Run `cd path_to_destination`.
