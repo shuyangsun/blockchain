@@ -39,8 +39,10 @@ int main(int const argc, char const **argv) {
   ssybc::logging::SetLoggerVerbosityLevel(ssybc::logging::LoggerVerbosity::kDebug);
   auto const logger = ssybc::logging::notest;
 
+  // Checkout "puppy" folder for "crypto_puppy" implementation.
   namespace cp = crypto_puppy;
 
+  // Setup a blockchain with content data type as Puppy, and use PuppyBinaryConverter for binary conversion.
   using PuppyChain = typename ssybc::Blockchain<ssybc::Block<
     cp::Puppy,
     cp::PuppyBinaryConverter
@@ -73,6 +75,7 @@ int main(int const argc, char const **argv) {
   std::cout << "Please be patient while we're building a pet house for " << name << "..." << std::endl;
   std::cout << std::endl;
 
+  // Mine the genesis block with given puppy and owner information.
   PuppyChain puppy_chain{
     PuppyChain::GenesisBlockMinedWithData({ breed, name, owner_name })
   };
@@ -85,6 +88,7 @@ int main(int const argc, char const **argv) {
   std::cin >> answer;
   if (answer == 'y') {
     auto puppy_block = puppy_chain.TailBlock();
+    // If tail block as content (your puppy), grow it and append it to the blockchain.
     if (!puppy_block.IsHeaderOnly()) {
       auto puppy = puppy_block.Content().Data();
       puppy.LevelUp();

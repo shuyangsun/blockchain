@@ -67,6 +67,7 @@ namespace crypto_puppy {
     PuppyBreed Breed() const;
     PuppyLevel Level() const;
 
+    void SetLevel(PuppyLevel const level);
     void LevelUp();
     operator std::string() const;
 

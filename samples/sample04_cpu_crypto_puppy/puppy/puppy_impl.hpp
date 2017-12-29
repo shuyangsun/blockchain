@@ -186,11 +186,17 @@ inline auto crypto_puppy::Puppy::Level() const -> PuppyLevel
 }
 
 
+inline void crypto_puppy::Puppy::SetLevel(PuppyLevel const level)
+{
+  level_ = level;
+}
+
+
 inline void crypto_puppy::Puppy::LevelUp()
 {
   auto level_raw = static_cast<LevelRawType>(level_);
   ++level_raw;
-  level_ = static_cast<PuppyLevel>(level_raw);
+  SetLevel(static_cast<PuppyLevel>(level_raw));
 }
 
 
@@ -276,11 +282,9 @@ inline auto crypto_puppy::PuppyBinaryConverter<DataT>::DataFromBinaryData(
 
   auto breed = static_cast<PuppyBreed>(breed_raw);
   auto level = static_cast<PuppyLevel>(level_raw);
-  
+
   Puppy result{ breed, name, owner_id };
-  for (LevelRawType i{ 0 }; i < level_raw; ++i) {
-    result.LevelUp();
-  }
+  result.SetLevel(level);
   return result;
 }
 
