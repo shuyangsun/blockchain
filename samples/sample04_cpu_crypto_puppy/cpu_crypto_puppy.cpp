@@ -19,7 +19,7 @@
  *********************************************************************************************************************/
 
 
-#include "puppy.hpp"
+#include "puppy/puppy.hpp"
 
 #include <iostream>
 #include <type_traits>
