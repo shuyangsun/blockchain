@@ -188,9 +188,9 @@ inline auto crypto_puppy::Puppy::Level() const -> PuppyLevel
 
 inline void crypto_puppy::Puppy::LevelUp()
 {
-  auto level_val = static_cast<std::underlying_type<PuppyLevel>::type>(level_);
-  ++level_val;
-  level_ = static_cast<PuppyLevel>(level_val);
+  auto level_raw = static_cast<LevelRawType>(level_);
+  ++level_raw;
+  level_ = static_cast<PuppyLevel>(level_raw);
 }
 
 
@@ -278,7 +278,9 @@ inline auto crypto_puppy::PuppyBinaryConverter<DataT>::DataFromBinaryData(
   auto level = static_cast<PuppyLevel>(level_raw);
   
   Puppy result{ breed, name, owner_id };
-  result.level_ = level;
+  for (LevelRawType i{ 0 }; i < level_raw; ++i) {
+    result.LevelUp();
+  }
   return result;
 }
 

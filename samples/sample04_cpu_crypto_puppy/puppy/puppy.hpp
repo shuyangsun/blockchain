@@ -70,9 +70,6 @@ namespace crypto_puppy {
     void LevelUp();
     operator std::string() const;
 
-    template<typename DataT>
-    friend DataT PuppyBinaryConverter<DataT>::DataFromBinaryData(ssybc::BinaryData const &binary_data) const;
-
   private:
     std::string const owner_id_;
     std::string const name_;
