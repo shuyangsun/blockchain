@@ -39,6 +39,9 @@ namespace crypto_puppy {
     kPuppyLevelCount
   };
 
+  using BreedRawType = typename std::underlying_type<PuppyBreed>::type;
+  using LevelRawType = typename std::underlying_type<PuppyLevel>::type;
+
   class Puppy;
 
   template<typename DataT>
@@ -52,7 +55,7 @@ namespace crypto_puppy {
   public:
     Puppy() = delete;
 
-    Puppy(PuppyBreed const breed, std::string const &owner_id);
+    Puppy(PuppyBreed const breed, std::string const &name, std::string const &owner_id);
 
     Puppy(Puppy const &puppy);
     Puppy(Puppy &&puppy);
@@ -60,6 +63,7 @@ namespace crypto_puppy {
     ~Puppy() = default;
 
     std::string OwnerID() const;
+    std::string Name() const;
     PuppyBreed Breed() const;
     PuppyLevel Level() const;
 
@@ -71,6 +75,7 @@ namespace crypto_puppy {
 
   private:
     std::string const owner_id_;
+    std::string const name_;
     PuppyBreed const breed_;
     PuppyLevel level_;
   };
