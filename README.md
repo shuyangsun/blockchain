@@ -9,7 +9,7 @@ SSYBlockchain is a generic purpose blockchain library, checkout [samples](https:
 
 SSYBlockchain is built and tested on the following 64-bit laptop/desktop operating systems:
 
-* macOS 10.13 (High Sierra)
+* MacOS 10.13 (High Sierra)
 * Ubuntu 16.04 LTS
 * Windows 10 (with Visual Studio 2017)
 
@@ -17,10 +17,10 @@ To get started, clone the source repository into a local path of your choice.
 
 SSYBlockchain is distributed with [CMake](https://cmake.org/), to generate build system for your platform with CMake, download the latest version [here](https://cmake.org/download/).
 
-### macOS
+### MacOS
 
 1. Open CMake application, you will be given options to select source and destination location. Simply set source location to source file location, and binary destination to a folder of your choice.
-2. Click "Configure". By default macOS generates Unix Makefiles for build system, but you can select other build systems if you'd like.
+2. Click "Configure". By default MacOS generates Unix Makefiles for build system, but you can select other build systems if you'd like.
 3. After project configuration is done, you can configure project options. Check "BUILD_SAMPLES" to build executable sample projects, by default this option is "ON".
 4. Click "Generate" to generate your build system.
 5. After project generation is done, simply go to the binary folder, and build the project (i.e., run `make all` for Unix Makefiles).
@@ -29,7 +29,7 @@ If you chose to build sample projects,they will be inside the "samples" folder.
 
 ### Windows
 
-Windows follows the same procedure as macOS, except the default system generated is a Visual Studio solution. Make sure you have Visual Studio installed to open the solution.
+Windows follows the same procedure as MacOS, except the default system generated is a Visual Studio solution. Make sure you have Visual Studio installed to open the solution.
 
 An alternative option is opening source file folder from Visual Studio directly. Microsoft started supporting CMake natively since Visual Studio 2017, checkout a simple tutorial on Microsoft's [blog](https://blogs.msdn.microsoft.com/vcblog/2016/10/05/cmake-support-in-visual-studio/).
 
