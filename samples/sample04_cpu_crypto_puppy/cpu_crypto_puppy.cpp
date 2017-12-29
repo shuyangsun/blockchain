@@ -83,7 +83,7 @@ int main(int const argc, char const **argv) {
   std::cout << std::endl << "Congratulations! " << name << " is living in a pet house on blockchain now!" << std::endl;
   std::cout << puppy_chain.Description() << std::endl;
 
-  std::cout << "Would you like to grow " << name << "? [y/n] : ";
+  std::cout << std::endl << "Would you like to grow " << name << "? [y/n] : ";
   char answer{};
   std::cin >> answer;
   if (answer == 'y') {
@@ -190,6 +190,7 @@ void PrintBreedSelections_()
  *
  *   }
  * }]
+ *
  * Would you like to grow Blosky? [y/n] : y
  *
  * Feeding and playing with Blosky...
