@@ -4,7 +4,7 @@
 
 SSYBlockchain is a generic purpose blockchain that supports dynamic content data type, hashing function, block append validation, and block miner. Default implementation suits many common situations, and it is highly customizable. The framework utilizes C++ template programming heavily to ensure performance, security and make it less error-prone when developers extend its functionality.
 
-Checkout [demo.cpp](https://github.com/shuyangsun/ssy_blockchain/blob/master/demo.cpp) for a simple demonstration for a string blockchain.
+Checkout [samples](https://github.com/shuyangsun/ssy_blockchain/tree/master/samples) for some demo projects.
 
 ## Basics of Block
 
