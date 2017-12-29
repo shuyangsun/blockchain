@@ -92,9 +92,9 @@ int main(int const argc, char const **argv) {
     if (!puppy_block.IsHeaderOnly()) {
       auto puppy = puppy_block.Content().Data();
       puppy.LevelUp();
-      std::cout << "Feeding and playing with " << puppy.Name() << "..." << std::endl;
+      std::cout << std::endl << "Feeding and playing with " << puppy.Name() << "..." << std::endl;
       puppy_chain.Append(puppy);
-      std::cout << puppy.Name() << " has grown up! Here's " << puppy.Name() << "'s history:" << std::endl;
+      std::cout << std::endl << puppy.Name() << " has grown up! Here's " << puppy.Name() << "'s history:" << std::endl;
       std::cout << puppy_chain.Description() << std::endl;
     }
   }
@@ -191,9 +191,11 @@ void PrintBreedSelections_()
  *   }
  * }]
  * Would you like to grow Blosky? [y/n] : y
+ *
  * Feeding and playing with Blosky...
  * Mining block # 1...
  * Finished mining block # 1.
+ *
  * Blosky has grown up! Here's Blosky's history:
  * [{
  *   header: {
