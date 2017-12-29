@@ -1,7 +1,5 @@
 # SSYBlockchain
 
-## Introduction
-
 SSYBlockchain is a generic purpose blockchain library, checkout [samples](https://github.com/shuyangsun/ssy_blockchain/tree/master/samples) for some sample projects, especially [CryptoPuppy](https://github.com/shuyangsun/ssy_blockchain/blob/master/samples/sample04_cpu_crypto_puppy/cpu_crypto_puppy.cpp).
 
 
