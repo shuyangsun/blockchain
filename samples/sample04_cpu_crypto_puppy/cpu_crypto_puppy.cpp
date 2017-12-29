@@ -27,7 +27,7 @@
 /**********************************************************************************************************************
  *
  * ASCII artworks from http://www.chris.com/ascii/index.php?art=animals/dogs
- * 
+ *
  * Scroll down to see a sample output.
  *
  *********************************************************************************************************************/
@@ -134,19 +134,19 @@ void PrintBreedSelections_()
  *
  * Welcome to CryptoPuppy!
  * Please type in your name to adopt a puppy: Shuyang
- * 
+ *
  * Now please select the breed of your puppy you'd like to adopt:
  * 1: Husky
  * 2: Bulldog
  * Type in number of selected breed: 1
  * What would you like to name it? : Blosky
- * 
+ *
  * Great job Shuyang!
  * Please be patient while we're building a pet house for Blosky...
- * 
+ *
  * Mining Genesis block...
  * Finished mining Genesis block.
- * 
+ *
  * Congratulations! Blosky is living in a pet house on blockchain now!
  * [{
  *   header: {
@@ -183,7 +183,7 @@ void PrintBreedSelections_()
  *       -hrr-      ` ;:       |    `--\__,'
  *                    '`      ,'
  *                         ,-'
- * 
+ *
  *   }
  * }]
  * Would you like to grow Blosky? [y/n] : y
@@ -226,7 +226,7 @@ void PrintBreedSelections_()
  *       -hrr-      ` ;:       |    `--\__,'
  *                    '`      ,'
  *                         ,-'
- * 
+ *
  *   }
  * },
  * {
@@ -264,14 +264,14 @@ void PrintBreedSelections_()
  *                          ) `--'       ,..::::
  *       -hrr-              ; `.        ,:::::::
  *                           ;  ``::.    :::::::
- * 
- * 
+ *
+ *
  *   }
  * }]
- * 
+ *
  * Would you like to save Blosky's history to a binary file (so it can be reloaded later)? [y/n] : y
- * 
- * Please type in the file path: /Users/shuyangsun/Desktop/blosky.ssybc
+ *
+ * Please type in the file path: blosky.ssybc
  * Blosky saved to file! Have a great day!
  *
  *********************************************************************************************************************/
