@@ -4,8 +4,6 @@
 
 SSYBlockchain is a generic purpose blockchain library, checkout [samples](https://github.com/shuyangsun/ssy_blockchain/tree/master/samples) for some sample projects, especially [CryptoPuppy](https://github.com/shuyangsun/ssy_blockchain/blob/master/samples/sample04_cpu_crypto_puppy/cpu_crypto_puppy.cpp).
 
-SSYBlockchain supports different kinds of content data type, hashing function, block append validation, and block miner. Default implementation suits many common situations (built in string and binary data content type support), and it is highly customizable. The framework utilizes C++ template programming heavily to ensure performance and make it less error-prone when developers extend its functionality.
-
 
 ## Installation
 
@@ -49,6 +47,8 @@ Below is the procedure to generate build system on command line:
 > Make sure `pthread` is installed on your system, it is used for CPU mining, otherwise compilation is likely to fail.
 
 ## Introduction to SSYBlockchain
+
+SSYBlockchain supports different kinds of content data type, hashing function, block append validation, and block miner. Default implementation suits many common situations (built in string and binary data content type support), and it is highly customizable. The framework utilizes C++ template programming heavily to ensure performance and make it less error-prone when developers extend its functionality.
 
 ### Basics of Block
 
