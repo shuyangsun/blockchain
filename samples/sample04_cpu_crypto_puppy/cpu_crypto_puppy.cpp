@@ -29,6 +29,8 @@ int main(int const argc, char const **argv) {
   ssybc::logging::SetLoggerVerbosityLevel(ssybc::logging::LoggerVerbosity::kDebug);
   auto const logger = ssybc::logging::notest;
 
+  using PuppyChain = typename ssybc::Blockchain<ssybc::Block<crypto_puppy::Puppy, crypto_puppy::PuppyBinaryConverter>>;
+
   return 0;
 }
 

@@ -87,7 +87,8 @@ inline crypto_puppy::Puppy::operator std::string() const
 }
 
 
-ssybc::BinaryData crypto_puppy::PuppyBinaryConverter::BinaryDataFromData(Puppy const & puppy) const
+template<typename DataT>
+inline ssybc::BinaryData crypto_puppy::PuppyBinaryConverter<DataT>::BinaryDataFromData(DataT const & puppy) const
 {
   auto level = puppy.Level();
   auto breed = puppy.Breed();
@@ -111,7 +112,8 @@ ssybc::BinaryData crypto_puppy::PuppyBinaryConverter::BinaryDataFromData(Puppy c
 }
 
 
-inline auto crypto_puppy::PuppyBinaryConverter::DataFromBinaryData(
+template<typename DataT>
+inline auto crypto_puppy::PuppyBinaryConverter<DataT>::DataFromBinaryData(
   ssybc::BinaryData const & binary_data) const -> Puppy
 {
   ssybc::BinaryData bin_copy{ binary_data.begin(), binary_data.end() };

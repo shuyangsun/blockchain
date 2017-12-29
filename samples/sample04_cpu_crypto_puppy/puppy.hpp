@@ -41,10 +41,11 @@ namespace crypto_puppy {
 
   class Puppy;
 
-  class PuppyBinaryConverter: ssybc::BinaryDataConverterInterface<Puppy> {
+  template<typename DataT>
+  class PuppyBinaryConverter: ssybc::BinaryDataConverterInterface<DataT> {
   public:
-    ssybc::BinaryData BinaryDataFromData(Puppy const &puppy) const override;
-    Puppy DataFromBinaryData(ssybc::BinaryData const &binary_data) const override;
+    ssybc::BinaryData BinaryDataFromData(DataT const &puppy) const override;
+    DataT DataFromBinaryData(ssybc::BinaryData const &binary_data) const override;
   };
 
   class Puppy {
@@ -65,7 +66,8 @@ namespace crypto_puppy {
     void LevelUp();
     operator std::string() const;
 
-    friend Puppy PuppyBinaryConverter::DataFromBinaryData(ssybc::BinaryData const &binary_data) const;
+    template<typename DataT>
+    friend DataT PuppyBinaryConverter<DataT>::DataFromBinaryData(ssybc::BinaryData const &binary_data) const;
 
   private:
     std::string const owner_id_;
