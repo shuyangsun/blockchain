@@ -44,7 +44,7 @@ Below is the procedure to generate build system on command line:
 3. Run `cmake -BUILD_SAMPLES=[ON/OFF] path_to_source`. This will generate Makefiles at destination folder.
 4. Run `make all` to build the project.
 
-> Make sure `pthread` is installed on your system, it is used for CPU mining, otherwise compilation is likely to fail.
+>  `pthread` must be installed for project to compile, it is used for CPU mining.
 
 ## Introduction to SSYBlockchain
 
