@@ -72,6 +72,43 @@ int main(int const argc, char const **argv) {
   std::cout << std::endl << "Congratulations! " << name << " is living in a pet house on blockchain now!" << std::endl;
   std::cout << puppy_chain.Description() << std::endl;
 
+  std::cout << "Would you like to grow " << name << "? [y/n] : ";
+  char answer{};
+  std::cin >> answer;
+  if (answer == 'y') {
+    auto puppy_block = puppy_chain.TailBlock();
+    if (!puppy_block.IsHeaderOnly()) {
+      auto puppy = puppy_block.Content().Data();
+      puppy.LevelUp();
+      std::cout << "Feeding and playing with " << puppy.Name() << "..." << std::endl;
+      puppy_chain.Append(puppy);
+      std::cout << puppy.Name() << " has grown up! Here's " << puppy.Name() << "'s history:" << std::endl;
+      std::cout << puppy_chain.Description() << std::endl;
+    }
+  }
+  std::cout << std::endl;
+  std::cout << "Would you like to save " << name << "'s history to a binary file (so it can be reloaded later)? ";
+  std::cout << "[y/n] : ";
+
+  std::cin.ignore();
+  std::cin >> answer;
+  std::cout << std::endl;
+
+  if (answer == 'y') {
+    std::cout << "Please type in the file path: ";
+    std::cin.ignore();
+    std::string file_path{};
+    std::getline(std::cin, file_path);
+    bool const succeed{ puppy_chain.SaveBinaryToFileAtPath(file_path) };
+    if (succeed) {
+      std::cout << name << " saved to file! Have a great day!" << std::endl;
+    } else {
+      std::cout << "Oops... looks like something went wrong while trying to save " << name << "to file." << std::endl;
+    }
+  } else {
+    std::cout << "Goodbye!" << std::endl;
+  }
+
   return 0;
 }
 
