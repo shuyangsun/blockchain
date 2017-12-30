@@ -22,19 +22,89 @@
 #ifndef SSYBC_SRC_BLOCKCHAIN_BLOCKCHAIN_BLOCKCHAIN_ITERATOR_BLOCKCHAIN_ITERATOR_IMPL_HPP_
 #define SSYBC_SRC_BLOCKCHAIN_BLOCKCHAIN_BLOCKCHAIN_ITERATOR_BLOCKCHAIN_ITERATOR_IMPL_HPP_
 
-
+#include "include/ssybc/general/general.hpp"
 #include "include/ssybc/blockchain/blockchain_iterator/blockchain_iterator.hpp"
 
 
 // --------------------------------------------- Constructor & Destructor ---------------------------------------------
 
 
+template<typename BlockchainT>
+inline ssybc::BlockchainIterator<BlockchainT>::BlockchainIterator(BlockchainT const & blockchain):
+  BlockchainIterator(blockchain, 0)
+{ EMPTY_BLOCK }
+
+
+template<typename BlockchainT>
+inline ssybc::BlockchainIterator<BlockchainT>::BlockchainIterator(
+  BlockchainT const & blockchain,
+  std::size_t const index):
+  blockchain_{ blockchain },
+  index_{ index }
+{ EMPTY_BLOCK }
+
+
+template<typename BlockchainT>
+inline ssybc::BlockchainIterator<BlockchainT>::BlockchainIterator(BlockchainIterator const & iter):
+  BlockchainIterator(iter.blockchain_, iter.index_)
+{ EMPTY_BLOCK }
+
+
+template<typename BlockchainT>
+inline ssybc::BlockchainIterator<BlockchainT>::BlockchainIterator(BlockchainIterator && iter):
+  BlockchainIterator(iter.blockchain_, iter.index_)
+{ EMPTY_BLOCK }
+
 
 // --------------------------------------------------- Public Method --------------------------------------------------
 
 
+template<typename BlockchainT>
+inline auto ssybc::BlockchainIterator<BlockchainT>::operator=(
+  BlockchainIterator const & iterator) -> BlockchainIterator&
+{
+  blockchain_ = iterator.blockchain_;
+  index_ = iterator.index_;
+  return *this;
+}
 
-// -------------------------------------------------- Private Member --------------------------------------------------
+
+template<typename BlockchainT>
+inline bool ssybc::BlockchainIterator<BlockchainT>::operator==(BlockchainIterator const & iterator)
+{
+  return !((*this) == iterator);
+}
+
+
+template<typename BlockchainT>
+inline bool ssybc::BlockchainIterator<BlockchainT>::operator!=(BlockchainIterator const & iterator)
+{
+  return index_ != iterator.index_;
+}
+
+
+template<typename BlockchainT>
+inline typename BlockchainT::BlockType ssybc::BlockchainIterator<BlockchainT>::operator*()
+{
+  return blockchain_[index_];
+}
+
+
+template<typename BlockchainT>
+inline auto ssybc::BlockchainIterator<BlockchainT>::operator++() -> BlockchainIterator&
+{
+  ++index_;
+  return *this;
+}
+
+
+template<typename BlockchainT>
+inline auto ssybc::BlockchainIterator<BlockchainT>::operator++(int) -> BlockchainIterator&
+{
+  BlockchainIterator result{ *this };
+  ++(*this);
+  return result;
+}
 
 
 #endif  // SSYBC_SRC_BLOCKCHAIN_BLOCKCHAIN_BLOCKCHAIN_ITERATOR_BLOCKCHAIN_ITERATOR_IMPL_HPP_

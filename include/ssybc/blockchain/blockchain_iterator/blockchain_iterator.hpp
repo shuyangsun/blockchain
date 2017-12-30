@@ -21,36 +21,49 @@
 #ifndef SSYBC_INCLUDE_SSYBC_BLOCKCHAIN_BLOCKCHAIN_ITERATOR_BLOCKCHAIN_ITERATOR_HPP_
 #define SSYBC_INCLUDE_SSYBC_BLOCKCHAIN_BLOCKCHAIN_ITERATOR_BLOCKCHAIN_ITERATOR_HPP_
 
-#include "include/ssybc/general/general.hpp"
-#include "include/ssybc/block/block.hpp"
-#include "include/ssybc/validator/block_validator_less_hash.hpp"
-#include "include/ssybc/miner/block_miner_cpu_brute_force.hpp"
+#include "include/ssybc/blockchain/blockchain.hpp"
 
-#include <unordered_map>
-#include <string>
-#include <memory>
+#include <iterator>
 
 namespace ssybc {
 
+  template<typename BlockchainT>
+  class BlockchainIterator : public std::iterator<std::forward_iterator_tag, BlockchainT> {
 
-
+  public:
 
 // -------------------------------------------------- Type Definition -------------------------------------------------
 
-  
+    using BlockchainType = BlockchainT;
 
 // --------------------------------------------- Constructor & Destructor ---------------------------------------------
 
-    
+    BlockchainIterator() = default;
+
+    BlockchainIterator(BlockchainT const &blockchain);
+    BlockchainIterator(BlockchainT const &blockchain, std::size_t const index);
+
+    BlockchainIterator(BlockchainIterator const &iter);
+    BlockchainIterator(BlockchainIterator &&iter);
+
+    ~BlockchainIterator() = default;
 
 // --------------------------------------------------- Public Method --------------------------------------------------
 
-    
+    BlockchainIterator &operator=(BlockchainIterator const &iterator);
+    bool operator==(BlockchainIterator const &iterator);
+    bool operator!=(BlockchainIterator const &iterator);
+
+    typename BlockchainT::BlockType operator*();
+
+    BlockchainIterator &operator++();
+    BlockchainIterator &operator++(int);
 
 // -------------------------------------------------- Private Member --------------------------------------------------
-
-  
-
+  private:
+    BlockchainT const &blockchain_;
+    std::size_t index_{};
+  };
 
 }  // namespace ssybc
 

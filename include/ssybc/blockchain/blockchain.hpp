@@ -25,6 +25,7 @@
 #include "include/ssybc/block/block.hpp"
 #include "include/ssybc/validator/block_validator_less_hash.hpp"
 #include "include/ssybc/miner/block_miner_cpu_brute_force.hpp"
+#include "include/ssybc/blockchain/blockchain_iterator/blockchain_iterator.hpp"
 
 #include <unordered_map>
 #include <string>
@@ -80,6 +81,9 @@ namespace ssybc {
 
     bool operator==(Blockchain const &blockchain) const;
     bool operator!=(Blockchain const &blockchain) const;
+
+    BlockchainIterator<Blockchain> begin() const;
+    BlockchainIterator<Blockchain> end() const;
 
     BlockType GenesisBlock() const;
     BlockType TailBlock() const;

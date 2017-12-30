@@ -270,6 +270,26 @@ template<
   typename BlockT,
   ssybc::HashDifficulty Difficulty,
   template<typename, ssybc::HashDifficulty> class ValidatorTemplate>
+inline auto ssybc::Blockchain<BlockT, Difficulty, ValidatorTemplate>::begin() const -> BlockchainIterator<Blockchain>
+{
+  return BlockchainIterator<Blockchain>{ *this };
+}
+
+
+template<
+  typename BlockT,
+  ssybc::HashDifficulty Difficulty,
+  template<typename, ssybc::HashDifficulty> class ValidatorTemplate>
+inline auto ssybc::Blockchain<BlockT, Difficulty, ValidatorTemplate>::end() const -> BlockchainIterator<Blockchain>
+{
+  return BlockchainIterator<Blockchain>{ *this, this->Size() };
+}
+
+
+template<
+  typename BlockT,
+  ssybc::HashDifficulty Difficulty,
+  template<typename, ssybc::HashDifficulty> class ValidatorTemplate>
 inline std::string ssybc::Blockchain<BlockT, Difficulty, ValidatorTemplate>::Description() const
 {
   auto result = util::Join<BlockType>(blocks_, ",\n", [&](BlockType block) { return block.Description();  });

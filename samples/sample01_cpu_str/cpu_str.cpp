@@ -118,7 +118,13 @@ int main(int const argc, char const **argv) {
 
   // Load from binary file.
   auto loaded_blockchain = StringBlockChain::LoadFromBinaryFileAtPath(file_path);
-  logger << "Loaded Blockchain is identical with original: " << (loaded_blockchain == str_blockchain);
+
+  logger << std::endl << "Loaded blockchain hashes:" << std::endl;
+  for (auto const &block : loaded_blockchain) {
+    logger << block.Header().HashAsString() << std::endl;
+  }
+
+  logger << std::endl << "Loaded Blockchain is identical with original: " << (loaded_blockchain == str_blockchain);
   logger << std::endl;
 
   return 0;
@@ -255,6 +261,12 @@ int main(int const argc, char const **argv) {
  * Reconstructed blockchain headers from binary data is identical with original: 1
  * 
  * Save binary header to file succeeded: 1
+ *
+ * Loaded blockchain hashes:
+ * 0000cc356c65e09d5798252924ea037bf4e3f424cd1b5a177ba79c65c296dc98
+ * 000039f2c9cb2cd297ea77eeaec362b432b7ff70c2571232f06cd3d99267448d
+ * 000030130c5040240cf567d57db516e8866bb0a6704cc2e905a011219617a975
+ *
  * Loaded Blockchain is identical with original: 1
  *
  *********************************************************************************************************************/

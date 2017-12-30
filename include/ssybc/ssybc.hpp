@@ -43,6 +43,7 @@
 #include "include/ssybc/validator/block_validator_less_hash.hpp"
 
 #include "include/ssybc/blockchain/blockchain.hpp"
+#include "include/ssybc/blockchain/blockchain_iterator/blockchain_iterator.hpp"
 
 #include "include/ssybc/miner/block_miner.hpp"
 #include "include/ssybc/miner/block_miner_cpu_brute_force.hpp"
