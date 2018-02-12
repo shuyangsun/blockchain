@@ -50,7 +50,7 @@ SSYBlockchain supports different kinds of content data type, hashing function, b
 
 ### Basics of Block
 
-A `Block` is a unit in a `Blockchain`, it contains the following information: index, time stamp, hash of previous block, merkle root, hash of current block, nonce, and its data content.
+A `Block` is a unit in a `Blockchain`, it is constructed with two parts: header and content. Block header contains the following information: index, time stamp, hash of previous block, Merkle root, hash of current block, nonce; block content contains the data it stores and size information about its binary data.
 
 #### Content data type and BinaryDataConverter
 
